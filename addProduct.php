@@ -17,8 +17,6 @@ function addProduct($db, $name, $price) {
         "price" => $price));
 }
 
-//addProduct($db, 'windows', 100);
-
 //var_dump(getAllProducts($db));
 
 if (isset($_POST['add'])) {
