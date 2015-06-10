@@ -55,3 +55,5 @@ function sendProductsInJSON($db, $name, $price){
 	return $JSON_products;
 }
 
+//git test
+// test2
