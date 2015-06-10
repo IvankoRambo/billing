@@ -80,6 +80,7 @@ function convertProductsInJSON($db, $products_keys){
 	
 }
 
+<<<<<<< HEAD
 
 function sendData($key ,$value, $address){
 	
@@ -105,3 +106,16 @@ function sendData($key ,$value, $address){
 
 
 
+=======
+function getAdminsList($db) {
+	$query = $db->prepare('SELECT * FROM admins');
+	$res = $query->execute();
+	if (!$res) {
+		return false;
+	} 
+
+	$admins = $query->fetchAll(PDO::FETCH_ASSOC);
+
+	return $admins;
+}
+>>>>>>> zeoorigin/dev
