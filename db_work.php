@@ -39,7 +39,7 @@ function insertIntoProducts($db, $name, $price){
  * Или можно отсылку JSON на ко всем системам не делать в функции, а возвращать JSON и отсылать его куда нужно уже вне функции
  */
 
-function sendProductsInJSON($db, $name, $price){
+function sendNewProductsInJSON($db, $name, $price){
 	
 	if(!insertIntoProducts($db, $name, $price)){
 		return false;
