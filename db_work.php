@@ -68,8 +68,7 @@ function convertProductsInJSON($db, $products_keys){
 		else $products_keys_str .= $products_keys[$i].', ';
 	}
 	
-	$query = $db->prepare("SELECT * FROM products where id IN (:prod_str)");
-	//$query->bindParam(":prod_str", $products_keys_str, PDO::PARAM_STR);
+	$query = $db->prepare("SELECT * FROM products where id IN ($products_keys_str)");
 	$query->execute();
 	
 	$JSON_products = array("products" => array());
@@ -80,9 +79,29 @@ function convertProductsInJSON($db, $products_keys){
 	return json_encode($JSON_products);
 	
 }
-<<<<<<< HEAD
-=======
 
-//git test
-// test2
->>>>>>> origin/dev
+
+function sendData($key ,$value, $address){
+	
+	$data = array(
+		$key => $value,
+	);
+	
+	$options = array(
+		'http' => array(
+			'header' => "Content-type: application/x-www-form-urlencoded\r\n",
+			'method' => 'POST',
+			'content' => http_build_query($data)
+		),
+	);
+	
+	$context = stream_context_create($options);
+	
+	$fp = fopen($address, 'r', false, $context);
+	fpassthru($fp);
+	fclose($fp);
+	
+}
+
+
+

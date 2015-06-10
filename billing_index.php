@@ -7,4 +7,8 @@
 	$str = convertProductsInJSON($db,[1, 3, 4]);
 	var_dump($str);
 	
+	$response = sendData('products', $str, 'get_products.php');
+	
+	var_dump($response);
+	
 ?>
