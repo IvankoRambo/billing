@@ -80,3 +80,9 @@ function convertProductsInJSON($db, $products_keys){
 	return json_encode($JSON_products);
 	
 }
+<<<<<<< HEAD
+=======
+
+//git test
+// test2
+>>>>>>> origin/dev
