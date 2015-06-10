@@ -3,7 +3,8 @@
 	
 	$db = getConnection($config_path);
 	
-	$str = sendProductsInJSON($db, 'Some Antivirus', 0.12);
+	$info = getAllProducts($db);
+	$str = convertProductsInJSON($db,[1, 3, 4]);
 	var_dump($str);
 	
 ?>

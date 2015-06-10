@@ -18,12 +18,30 @@ function getConnection($config_path){
 }
 
 
-function getProducts($db){
+function getAllProducts($db){
 	$query = $db->prepare("SELECT * FROM products");
 	$query->execute();
 	
 	return ( $query->fetchAll(PDO::FETCH_ASSOC) );
 }
+
+function getLastProduct($db){
+	$query = $db->prepare("SELECT * FROM products where id=(SELECT MAX(id) FROM products)");
+	$query->execute();
+	
+	return ( $query->fetchAll(PDO::FETCH_ASSOC) );
+}
+
+
+function filterProductsKeys($product_info){
+	$keys = [];
+	for($i = 0; $i<count($product_info); $i++){
+		$keys[] = $product_info[$i]['id'];
+	}
+	
+	return $keys;
+}
+
 
 function insertIntoProducts($db, $name, $price){
 	$query = $db->prepare("INSERT INTO products (name, price) VALUE (:name, :price)");
@@ -34,24 +52,31 @@ function insertIntoProducts($db, $name, $price){
 	return ( $query->execute() ) ? true : false;
 }
 
-/*
- * here is expected the third parameter - an array with addresses of systems we will send JSON with products (maybe :) )
- * Или можно отсылку JSON на ко всем системам не делать в функции, а возвращать JSON и отсылать его куда нужно уже вне функции
- */
 
-function sendNewProductsInJSON($db, $name, $price){
+
+/*
+ *function for converting products array in JSON
+ */
+ 
+
+function convertProductsInJSON($db, $products_keys){
+		
+	$products_keys_str = '';
 	
-	if(!insertIntoProducts($db, $name, $price)){
-		return false;
+	for($i = 0; $i<count($products_keys); $i++){
+		if($i == count($products_keys)-1)	$products_keys_str .= $products_keys[$i];
+		else $products_keys_str .= $products_keys[$i].', ';
 	}
 	
-	$product_list = getProducts($db);
-	$JSON_products_array = array('products' => array());
+	$query = $db->prepare("SELECT * FROM products where id IN (:prod_str)");
+	//$query->bindParam(":prod_str", $products_keys_str, PDO::PARAM_STR);
+	$query->execute();
 	
-	for($i = 0; $i<count($product_list); $i++)	$JSON_array['products'][] = $product_list[$i];
+	$JSON_products = array("products" => array());
+	$array_products = $query->fetchAll(PDO::FETCH_ASSOC);
 	
-	$JSON_products = json_encode($JSON_array);
+	for($i = 0; $i<count($array_products); $i++) $JSON_products['products'][] = $array_products[$i];
 	
-	return $JSON_products;
+	return json_encode($JSON_products);
+	
 }
-
