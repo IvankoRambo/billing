@@ -3,7 +3,7 @@
 	
 	$db = getConnection($config_path);
 	
-	$str = sendProductsInJSON($db, 'Avarum Key SuperAntivirus', 0.12);
+	$str = sendProductsInJSON($db, 'Some Antivirus', 0.12);
 	var_dump($str);
 	
 ?>
