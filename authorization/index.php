@@ -19,6 +19,9 @@
 		if (!$errAuth) {
 			require($path.'/../db_work.php');
 
+			$db = getConnection($config_path);
+
+			$admins = getAdminsList($db);
 		}
 	}
 ?>
@@ -44,5 +47,8 @@
 		<?php  	endif;
 			  endforeach;?> 
 	<?php endif;?>
+	<?php if (!$errAuth) 
+			var_dump($admins);
+	?>
 </body>
 </html>
