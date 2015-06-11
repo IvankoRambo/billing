@@ -1,7 +1,6 @@
 <?php
 	require_once __DIR__.'/db_work.php';
-	
-	$r = new HttpRequest('http://example.com/form.php', HttpRequest::METH_POST);
+
 
 	$db = getConnection($config_path);
 	
@@ -9,10 +8,19 @@
 	$info = filterProductsKeys($info);
 	$str = convertProductsInJSON($db, $info);
 	var_dump($str);
+
 	
 
-	/*$response = sendData('products', $str, 'get_products.php');
+	// создаем подключение
+	$ch = curl_init('http://10.55.33.27/Account_Service/AS/test.php');
+	// устанавлваем даные для отправки
+	curl_setopt($ch, CURLOPT_POSTFIELDS, 'a='.$str);
+	// флаг о том, что нужно получить результат
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+	// отправляем запрос
+	$response = curl_exec($ch);
+	// закрываем соединение
+	curl_close($ch);
 	
-	var_dump($response);*/
-	
+	var_export($response);
 ?>

@@ -4,23 +4,23 @@ require('db_work.php');
 $config_path = 'config/db.ini';
 $db = getConnection($config_path);
 
-/**
- * @param pdo $db
- * @param string $name
- * @param float $price
- */
-function addProduct($db, $name, $price) {
-    $query = $db->prepare("INSERT INTO products(name, price)
-		VALUES(:name, :price)");
-    $query->execute(array(
-        "name" => $name,
-        "price" => $price));
-}
+///**
+// * @param pdo $db
+// * @param string $name
+// * @param float $price
+// */
+//function addProduct($db, $name, $price) {
+//    $query = $db->prepare("INSERT INTO products(name, price)
+//		VALUES(:name, :price)");
+//    $query->execute(array(
+//        "name" => $name,
+//        "price" => $price));
+//}
 
 //var_dump(getAllProducts($db));
 
 if (isset($_POST['add'])) {
-    addProduct($db, $_POST['name'], $_POST['price']);
+    insertIntoProducts($db, $_POST['name'], $_POST['price']);
 //    header("Location: index.php");
 }
 
