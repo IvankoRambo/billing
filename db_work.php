@@ -101,6 +101,13 @@ function convertProductsInJSON($db, $products_keys){
  */
 
 /*function sendData($key_info ,$info, $address_array, $description = null){
+=======
+function sendData($key ,$value, $address){
+	
+	$data = array(
+		$key => $value,
+	);
+>>>>>>> zeoorigin/dev
 	
 	$response_array = array();
 	
@@ -140,10 +147,6 @@ function convertProductsInJSON($db, $products_keys){
 		
 }*/
 
-
-function sendData(){
-	
-}
 
 
 function getAdminsList($db) {
