@@ -80,8 +80,6 @@ function convertProductsInJSON($db, $products_keys){
 	
 }
 
-<<<<<<< HEAD
-
 function sendData($key ,$value, $address){
 	
 	$data = array(
@@ -104,9 +102,6 @@ function sendData($key ,$value, $address){
 	
 }
 
-
-
-=======
 function getAdminsList($db) {
 	$query = $db->prepare('SELECT * FROM admins');
 	$res = $query->execute();
@@ -118,4 +113,4 @@ function getAdminsList($db) {
 
 	return $admins;
 }
->>>>>>> zeoorigin/dev
+
