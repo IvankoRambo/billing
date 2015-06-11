@@ -17,6 +17,20 @@ function getConnection($config_path){
 		
 }
 
+/*
+ * checking is right password for admin or not 
+*/
+
+function isRightPassword($db, $name, $password){
+	$query = $db->prepare("SELECT id FROM admins WHERE name = :name AND password = :password");
+	$query->bindParam(":name", $name, PDO::PARAM_STR);
+	$query->bindParam(":password", $password, PDO::PARAM_STR);
+	$query->execute();
+	$check = $query->fetchAll(PDO::FETCH_NUM);
+	
+	return ( empty($check) ) ? false : true;
+}
+
 
 function getAllProducts($db){
 	$query = $db->prepare("SELECT * FROM products");
@@ -74,39 +88,64 @@ function convertProductsInJSON($db, $products_keys){
 	$JSON_products = array("products" => array());
 	$array_products = $query->fetchAll(PDO::FETCH_ASSOC);
 	
+	
+	
 	for($i = 0; $i<count($array_products); $i++) $JSON_products['products'][] = $array_products[$i];
 	
 	return json_encode($JSON_products);
 	
 }
 
-<<<<<<< HEAD
+/*
+ * Sending some data in JSON for systems
+ */
 
-function sendData($key ,$value, $address){
+/*function sendData($key_info ,$info, $address_array, $description = null){
 	
-	$data = array(
-		$key => $value,
-	);
+	$response_array = array();
 	
-	$options = array(
-		'http' => array(
-			'header' => "Content-type: application/x-www-form-urlencoded\r\n",
-			'method' => 'POST',
-			'content' => http_build_query($data)
-		),
-	);
+	for($i = 0; $i < count($address_array); $i++){
+				
+		$url = $address_array[$i];
+		
+		$fields = array(
+		$key_info => $info,
+		'description' => $description.' '.$url
+		);
+		
+		$fields_str = '';
+		
+		foreach($fields as $key=>$value) { $fields_str .= $key.'='.$value.'&'; }
+		$fields_str = trim($fields_str, '&');
+		
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_POST, count($fields));
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $fields_str);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+	    'Transfer-Encoding: chunked',
+	    'Connection: keep-alive',
+	    'Content-Length: ' . strlen($fields_str))
+		);
+		
+		$response = curl_exec($ch);
+		$response_array[] = ( !$response ) ? 'Some technical problems with sending data on '.$url : $response;
+		curl_close($ch);
+				
+	}
 	
-	$context = stream_context_create($options);
-	
-	$fp = fopen($address, 'r', false, $context);
-	fpassthru($fp);
-	fclose($fp);
+	return $response_array[0];
+		
+}*/
+
+
+function sendData(){
 	
 }
 
 
-
-=======
 function getAdminsList($db) {
 	$query = $db->prepare('SELECT * FROM admins');
 	$res = $query->execute();
@@ -118,4 +157,4 @@ function getAdminsList($db) {
 
 	return $admins;
 }
->>>>>>> zeoorigin/dev
+
