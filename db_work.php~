@@ -17,6 +17,20 @@ function getConnection($config_path){
 		
 }
 
+/*
+ * checking is right password for admin or not 
+*/
+
+function isRightPassword($db, $name, $password){
+	$query = $db->prepare("SELECT id FROM admins WHERE name = :name AND password = :password");
+	$query->bindParam(":name", $name, PDO::PARAM_STR);
+	$query->bindParam(":password", $password, PDO::PARAM_STR);
+	$query->execute();
+	$check = $query->fetchAll(PDO::FETCH_NUM);
+	
+	return ( empty($check) ) ? false : true;
+}
+
 
 function getAllProducts($db){
 	$query = $db->prepare("SELECT * FROM products");
@@ -74,6 +88,8 @@ function convertProductsInJSON($db, $products_keys){
 	$JSON_products = array("products" => array());
 	$array_products = $query->fetchAll(PDO::FETCH_ASSOC);
 	
+	
+	
 	for($i = 0; $i<count($array_products); $i++) $JSON_products['products'][] = $array_products[$i];
 	
 	return json_encode($JSON_products);
@@ -82,29 +98,35 @@ function convertProductsInJSON($db, $products_keys){
 
 
 
-function sendData($key ,$value, $address){
-	
-	$data = array(
-		$key => $value,
-	);
-	
-	$options = array(
-		'http' => array(
-			'header' => "Content-type: application/x-www-form-urlencoded\r\n",
-			'method' => 'POST',
-			'content' => http_build_query($data)
-		),
-	);
-	
-	$context = stream_context_create($options);
-	
-	$fp = fopen($address, 'r', false, $context);
-	fpassthru($fp);
-	fclose($fp);
-	
+
+/*
+ * Sending some data in JSON for systems
+ */
+
+function sendData($key_info ,$info, $address, $secret_key = null){
+
+				
+		$url = $address;
+		
+		$fields = array(
+		$key_info => $info,
+		'secret_key' => $secret_key
+		);
+		
+		$fields_str = '';
+		
+		foreach($fields as $key=>$value) { $fields_str .= $key.'='.$value.'&'; }
+		$fields_str = trim($fields_str, '&');
+		
+	$ch = curl_init($url);
+	curl_setopt($ch, CURLOPT_POSTFIELDS, $fields_str);
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+	$response = curl_exec($ch);
+	curl_close($ch);
+
+	return $response;
+		
 }
-
-
 
 
 function getAdminsList($db) {

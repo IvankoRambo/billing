@@ -96,35 +96,21 @@ function convertProductsInJSON($db, $products_keys){
 	
 }
 
-<<<<<<< HEAD
 
-=======
+
+
 /*
  * Sending some data in JSON for systems
  */
->>>>>>> origin/dev
 
-/*function sendData($key_info ,$info, $address_array, $description = null){
-=======
-function sendData($key ,$value, $address){
-	
-<<<<<<< HEAD
-	
-=======
-	$data = array(
-		$key => $value,
-	);
->>>>>>> zeoorigin/dev
-	
-	$response_array = array();
-	
-	for($i = 0; $i < count($address_array); $i++){
+function sendData($key_info ,$info, $address, $secret_key = null){
+
 				
-		$url = $address_array[$i];
+		$url = $address;
 		
 		$fields = array(
 		$key_info => $info,
-		'description' => $description.' '.$url
+		'secret_key' => $secret_key
 		);
 		
 		$fields_str = '';
@@ -132,35 +118,17 @@ function sendData($key ,$value, $address){
 		foreach($fields as $key=>$value) { $fields_str .= $key.'='.$value.'&'; }
 		$fields_str = trim($fields_str, '&');
 		
-		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
-		curl_setopt($ch, CURLOPT_URL, $url);
-		curl_setopt($ch, CURLOPT_POST, count($fields));
-		curl_setopt($ch, CURLOPT_POSTFIELDS, $fields_str);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-		curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-	    'Transfer-Encoding: chunked',
-	    'Connection: keep-alive',
-	    'Content-Length: ' . strlen($fields_str))
-		);
+	$ch = curl_init($url);
+	curl_setopt($ch, CURLOPT_POSTFIELDS, $fields_str);
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+	$response = curl_exec($ch);
+	curl_close($ch);
+
+	return $response;
 		
-		$response = curl_exec($ch);
-		$response_array[] = ( !$response ) ? 'Some technical problems with sending data on '.$url : $response;
-		curl_close($ch);
-				
-	}
->>>>>>> origin/dev
-	
-	return $response_array[0];
-		
-}*/
+}
 
 
-
-<<<<<<< HEAD
-
-=======
->>>>>>> origin/dev
 function getAdminsList($db) {
 	$query = $db->prepare('SELECT * FROM admins');
 	$res = $query->execute();
