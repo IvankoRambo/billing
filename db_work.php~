@@ -84,7 +84,23 @@ function convertProductsInJSON($db, $products_keys){
 
 function sendData($key ,$value, $address){
 	
+	$data = array(
+		$key => $value,
+	);
 	
+	$options = array(
+		'http' => array(
+			'header' => "Content-type: application/x-www-form-urlencoded\r\n",
+			'method' => 'POST',
+			'content' => http_build_query($data)
+		),
+	);
+	
+	$context = stream_context_create($options);
+	
+	$fp = fopen($address, 'r', false, $context);
+	fpassthru($fp);
+	fclose($fp);
 	
 }
 

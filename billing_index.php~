@@ -1,7 +1,7 @@
 <?php
 	require_once __DIR__.'/db_work.php';
 	
-	$r = new HttpRequest('http://example.com/form.php', HttpRequest::METH_POST);
+
 
 	$db = getConnection($config_path);
 	
