@@ -1,6 +1,5 @@
 <?php
-	$path = dirname(__FILE__);
-
+	
 	define("ERR_AUTH_NAME_UNSET", "1");
 	define("ERR_AUTH_PASSWORD_UNSET", "2");
 	$error_messages = array (
@@ -17,7 +16,7 @@
 		}
 
 		if (!$errAuth) {
-			require($path.'/../db_work.php');
+			require(__DIR__.'/../db_work.php');
 
 			$db = getConnection($config_path);
 
