@@ -1,9 +1,9 @@
 <?php
 	require_once '/var/www/dev.school-server/www/billing_v1/db_work.php';
 
-	if(isset($_POST['exit']))	session_destroy();	
 
 	session_start();
+
 	$db = getConnection('/var/www/dev.school-server/www/billing_v1//config/db.ini');
 	
 	$data['name'] = ( isset($_POST['name']) ) ? $_POST['name'] : null;	
@@ -17,7 +17,7 @@
 	if(isset($_POST['button'])){
 		
 	if(!($data['name']) || !($data['password'])){
-		$data['data'] = 'You have to fill all fields';	
+		$response['data'] = 'You have to fill all fields';	
 	}
 	else{
 		
@@ -33,6 +33,9 @@
 	}
 	
 	}
+	
+	
+	if(isset($_POST['exit']))	session_destroy();	
 
 ?>
     <body>
@@ -52,6 +55,12 @@
 		<?php endif; ?>
 		
         <br />
+        
+        <?php if(!$response['success']) : ?>
+       	<form method="POST" action="registration_v2.php" >
+        	<button name="register">Register</button>
+        </form>
+        <?php endif; ?>
         
         
        	<?php if(isset($data['name']) && isset($_SESSION['name_'.$data['name']])) : ?>

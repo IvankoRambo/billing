@@ -59,7 +59,7 @@ function filterProductsKeys($product_info){
 
 function insertIntoProducts($db, $name, $price){
 	$query = $db->prepare("INSERT INTO products (name, price) VALUE (:name, :price)");
-	$query->bindParam(":name", $name, PDO::PARAM_STR);
+	$query->bindParam(":name", $name, PDO::PARAdbM_STR);
 	$price = (string)$price;
 	$query->bindParam(":price", $price, PDO::PARAM_STR);
 	
