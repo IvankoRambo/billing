@@ -249,8 +249,8 @@ function addAdminIfNotExist($db, $name, $password) {
 }
 
 function updateProduct($db, $id, $name, $price) {
-	$query = $db->prepare("UPDATE products SET name=':name', price=:price WHERE id=:id");
-	$query->bindParam(':name', $name);
+	$query = $db->prepare("UPDATE products SET name='$name', price=:price WHERE id=:id");
+	// $query->bindParam(':name', $name);
 	$query->bindParam(':price', $price);
 	$query->bindParam(':id', $id);
 	return ($query->execute());
