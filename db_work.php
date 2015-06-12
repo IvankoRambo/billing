@@ -255,3 +255,9 @@ function updateProduct($db, $id, $name, $price) {
 	$query->bindParam(':id', $id);
 	return ($query->execute());
 }
+
+function deleteProduct($db, $id) {
+	$query = $db->prepare('DELETE FROM products WHERE id=:id');
+	$query->bindParam(':id', $id);
+	return ($query->execute());
+}
