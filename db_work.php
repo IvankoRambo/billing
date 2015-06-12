@@ -128,12 +128,24 @@ function sendData($key_info ,$info, $address, $secret_key = null){
 		
 }
 
+/*
+	Getting all admins as array;
+
+	returns array of admins
+	returns 1, if there is problem with query.
+	returns 2, if there is problem with database. 
+*/
 
 function getAdminsList($db) {
 	$query = $db->prepare('SELECT * FROM admins');
+	
+	if (!$query) {
+		return 1;
+	}
+
 	$res = $query->execute();
 	if (!$res) {
-		return false;
+		return 2;
 	} 
 
 	$admins = $query->fetchAll(PDO::FETCH_ASSOC);
@@ -141,3 +153,97 @@ function getAdminsList($db) {
 	return $admins;
 }
 
+/*
+	Return does admin exist as bool value
+
+	returns true if admin exists
+	returns false if admin does not exist
+	returns 1, if there is problem with query.
+	returns 2, if there is problem with database. 
+*/
+
+function isAdminExist($db, $name) {
+	$admins = getAdminsList($db);
+	
+	if ($admins === 1 || $admins === 2) {
+		return $admins;
+	}
+
+	foreach ($admins as $admin) {
+		if ($admin['name'] == $name) {
+			return true;
+		}
+	}
+	return false;
+}
+
+/*
+	Add new admin to table
+
+	return true if success
+	returns 1, if there is problem with query.
+	returns 2, if there is problem with database. 
+*/
+
+
+function addAdmin($db, $name, $password) {
+	$query = $db->prepare('INSERT INTO admins (`name`, `password`) VALUES (:name, PASSWORD(:password))');
+	
+	if (!$query) {
+		return 1;
+	}
+
+	$query->bindParam(':name', $name);
+	$query->bindParam(':password', $password);
+	
+	$res = $query->execute();
+
+	if (!$res) {
+		return 2;
+	}
+
+	return true;
+}
+
+/*
+	Add new Admin if not exist before
+
+	return true if success
+	returns 1, if there is problem with query.
+	returns 2, if there is problem with database. 
+	
+*/
+
+function addAdminIfNotExist($db, $name, $password) {
+	$res = isAdminExist($db, $name);
+	switch ($res) {
+		case 1: {
+			return 1;
+		} break;
+		case 2: {
+			return 2;
+		} break;
+		case true: {
+			return false;
+		} break;
+		default: {
+
+		}
+	}
+
+	$res = addAdmin($db, $name, $password);
+
+	switch ($res) {
+		case 1: {
+			return 1;
+		} break;
+		case 2: {
+			return 2;
+		} break;
+		default: {
+
+		}
+	}
+
+	return true;
+}
