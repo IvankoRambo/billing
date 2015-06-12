@@ -1,10 +1,11 @@
 <?php
-	require_once '/var/www/dev.school-server/www/billing_v1/db_work.php';
+	require_once __DIR__.'/../db_work.php';
 
 
 	session_start();
 
-	$db = getConnection('/var/www/dev.school-server/www/billing_v1//config/db.ini');
+
+	$db = getConnection(__DIR__.'/../config/db.ini');
 	
 	$data['name'] = ( isset($_POST['name']) ) ? $_POST['name'] : null;	
 	$data['password'] = ( isset($_POST['password']) ) ? $_POST['password'] : null;

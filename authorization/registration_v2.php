@@ -18,20 +18,17 @@ if(!$data['user_name'] || !$data['password']){
 	$response['data'] = 'You ought to fill all fields!';	
 }
 else{
-	$user_data = getUserInfo($db, $data['email']);
-	if(empty($user_data)){
+	if(insertNewAdmin($db, $data['user_name'], $data['password'])){
 		$response['success'] = true;
-		createUser($db, $data['user_name'], $data['email'], $data['password'], date('Y-m-d H:i:s'), (int)$data['is_active']);
 		$response['data'] = 'You have been successfully registered';
-		$diff_info = registration_difference($db, 'name1', 'name2', 'minute_diff');
-		$response['additional'] = ( $diff_info['0']['minute_diff'] == 0 ) ? 'The previous user registered less than minute ago. We a pretty popular now.' : "The previous user registered {$diff_info['0']['minute_diff']} minutes ago";
 	}
-	else{
-		$response['data'] = 'User with such email already exists in the system';
+	else {
+		$response['data'] = 'The user with such login is already exists';
 	}
 }
 
 }
+
 
 ?>
 

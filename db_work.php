@@ -59,7 +59,7 @@ function filterProductsKeys($product_info){
 
 function insertIntoProducts($db, $name, $price){
 	$query = $db->prepare("INSERT INTO products (name, price) VALUE (:name, :price)");
-	$query->bindParam(":name", $name, PDO::PARAdbM_STR);
+	$query->bindParam(":name", $name, PDO::PARAM_STR);
 	$price = (string)$price;
 	$query->bindParam(":price", $price, PDO::PARAM_STR);
 	
@@ -129,15 +129,33 @@ function sendData($key_info ,$info, $address, $secret_key = null){
 }
 
 
+
 function getAdminsList($db) {
 	$query = $db->prepare('SELECT * FROM admins');
+	
+	if (!$query) {
+		return 1;
+	}
+
 	$res = $query->execute();
 	if (!$res) {
-		return false;
+		return 2;
 	} 
 
 	$admins = $query->fetchAll(PDO::FETCH_ASSOC);
 
 	return $admins;
 }
+
+
+ function insertNewAdmin($db, $name, $password){
+ 	$query = $db->prepare('INSERT INTO admins (name, password) VALUES (:name, :password)');
+	$query->bindParam(':name', $name);
+	$query->bindParam(':password', $password);
+	
+	return ( $query->execute() );
+	
+ }
+ 
+
 
