@@ -159,3 +159,22 @@ function getAdminsList($db) {
  
 
 
+<<<<<<< HEAD
+=======
+	return true;
+}
+
+function updateProduct($db, $id, $name, $price) {
+	$query = $db->prepare("UPDATE products SET name='$name', price=:price WHERE id=:id");
+	// $query->bindParam(':name', $name);
+	$query->bindParam(':price', $price);
+	$query->bindParam(':id', $id);
+	return ($query->execute());
+}
+
+function deleteProduct($db, $id) {
+	$query = $db->prepare('DELETE FROM products WHERE id=:id');
+	$query->bindParam(':id', $id);
+	return ($query->execute());
+}
+>>>>>>> zeoorigin/dev
