@@ -158,23 +158,26 @@ function getAdminsList($db) {
  }
  
 
-
-<<<<<<< HEAD
-=======
-	return true;
-}
-
 function updateProduct($db, $id, $name, $price) {
-	$query = $db->prepare("UPDATE products SET name='$name', price=:price WHERE id=:id");
-	// $query->bindParam(':name', $name);
-	$query->bindParam(':price', $price);
-	$query->bindParam(':id', $id);
+	$query = $db->prepare("UPDATE products SET name=:name, price=:price WHERE id=:id");
+	$price = (string)$price;
+	$query->bindParam(':name', $name, PDO::PARAM_STR);
+	$query->bindParam(':price', $price, PDO::PARAM_STR);
+	$query->bindParam(':id', $id, PDO::PARAM_INT);
 	return ($query->execute());
 }
 
 function deleteProduct($db, $id) {
 	$query = $db->prepare('DELETE FROM products WHERE id=:id');
-	$query->bindParam(':id', $id);
+	$query->bindParam(':id', $id, PDO::PARAM_INT);
 	return ($query->execute());
 }
->>>>>>> zeoorigin/dev
+
+function getProductsViaId($db, $id){
+	$query = $db->prepare("SELECT name, price FROM products WHERE id=:id");
+	$query->bindParam(":id", $id, PDO::PARAM_INT);
+	$query->execute();
+	
+	return ( $query->fetchAll(PDO::FETCH_ASSOC) );
+}
+
