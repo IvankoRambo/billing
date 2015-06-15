@@ -60,7 +60,6 @@ function filterProductsKeys($product_info){
 function insertIntoProducts($db, $name, $price){
 	$query = $db->prepare("INSERT INTO products (name, price) VALUE (:name, :price)");
 	$query->bindParam(":name", $name, PDO::PARAM_STR);
-	$price = (string)$price;
 	$query->bindParam(":price", $price, PDO::PARAM_STR);
 	
 	return ( $query->execute() ) ? true : false;
@@ -98,7 +97,6 @@ function convertProductsInJSON($db, $products_keys){
 
 
 
-
 /*
  * Sending some data in JSON for systems
  */
@@ -130,24 +128,6 @@ function sendData($key_info ,$info, $address, $secret_key = null){
 
 
 
-function getAdminsList($db) {
-	$query = $db->prepare('SELECT * FROM admins');
-	
-	if (!$query) {
-		return 1;
-	}
-
-	$res = $query->execute();
-	if (!$res) {
-		return 2;
-	} 
-
-	$admins = $query->fetchAll(PDO::FETCH_ASSOC);
-
-	return $admins;
-}
-
-
  function insertNewAdmin($db, $name, $password){
  	$query = $db->prepare('INSERT INTO admins (name, password) VALUES (:name, :password)');
 	$query->bindParam(':name', $name);
@@ -157,6 +137,7 @@ function getAdminsList($db) {
 	
  }
  
+
 
 function updateProduct($db, $id, $name, $price) {
 	$query = $db->prepare("UPDATE products SET name=:name, price=:price WHERE id=:id");
@@ -173,6 +154,7 @@ function deleteProduct($db, $id) {
 	return ($query->execute());
 }
 
+
 function getProductsViaId($db, $id){
 	$query = $db->prepare("SELECT name, price FROM products WHERE id=:id");
 	$query->bindParam(":id", $id, PDO::PARAM_INT);
@@ -180,6 +162,25 @@ function getProductsViaId($db, $id){
 	
 	return ( $query->fetchAll(PDO::FETCH_ASSOC) );
 }
+
+/*
+ * Proccessing of refund
+ */
+ 
+ function addNewRefund($db, $refund_id, $order_id, $product_id, $product_quantity, $refund_sum = 0, $date = NULL){
+	
+	$query = $db->prepare('INSERT INTO refund VALUE (:id, :order_id, :product_id, :product_quantity, :refund_sum, :date)');
+	$query->bindParam(':id', $refund_id, PDO::PARAM_INT);
+	$query->bindParam(':order_id', $order_id, PDO::PARAM_INT);
+	$query->bindParam(':product_id', $product_id, PDO::PARAM_INT);
+	$query->bindParam(':product_quantity', $product_quantity, PDO::PARAM_INT);
+	$query->bindParam(':refund_sum', $refund_sum, PDO::PARAM_INT);
+	if(!is_null($date)) $date = string($date);
+	$query->bindParam(':date', $date, PDO::PARAM_STR);
+	
+	return ( $query->execute() );
+	
+ }
 
 function getOrder($db, $product_id, $product_quantity, $card_name, $sum, $user_id = NULL) {
 	$query = $db->prepare('INSERT INTO `orders`' +
