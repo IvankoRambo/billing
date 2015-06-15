@@ -48,7 +48,7 @@ $products = getAllProducts($db);
         <tr>
             <td><?=$products[$i]['name']?></td>
             <td><?=$products[$i]['price']?></td>
-            <td><a href="single_edit.php?product_id="<?= $id; ?> >
+            <td><a href=<?= 'single_edit.php?product_id='.$id; ?> >
                     <span class="glyphicon glyphicon-pencil">EDIT</span>
                 </a></td>
         </tr>

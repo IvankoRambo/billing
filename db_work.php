@@ -60,7 +60,6 @@ function filterProductsKeys($product_info){
 function insertIntoProducts($db, $name, $price){
 	$query = $db->prepare("INSERT INTO products (name, price) VALUE (:name, :price)");
 	$query->bindParam(":name", $name, PDO::PARAM_STR);
-	$price = (string)$price;
 	$query->bindParam(":price", $price, PDO::PARAM_STR);
 	
 	return ( $query->execute() ) ? true : false;
@@ -98,7 +97,6 @@ function convertProductsInJSON($db, $products_keys){
 
 
 
-
 /*
  * Sending some data in JSON for systems
  */
@@ -130,24 +128,6 @@ function sendData($key_info ,$info, $address, $secret_key = null){
 
 
 
-function getAdminsList($db) {
-	$query = $db->prepare('SELECT * FROM admins');
-	
-	if (!$query) {
-		return 1;
-	}
-
-	$res = $query->execute();
-	if (!$res) {
-		return 2;
-	} 
-
-	$admins = $query->fetchAll(PDO::FETCH_ASSOC);
-
-	return $admins;
-}
-
-
  function insertNewAdmin($db, $name, $password){
  	$query = $db->prepare('INSERT INTO admins (name, password) VALUES (:name, :password)');
 	$query->bindParam(':name', $name);
@@ -159,22 +139,18 @@ function getAdminsList($db) {
  
 
 
-<<<<<<< HEAD
-=======
+function updateProduct($db, $id, $name, $price) {
+	$query = $db->prepare("UPDATE products SET name=:name, price=:price WHERE id=:id");
+	$price = (string)$price;
+	$query->bindParam(':name', $name);
+	$query->bindParam(':price', $price, PDO::PARAM_STR);
 	return true;
 }
 
-function updateProduct($db, $id, $name, $price) {
-	$query = $db->prepare("UPDATE products SET name='$name', price=:price WHERE id=:id");
-	// $query->bindParam(':name', $name);
-	$query->bindParam(':price', $price);
-	$query->bindParam(':id', $id);
-	return ($query->execute());
-}
 
 function deleteProduct($db, $id) {
 	$query = $db->prepare('DELETE FROM products WHERE id=:id');
 	$query->bindParam(':id', $id);
 	return ($query->execute());
 }
->>>>>>> zeoorigin/dev
+
