@@ -181,3 +181,6 @@ function getProductsViaId($db, $id){
 	return ( $query->fetchAll(PDO::FETCH_ASSOC) );
 }
 
+function getOrder($db, $product_id, $product_quantity, $card_name, $sum, $user_id = NULL) {
+	$query = $db->prepare('INSERT INTO `orders` (`product_id`, `product_quantity`)');
+}
