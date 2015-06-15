@@ -42,13 +42,12 @@ $products = getAllProducts($db);
         </tr>
     </thead>
     <?php for($i = 0; $i < count($products); $i++) : ?>
-    	<?php $id = $products[$i]['id']; ?>
-    	
     	
         <tr>
             <td><?=$products[$i]['name']?></td>
             <td><?=$products[$i]['price']?></td>
-            <td><a href=<?= 'single_edit.php?product_id='.$id; ?> >
+
+            <td><a href=<?= "single_product.php?product_id={$products[$i]['id']}"; ?> >
                     <span class="glyphicon glyphicon-pencil">EDIT</span>
                 </a></td>
         </tr>
