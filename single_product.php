@@ -99,7 +99,7 @@ if(isset($_POST['delete'])){
 
 <?php
 
-if($response['deleted'])	header('Refresh: '.$pause.'; URL=index_update.php');
+if($response['deleted'])	header('Refresh: '.$pause.'; URL=index.php');
 
 ?>
 

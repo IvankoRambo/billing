@@ -1,8 +1,8 @@
 <?php
 
-require_once '/var/www/dev.school-server/www/billing_v1/db_work.php';
+require_once __DIR__ . '/db_work.php';
 
-$db = getConnection('/var/www/dev.school-server/www/billing_v1/config/db.ini');
+$db = getConnection(__DIR__.'/config/db.ini');
 
 $data['user_name'] = ( isset($_POST['user_name']) ) ? $_POST['user_name'] : null;
 $data['password'] = ( isset($_POST['password']) ) ? $_POST['password'] : null;
@@ -13,11 +13,7 @@ $response = array(
 	'success' => false
 );
 
-if(isset($_POST)){
-if(!$data['user_name'] || !$data['password']){
-	$response['data'] = 'You ought to fill all fields!';	
-}
-else{
+if(isset($_POST['sign_up'])) {
 	if(insertNewAdmin($db, $data['user_name'], $data['password'])){
 		$response['success'] = true;
 		$response['data'] = 'You have been successfully registered';
@@ -25,24 +21,19 @@ else{
 	else {
 		$response['data'] = 'The user with such login is already exists';
 	}
-}
 
 }
-
 
 ?>
-
-
 <body>
-	
 	<?php if(!$response['success']) : ?>
-		<div>Registation of a new user</div> <br />
-	<form method="POST" action=<?= $_SERVER['SCRIPT_NAME'] ?> >
+		<div>Registration of a new user</div> <br />
+	<form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
 		<span>Your name:</span><br />
-		<input type="text" name="user_name"  /><br />
+		<input type="text" name="user_name" required  /><br />
 		<span>Your password:</span><br />
-		<input type="text" name="password" /><br />
-		<button name="r_b">Register</button>
+		<input type="password" name="password" required /><br />
+		<button name="sign_up">Register</button>
 	</form>
 	<?php endif; ?>
 	
@@ -52,14 +43,10 @@ else{
 	
 	<?php if($response['success']) : ?>
 	<form method="POST">
-		<button name="b_b">Back to the registation</button>
+        <a href="index.php">Go back</a>
 	</form>
 	<?php endif; ?>
 	
 	<br />
-	
-	
-	<form id="exit" method="POST" action="auth.php">
-        <button name="exit">Exit</button>
-    </form>
-	
+
+    <a href="index.php">Exit</a>
