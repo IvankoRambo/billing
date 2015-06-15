@@ -1,8 +1,8 @@
 <?php
 
-require_once '/var/www/dev.school-server/www/billing_v1/db_work.php';
+require_once __DIR__ . '/../db_work.php';
 
-$db = getConnection('/var/www/dev.school-server/www/billing_v1/config/db.ini');
+$db = getConnection(__DIR__.'/../config/db.ini');
 
 $data['user_name'] = ( isset($_POST['user_name']) ) ? $_POST['user_name'] : null;
 $data['password'] = ( isset($_POST['password']) ) ? $_POST['password'] : null;
@@ -13,7 +13,7 @@ $response = array(
 	'success' => false
 );
 
-if(isset($_POST)){
+if(isset($_POST['r_b'])) {
 if(!$data['user_name'] || !$data['password']){
 	$response['data'] = 'You ought to fill all fields!';	
 }
@@ -39,9 +39,9 @@ else{
 		<div>Registation of a new user</div> <br />
 	<form method="POST" action=<?= $_SERVER['SCRIPT_NAME'] ?> >
 		<span>Your name:</span><br />
-		<input type="text" name="user_name"  /><br />
+		<input type="text" name="user_name" required  /><br />
 		<span>Your password:</span><br />
-		<input type="text" name="password" /><br />
+		<input type="password" name="password" required /><br />
 		<button name="r_b">Register</button>
 	</form>
 	<?php endif; ?>
@@ -52,14 +52,10 @@ else{
 	
 	<?php if($response['success']) : ?>
 	<form method="POST">
-		<button name="b_b">Back to the registation</button>
+        <a href="index_update.php">Go back</a>
 	</form>
 	<?php endif; ?>
 	
 	<br />
-	
-	
-	<form id="exit" method="POST" action="auth.php">
-        <button name="exit">Exit</button>
-    </form>
-	
+
+    <a href="index_update.php">Exit</a>

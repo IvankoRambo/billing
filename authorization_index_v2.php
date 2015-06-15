@@ -1,9 +1,6 @@
 <?php
-	require_once __DIR__.'/../db_work.php';
-
-
+	require_once __DIR__ . '/../db_work.php';
 	session_start();
-
 
 	$db = getConnection(__DIR__.'/../config/db.ini');
 	
@@ -17,14 +14,16 @@
 	
 	if(isset($_POST['button'])){
 		
-	if(!($data['name']) || !($data['password'])){
-		$response['data'] = 'You have to fill all fields';	
-	}
+        if(!($data['name']) || !($data['password'])){
+            $response['data'] = 'You have to fill all fields';
+        }
 	else{
 		
 		if(isRightPassword($db, $data['name'], $data['password'])){
 			$response['data'] = 'You\'ve been successfully logged in,';
-			$_SESSION['name_'.$data['name']] = $data['name'];
+//			$_SESSION['name_'.$data['name']] = $data['name'];
+			$_SESSION['name'] = $data['name'];
+            $_SESSION['isLogged'] = true;
 			$response['success'] = true;
 		}
 		else{
@@ -34,14 +33,16 @@
 	}
 	
 	}
-	
-	
-	if(isset($_POST['exit']))	session_destroy();	
+
+	if(isset($_POST['exit'])) {
+        session_destroy();
+        $_SESSION = array();
+    }
 
 ?>
     <body>
 		
-		<?php if(!$response['success']) : ?>
+		<?php if(!isset($_SESSION['name'])) : ?>
         <form id="auth" method="POST" action=<?= $_SERVER["SCRIPT_NAME"] ?> >
             <span>Your name:</span><br />
             <input type="text" id="email" name="name" /><br>
@@ -51,20 +52,22 @@
         </form><br />
         <?php endif; ?>
         
-		<?php if(!empty($_POST)) : ?>
-			<div id="message_log"><?= $response['data']; ?></div>
+
+        <?php if(isset($_SESSION['isLogged'])) : ?>
+			<div id="message_log"><?= "Welcome " . $_SESSION['name'] ?></div>
 		<?php endif; ?>
 		
         <br />
         
-        <?php if(!$response['success']) : ?>
-       	<form method="POST" action="registration_v2.php" >
-        	<button name="register">Register</button>
-        </form>
+        <?php if(!isset($_SESSION['name'])) : ?>
+            <div id="message_log"><?= $response['data']; ?></div>
+            <form method="POST" action="registration.php" >
+                <button name="register">Register</button>
+            </form>
         <?php endif; ?>
         
         
-       	<?php if(isset($data['name']) && isset($_SESSION['name_'.$data['name']])) : ?>
+       	<?php if(/*isset($data['name']) &&*/ isset($_SESSION['name'])) : ?>
         <form id="exit" method="POST">
                 <button name="exit">Exit</button>
         </form>
