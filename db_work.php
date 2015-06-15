@@ -162,3 +162,22 @@ function getProductsViaId($db, $id){
 	
 	return ( $query->fetchAll(PDO::FETCH_ASSOC) );
 }
+
+/*
+ * Proccessing of refund
+ */
+ 
+ function addNewRefund($db, $refund_id, $order_id, $product_id, $product_quantity, $refund_sum = 0, $date = NULL){
+	
+	$query = $db->prepare('INSERT INTO refund VALUE (:id, :order_id, :product_id, :product_quantity, :refund_sum, :date)');
+	$query->bindParam(':id', $refund_id, PDO::PARAM_INT);
+	$query->bindParam(':order_id', $order_id, PDO::PARAM_INT);
+	$query->bindParam(':product_id', $product_id, PDO::PARAM_INT);
+	$query->bindParam(':product_quantity', $product_quantity, PDO::PARAM_INT);
+	$query->bindParam(':refund_sum', $refund_sum, PDO::PARAM_INT);
+	if(!is_null($date)) $date = string($date);
+	$query->bindParam(':date', $date, PDO::PARAM_STR);
+	
+	return ( $query->execute() );
+	
+ }
