@@ -21,7 +21,7 @@ $db = getConnection($config_path);
 
 if (isset($_POST['add'])) {
     insertIntoProducts($db, $_POST['name'], $_POST['price']);
-//    header("Location: index_old.php");
+//    header("Location: index.php");
 }
 
 ?>

@@ -26,12 +26,12 @@ if(isset($_POST['sign_in'])){
         $_SESSION['isLogged'] = true;
     }
     else{
-        echo 'Access denied!';
+        echo '<h3>Access denied!</h3>';
     }
 }
 ?>
 
-<div class="row">
+<div class="row pull-right">
     <div class="" id="top_panel">
         <?php if (!empty($_SESSION['isLogged'])): ?>
             <h4>Welcome <?=$_SESSION['name']?></a></h4>

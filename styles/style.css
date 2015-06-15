@@ -1,5 +1,5 @@
 body {
-    /*background-color: #dde;*/
+    background-color: #dde;
 }
 
 .add_product_form {
@@ -14,7 +14,7 @@ body {
 .products_table {
     font-family:"Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
     font-size:12px;
-    background:#fff;
+    background:#dde;
     width:400px;
     border-collapse:collapse;
     text-align:left;
@@ -40,7 +40,7 @@ body {
 
 #top_panel {
     /*width:210px;*/
-    background-color:#abc;
+    background-color: #5bc0de;
     padding: 15px;
     border: 1px solid black;
     /*margin: 10px;*/
@@ -51,6 +51,14 @@ body {
     background-color:#ccc;
     padding: 15px;
     border: 1px solid black;
+}
+.center-row {
+    display:table;
+}
+.center {
+    display:table-cell;
+    vertical-align:middle;
+    float:none;
 }
 
 

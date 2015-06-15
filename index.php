@@ -44,7 +44,11 @@ function page_index() {
         </form>
     <?php
     } else {
-        echo '<h1 align=center>Hi, please sign in to continue...</h1>';
+        echo '<div class="row center-row">
+            <div class="center">
+                <h1 align=center>Hi, please sign in to continue...</h1>
+            </div>
+        </div>';
     }
 
 }
