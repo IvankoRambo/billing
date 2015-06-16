@@ -182,10 +182,10 @@ function getProductsViaId($db, $id){
 	
  }
 
-function getOrder($db, $product_id, $product_quantity, $card_name, $sum, $user_id = NULL) {
-	$query = $db->prepare('INSERT INTO `orders`' +
-						  '(`product_id`, `product_quantity`, `card_name`, `sum`, `user_id`)'+
-						  'VALUES'+
+function postOrder($db, $product_id, $product_quantity, $card_name, $sum, $user_id = NULL) {
+	$query = $db->prepare('INSERT INTO `orders`'.
+						  '(`product_id`, `product_quantity`, `card_name`, `sum`, `user_id`)'.
+						  'VALUES'.
 						  '(:product_id, :product_quantity, :card_name, :sum, :user_id)');
 	$query->bindParam(':product_id', $product_id, PDO::PARAM_INT);
 	$query->bindParam(':product_quantity', $product_quantity, PDO::PARAM_INT);
@@ -194,5 +194,7 @@ function getOrder($db, $product_id, $product_quantity, $card_name, $sum, $user_i
 	$query->bindParam(':user_id', $user_id, PDO::PARAM_INT);
 	$res = $query->execute();
 	
-	echo $res;
+	echo $res? "True" : "False";
+
+	 
 }

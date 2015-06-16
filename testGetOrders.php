@@ -2,7 +2,11 @@
 	require('db_work.php');
 	$db = getConnection($config_path);
 
-	// function getOrder($db, $product_id, $product_quantity, $card_name, $sum, $user_id = NULL) {
+	// function postOrder($db, $product_id, $product_quantity, $card_name, $sum, $user_id = NULL) {
 
-	getOrder($db, 1, 1, "DB62224", 220, 4);
+	if (isset($_POST) && isset($_POST['data'])) {
+		$order = json_encode($_POST['data']);
+		var_dump($order);
+	}
+	echo "YEAH";
 ?>
