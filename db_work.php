@@ -165,8 +165,8 @@ function getProductsViaId($db, $id){
 
 
 /*
- * Proccessing of refund
- */
+ * This functions are in process now, expecting for confirming of refund and order data
+ 
  
  function addNewRefund($db, $refund_id, $order_id, $product_id, $product_quantity, $refund_sum = 0, $date = NULL){
 	
@@ -183,7 +183,27 @@ function getProductsViaId($db, $id){
 	
  }
 
+
 function getOrder($db, $product_id, $product_quantity, $card_name, $sum, $user_id = NULL) {
 	$query = $db->prepare('INSERT INTO `orders` (`product_id`, `product_quantity`)');
 }
 
+
+function postOrder($db, $product_id, $product_quantity, $card_name, $sum, $user_id = NULL) {
+	$query = $db->prepare('INSERT INTO `orders`'.
+						  '(`product_id`, `product_quantity`, `card_name`, `sum`, `user_id`)'.
+						  'VALUES'.
+						  '(:product_id, :product_quantity, :card_name, :sum, :user_id)');
+	$query->bindParam(':product_id', $product_id, PDO::PARAM_INT);
+	$query->bindParam(':product_quantity', $product_quantity, PDO::PARAM_INT);
+	$query->bindParam(':card_name', $card_name, PDO::PARAM_STR);
+	$query->bindParam(':sum', $sum, PDO::PARAM_INT);
+	$query->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+	$res = $query->execute();
+	
+	echo $res? "True" : "False";
+
+	 
+}
+
+*/

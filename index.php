@@ -1,9 +1,17 @@
 <?php
 
+
+
+
 function page_index() {
     session_start();
     require('header.php');
     $db = getConnection(__DIR__.'/config/db.ini');
+
+    if (isset($_POST['add'])) {
+        insertIntoProducts($db, $_POST['name'], $_POST['price']);
+    }
+
     $products = getAllProducts($db);
     if (!empty($_SESSION['isLogged'])) {
         ?>
@@ -13,8 +21,8 @@ function page_index() {
 
                 <form method="post">
                     <p><input type="text" name="name" required placeholder="name"/>
-                        <input type="text" name="price" required placeholder="price"/>
-                        <input type="submit" name="add" value="Add" class="btn btn-primary btn-sm"/></p>
+                    <input type="text" name="price" required placeholder="price"/>
+                    <input type="submit" name="add" value="Add" class="btn btn-primary btn-sm"/></p>
                 </form>
             </div>
         </div>
@@ -56,5 +64,4 @@ function page_index() {
 
 page_index();
 require('footer.php');
-
 
