@@ -58,8 +58,3 @@ page_index();
 require('footer.php');
 
 
-
-
-
-
-
