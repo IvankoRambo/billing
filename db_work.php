@@ -28,7 +28,7 @@ function isRightPassword($db, $name, $password){
 	$query->execute();
 	$check = $query->fetchAll(PDO::FETCH_NUM);
 	
-	return ( empty($check) ) ? false : true;
+	return ( empty($check) );
 }
 
 
@@ -121,7 +121,9 @@ function sendData($key_info ,$info, $address, $secret_key = null){
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 	$response = curl_exec($ch);
 	curl_close($ch);
-
+	
+	
+	
 	return $response;
 		
 }

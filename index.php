@@ -7,14 +7,25 @@ function page_index() {
     session_start();
     require('header.php');
     $db = getConnection(__DIR__.'/config/db.ini');
-
+	
+	$product_message = array(
+		'data' => null
+	);
+	
     if (isset($_POST['add'])) {
-        insertIntoProducts($db, $_POST['name'], $_POST['price']);
+        if(insertIntoProducts($db, $_POST['name'], $_POST['price'])){
+        $product_message['data'] = 'New product was added successfully';
+		//sending product 
+		//sendData()
+		//adding success response into log file, if response is false than failed script listening
+		}
+		else $product_message['data'] = 'Product with such name alredy exists in the system';
     }
 
     $products = getAllProducts($db);
     if (!empty($_SESSION['isLogged'])) {
         ?>
+       <div id="product_message"><?= $product_message['data']; ?></div>
         <div class="row">
             <div class="add_product_form">
                 <h4>Adding new product:</h4>
