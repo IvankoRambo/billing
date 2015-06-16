@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 5.5.43, for debian-linux-gnu (x86_64)
 --
--- Host: 10.55.33.22    Database: billing
+-- Host: localhost    Database: billing
 -- ------------------------------------------------------
 -- Server version	5.5.43-0ubuntu0.14.04.1
 
@@ -42,6 +42,79 @@ INSERT INTO `admins` VALUES (6,'Vlad','vlad_password'),(7,'test','test'),(8,'tes
 UNLOCK TABLES;
 
 --
+-- Table structure for table `failed_orders`
+--
+
+DROP TABLE IF EXISTS `failed_orders`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `failed_orders` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `data` text COLLATE utf8_unicode_ci NOT NULL,
+  `destination` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `failed_orders`
+--
+
+LOCK TABLES `failed_orders` WRITE;
+/*!40000 ALTER TABLE `failed_orders` DISABLE KEYS */;
+/*!40000 ALTER TABLE `failed_orders` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `failed_products`
+--
+
+DROP TABLE IF EXISTS `failed_products`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `failed_products` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `data` text COLLATE utf8_unicode_ci NOT NULL,
+  `destination` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `failed_products`
+--
+
+LOCK TABLES `failed_products` WRITE;
+/*!40000 ALTER TABLE `failed_products` DISABLE KEYS */;
+INSERT INTO `failed_products` VALUES (1,'{\"products\":[{\"id\":\"1\",\"name\":\"Some Ant\",\"price\":\"123\"},{\"id\":\"3\",\"name\":\"Lost Good\",\"price\":\"66\"}]}','AS');
+/*!40000 ALTER TABLE `failed_products` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `failed_refunds`
+--
+
+DROP TABLE IF EXISTS `failed_refunds`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `failed_refunds` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `data` text COLLATE utf8_unicode_ci NOT NULL,
+  `destination` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `failed_refunds`
+--
+
+LOCK TABLES `failed_refunds` WRITE;
+/*!40000 ALTER TABLE `failed_refunds` DISABLE KEYS */;
+/*!40000 ALTER TABLE `failed_refunds` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `keys`
 --
 
@@ -80,7 +153,7 @@ CREATE TABLE `orders` (
   `sum` int(11) NOT NULL,
   `user_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`order_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -89,6 +162,7 @@ CREATE TABLE `orders` (
 
 LOCK TABLES `orders` WRITE;
 /*!40000 ALTER TABLE `orders` DISABLE KEYS */;
+INSERT INTO `orders` VALUES (1,1,4,'BR25522',100,NULL),(6,1,4,'BR25522',100,5);
 /*!40000 ALTER TABLE `orders` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -129,7 +203,7 @@ CREATE TABLE `products` (
   `price` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `unique_name` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -138,7 +212,7 @@ CREATE TABLE `products` (
 
 LOCK TABLES `products` WRITE;
 /*!40000 ALTER TABLE `products` DISABLE KEYS */;
-INSERT INTO `products` VALUES (1,'Some Antvirus',100),(3,'Lost Good',66),(4,'Lost Good2',13);
+INSERT INTO `products` VALUES (1,'Some Ant',123),(3,'Lost Good',66),(4,'Lost Good2',13),(5,'ProductNew',156),(6,'Product',123);
 /*!40000 ALTER TABLE `products` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -166,7 +240,7 @@ CREATE TABLE `refund` (
 
 LOCK TABLES `refund` WRITE;
 /*!40000 ALTER TABLE `refund` DISABLE KEYS */;
-INSERT INTO `refund` VALUES (1,2,3,4,124,NULL),(14,0,2,1,0,NULL);
+INSERT INTO `refund` VALUES (1,2,3,4,124,NULL),(4,0,2,1,0,NULL),(14,0,2,1,0,NULL);
 /*!40000 ALTER TABLE `refund` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -203,4 +277,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-06-15 20:28:31
+-- Dump completed on 2015-06-16 20:30:25
