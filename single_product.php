@@ -91,7 +91,7 @@ if(isset($_POST['delete'])){
 </div>
 
 <?php if(!$response['deleted']) : ?>
-	<form method="POST" action="index_update.php">
+	<form method="POST" action="index.php">
 		<button>Back to the billing page</button>
 	</form>
 <?php endif; ?>

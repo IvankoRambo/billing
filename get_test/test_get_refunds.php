@@ -28,7 +28,7 @@ else{
 	$refund = json_decode($json_refund);
 	$refund_data = (array)$refund[0];
 	print_r($refund_data);
-	$check = addNewRefund($db, $refund_data['id'], $refund_data['order_num'], 2, $refund_data['product_num']);
+	$check = addNewRefund($db, 4, $refund_data['order_num'], 2, $refund_data['product_num']);
 	var_dump($check);
 }
 
