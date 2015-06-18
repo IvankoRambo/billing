@@ -16,7 +16,7 @@
 		if (!isset($order->user_id)) {
 			$order->user_id = NULL;
 		}
-		postOrder($db, 
+		$res = postOrder($db, 
 				  $order->order_id,
 				  $order->product_id,
 				  $order->product_quantity,
@@ -24,6 +24,7 @@
 				  $order->sum,
 				  $order->keys,
 				  $order->user_id);
+		echo $res;
 		// var_dump($order);
 	}
 	// echo "YEAH";

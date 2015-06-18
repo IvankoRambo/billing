@@ -136,7 +136,7 @@ function sendData($db, $key_info ,$info, $address, $secret_key = null){
 	$response = curl_exec($ch);
 	curl_close($ch);
 	
-	if(!response){
+	if(!$response){
 		insertIntoFailedTable($db, $key_info, $info, $url);	
 	}
 	
@@ -267,5 +267,14 @@ function postOrder($db, $order_id, $product_id, $product_quantity, $card_name, $
 		var_dump($query->errorInfo());
 		echo '</pre>';
 	}
-	 
+	
+// function sendData($db, $key_info ,$info, $address, $secret_key = null){
+	$data = array(
+		'order_id' => $order_id,
+		'keys' => $keys
+	);
+	$res = sendData($db, 'orders', json_encode($data), 'http://10.55.33.34/test_getOrderId.php');///AccountService/AS/test_getOrderId.php') ; 
+	return $res;
+
+
 }

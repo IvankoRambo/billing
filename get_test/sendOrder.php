@@ -6,7 +6,7 @@
 
 	$params = array(
 		'data' => json_encode(array(
-				'order_id' => 2,
+				'order_id' => rand(1, 1000),
 				'product_id' => 1,
 				'product_quantity' => 4,
 				'card_name' => 'BR25522',
@@ -19,6 +19,8 @@
 		CURLOPT_POST => true,
 		CURLOPT_POSTFIELDS => $params
 		);
+
+
 	
 	$ch = curl_init();
 
