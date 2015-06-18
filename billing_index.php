@@ -7,12 +7,12 @@
 	
 	$info = getAllProducts($db);
 	$info = filterProductsKeys($info);
-	$str = convertProductsInJSON($db, [1,2,3]);
-
-//    var_dump($str);
-
-	$response1 = sendData('products', $str, 'http://10.55.33.33/Account_Service/AS/get_products.php');
-	$response2 = sendData('products', $str, 'http://payment.proc/billing/GetProductsFromBilling.php');
+	$str = convertProductsInJSON($db, [8, 9, 10]);
 	
-	echo($response2);
+	var_dump($str);
+	
+	//$response1 = sendData('products', $str, 'http://10.55.33.33/Account_Service/AS/get_products.php');
+	//$response2 = sendData('products', $str, 'http://payment.proc/billing/GetProductsFromBilling.php');
+	
+	//echo($response2);
 ?>

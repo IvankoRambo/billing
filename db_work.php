@@ -28,9 +28,8 @@ function isRightPassword($db, $name, $password){
 	$query->execute();
 	$check = $query->fetchAll(PDO::FETCH_NUM);
 	
-	return ( empty($check) ) ? false : true;
+	return ( !empty($check) );
 }
-
 
 function getAllProducts($db){
 	$query = $db->prepare("SELECT * FROM products");
@@ -121,7 +120,9 @@ function sendData($key_info ,$info, $address, $secret_key = null){
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 	$response = curl_exec($ch);
 	curl_close($ch);
-
+	
+	
+	
 	return $response;
 		
 }
@@ -163,9 +164,10 @@ function getProductsViaId($db, $id){
 	return ( $query->fetchAll(PDO::FETCH_ASSOC) );
 }
 
+
 /*
- * Proccessing of refund
- */
+ * This functions are in process now, expecting for confirming of refund and order data
+ 
  
  function addNewRefund($db, $refund_id, $order_id, $product_id, $product_quantity, $refund_sum = 0, $date = NULL){
 	
@@ -181,6 +183,12 @@ function getProductsViaId($db, $id){
 	return ( $query->execute() );
 	
  }
+
+
+function getOrder($db, $product_id, $product_quantity, $card_name, $sum, $user_id = NULL) {
+	$query = $db->prepare('INSERT INTO `orders` (`product_id`, `product_quantity`)');
+}
+
 
 function postOrder($db, $product_id, $product_quantity, $card_name, $sum, $user_id = NULL) {
 	$query = $db->prepare('INSERT INTO `orders`'.
@@ -198,3 +206,5 @@ function postOrder($db, $product_id, $product_quantity, $card_name, $sum, $user_
 
 	 
 }
+
+*/

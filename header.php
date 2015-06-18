@@ -24,8 +24,7 @@ if(isset($_POST['sign_in'])){
     if(isRightPassword($db, $data['name'], $data['password'])){
         $_SESSION['name'] = $data['name'];
         $_SESSION['isLogged'] = true;
-    }
-    else{
+    } else {
         echo '<h3>Access denied!</h3>';
     }
 }
