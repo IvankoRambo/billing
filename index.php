@@ -12,6 +12,13 @@ function page_index() {
     if (isset($_POST['add'])) {
         if(insertIntoProducts($db, $_POST['name'], $_POST['price'])){
         $product_message['data'] = 'New product was added successfully';
+		$products = getAllProducts($db);
+		$products = filterProductsKeys($products);
+		$products_json = convertProductsInJSON($db, $products);
+		$prod_response = sendData($db ,'products', $products_json, 'http://dev.school-server/billing_v1/get_test/test_get_producs.php');
+		if($prod_response != 'File not found.'){
+			insertIntoLogFile('products_response.log', $prod_response);
+		}
 		//sending product 
 		//sendData()
 		//adding success response into log file, if response is false than failed script listening

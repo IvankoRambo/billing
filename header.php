@@ -9,7 +9,8 @@
 <body>
 <div class="container-fluid">
 <?php
-require __DIR__ . '/db_work.php';
+require_once __DIR__ . '/db_work.php';
+require_once __DIR__.'/loggings.php';
 $db = getConnection(__DIR__.'/config/db.ini');
 
 $data['name'] = ( isset($_POST['name']) ) ? $_POST['name'] : null;
