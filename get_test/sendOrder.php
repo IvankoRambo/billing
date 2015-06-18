@@ -1,19 +1,21 @@
 <pre>
 <?php
 
-// function postOrder($db, $product_id, $product_quantity, $card_name, $sum, $user_id = NULL) {
+//function postOrder($db, $order_id, $product_id, $product_quantity, $card_name, $sum, $keys, $user_id = NULL) {
 
 
 	$params = array(
 		'data' => json_encode(array(
+				'order_id' => 2,
 				'product_id' => 1,
 				'product_quantity' => 4,
 				'card_name' => 'BR25522',
 				'sum' => 100,
+				'keys' => array(rand(1, 1000), rand(1, 1000), rand(1, 1000), rand(1,1000)),
 				'user_id' => 5
 				)));
 	$defaults = array(
-		CURLOPT_URL => 'dev.big-exercise/testGetOrders.php',
+		CURLOPT_URL => 'dev.big-exercise/get_test/testGetOrders.php',
 		CURLOPT_POST => true,
 		CURLOPT_POSTFIELDS => $params
 		);

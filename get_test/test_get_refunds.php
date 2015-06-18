@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__.'/db_work.php';
+require_once __DIR__.'/../db_work.php';
 
 $db = getConnection($config_path);
 

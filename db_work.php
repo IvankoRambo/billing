@@ -191,11 +191,14 @@ function getOrder($db, $product_id, $product_quantity, $card_name, $sum, $user_i
 }
 
 
-function postOrder($db, $product_id, $product_quantity, $card_name, $sum, $user_id = NULL) {
+*/
+
+function postOrder($db, $order_id, $product_id, $product_quantity, $card_name, $sum, $keys, $user_id = NULL) {
 	$query = $db->prepare('INSERT INTO `orders`'.
-						  '(`product_id`, `product_quantity`, `card_name`, `sum`, `user_id`)'.
+						  '(`order_id`, `product_id`, `product_quantity`, `card_name`, `sum`, `user_id`)'.
 						  'VALUES'.
-						  '(:product_id, :product_quantity, :card_name, :sum, :user_id)');
+						  '(:order_id, :product_id, :product_quantity, :card_name, :sum, :user_id)');
+	$query->bindParam(':order_id', $order_id, PDO::PARAM_INT);
 	$query->bindParam(':product_id', $product_id, PDO::PARAM_INT);
 	$query->bindParam(':product_quantity', $product_quantity, PDO::PARAM_INT);
 	$query->bindParam(':card_name', $card_name, PDO::PARAM_STR);
@@ -203,9 +206,46 @@ function postOrder($db, $product_id, $product_quantity, $card_name, $sum, $user_
 	$query->bindParam(':user_id', $user_id, PDO::PARAM_INT);
 	$res = $query->execute();
 	
-	echo $res? "True" : "False";
+	if (!$res) {
+		echo '<pre>';
+		var_dump($query->errorInfo());
+		echo '</pre>';
 
+	}
+	// echo $res? "True" : "False";
+
+	$query_str = 'INSERT INTO `order_keys`'.
+				 '(`order_id`, `key_id`)'.
+				 'VALUES';
+	$keys_count = count($keys);
+	for ($i = 1; $i < $keys_count; $i++) {
+		$query_str = $query_str."(:order_id, :key_id$i), ";
+	}
+	$query_str = $query_str."(:order_id, :key_id$keys_count);";
+	
+	// print($query_str);
+
+	$query = $db->prepare($query_str);
+	
+	$i = 1;
+	$query->bindParam(':order_id', $order_id, PDO::PARAM_INT);
+	foreach ($keys as $key) {
+		// echo "<br>";
+		// print($i.' - '.$key);
+		$query->bindValue(':key_id'.$i, $key, PDO::PARAM_INT);
+		$i++;
+	}
+	// echo '<br>';
+	// print($query->queryString);
+
+
+	$res = $query->execute();
+
+	// echo $res? "True" : "False";
+	if (!$res) {
+		echo '<pre>';
+		var_dump($query->errorInfo());
+		echo '</pre>';
+	}
 	 
 }
-
-*/
