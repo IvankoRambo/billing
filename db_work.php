@@ -28,9 +28,10 @@ function isRightPassword($db, $name, $password){
 	$query->execute();
 	$check = $query->fetchAll(PDO::FETCH_NUM);
 	
-	return ( empty($check) ) ? false : true;
-}
 
+	return ( !empty($check) );
+
+}
 
 function getAllProducts($db){
 	$query = $db->prepare("SELECT * FROM products");

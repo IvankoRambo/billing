@@ -45,7 +45,6 @@ function page_index() {
                 </tr>
                 </thead>
                 <?php for ($i = 0; $i < count($products); $i++) : ?>
-
                     <tr>
                         <td><?= $products[$i]['name'] ?></td>
                         <td><?= $products[$i]['price'] ?></td>
