@@ -42,7 +42,7 @@ function checkForFailed($db) {
         return 'failed_orders';
     } elseif (($refunds->rowCount() > 0)) {
         return 'failed_refunds';
-    }
+    } else return false;
 }
 
 
@@ -55,7 +55,7 @@ function getLastRecord($db, $tableName) {
     $query = $db->prepare("SELECT * FROM $tableName ORDER BY id DESC LIMIT 1");
     $query->execute();
 
-    return $query->fetch(PDO::FETCH_OBJ);
+    return $query->fetchAll(PDO::FETCH_OBJ);
 }
 
 //function deleteLastRecord
@@ -87,22 +87,40 @@ function getLastRecord($db, $tableName) {
 //}
 
 var_dump(checkForFailed($db));
+//
+//while(checkForFailed($db)) {
+//    if (getLastRecord($db, checkForFailed($db))) {
+//        // insert here function to send data to destination
+//        print("sending data to => " . getLastRecord($db, checkForFailed($db))->destination . "<br>");
+//    } else {
+//        echo 'There are no failed products to send!<br>';
+//    }
+//}
 
-while(checkForFailed($db)) {
-    if (getLastRecord($db, checkForFailed($db))) {
-        // insert here function to send data to destination
-        print("sending data to => " . getLastRecord($db, checkForFailed($db))->destination . "<br>");
-    } else {
-        echo 'There are no failed products to send!<br>';
+//var_dump(getLastRecord($db, 'failed_products'));
+
+
+$myProducts = 4;
+$myOrders = 5;
+
+function getMy($myProducts, $myOrders) {
+    while (check($myProducts, $myOrders)) {
+        if (check($myProducts, $myOrders) == 'products') {
+            echo $myProducts--;
+        } elseif (check($myProducts, $myOrders) == 'orders') {
+            echo $myOrders--;
+        }
     }
 }
 
-
-$myProducts = 2;
-$myOrders = 3;
-
-function getMySomething() {
-
+function check($myProducts, $myOrders) {
+    if ($myProducts > 0) {
+        return 'products';
+    } elseif ($myOrders > 0) {
+        return 'orders';
+    } else return false;
 }
+
+getMy($myProducts, $myOrders);
 
 
