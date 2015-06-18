@@ -1,7 +1,7 @@
 <?php
     
 	require_once __DIR__.'/db_work.php';
-
+	require_once __DIR__.'/loggings.php';
 
 	$db = getConnection($config_path);
 	
@@ -11,8 +11,13 @@
 	
 	var_dump($str);
 	
-	//$response1 = sendData('products', $str, 'http://10.55.33.33/Account_Service/AS/get_products.php');
-	//$response2 = sendData('products', $str, 'http://payment.proc/billing/GetProductsFromBilling.php');
+	//$response1 = sendData($db ,'products', $str, 'http://10.55.33.33/Account_Service/AS/get_products.php');
+	//$response2 = sendData($db ,'products', $str, 'http://payment.proc/billing/GetProductsFromBilling.php');
+	//$check = insertIntoFailedTable($db, 'products', 'fsrfs', 'fsdfsd');
+	//insertIntoLogFile('products_response.log', 'We have aasdanesponse');
+	
+	//$log = getFromLogFile('products_response.log');
+	//var_dump($log);
 	
 	//echo($response2);
 ?>

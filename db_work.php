@@ -28,7 +28,7 @@ function isRightPassword($db, $name, $password){
 	$query->execute();
 	$check = $query->fetchAll(PDO::FETCH_NUM);
 	
-	return ( empty($check) );
+	return ( empty($check) ) ? false : true;
 }
 
 
@@ -96,12 +96,26 @@ function convertProductsInJSON($db, $products_keys){
 }
 
 
+/*
+ * Working with 'failed script' 
+*/
+
+function insertIntoFailedTable($db, $sufix, $data, $destination){
+	
+	$query = $db->prepare("INSERT INTO failed_{$sufix} (data, destination) VALUE (:data, :destination)");
+	$query->bindParam(":data", $data, PDO::PARAM_STR);
+	$query->bindParam(":destination", $destination, PDO::PARAM_STR);
+	
+	return ( $query->execute() );
+		
+}
 
 /*
  * Sending some data in JSON for systems
  */
 
-function sendData($key_info ,$info, $address, $secret_key = null){
+ 
+function sendData($db, $key_info ,$info, $address, $secret_key = null){
 
 				
 		$url = $address;
@@ -122,13 +136,17 @@ function sendData($key_info ,$info, $address, $secret_key = null){
 	$response = curl_exec($ch);
 	curl_close($ch);
 	
-	
+	if(!response){
+		insertIntoFailedTable($db, $key_info, $info, $url);	
+	}
 	
 	return $response;
 		
 }
 
-
+/*
+ * admins 
+*/
 
  function insertNewAdmin($db, $name, $password){
  	$query = $db->prepare('INSERT INTO admins (name, password) VALUES (:name, :password)');
@@ -139,7 +157,9 @@ function sendData($key_info ,$info, $address, $secret_key = null){
 	
  }
  
-
+/*
+ *	updates and deletes of products 
+*/
 
 function updateProduct($db, $id, $name, $price) {
 	$query = $db->prepare("UPDATE products SET name=:name, price=:price WHERE id=:id");

@@ -1,8 +1,5 @@
 <?php
 
-
-
-
 function page_index() {
     session_start();
     require('header.php');
