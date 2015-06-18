@@ -4,10 +4,10 @@
  * Loggings
  */
  
- function insertIntoLogFile($filepath, $info){
+ function insertIntoLogFile($filepath, $info, $date){
  	$fd = fopen($filepath, "a");
 	if($fd == -1)	die("Error opening of file");
-	fputs($fd, $info."\r\n");
+	fputs($fd, $info.' ['.$date."]\r\n");
 	fclose($fd);
 	return true;
  }

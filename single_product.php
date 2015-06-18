@@ -1,6 +1,7 @@
 <?php
 
 require_once __DIR__.'/db_work.php';
+require_once __DIR__.'/loggings.php';
 
 $pause = 2;
 $product_id = (int)$_GET['product_id'];
@@ -30,6 +31,15 @@ if(isset($_POST['update'])){
 			if(updateProduct($db, $product_id, $data['name'], $data['price'])){
 				$response['success'] = true;
 				$response['data'] = 'You have been successfully update product info';
+				
+			$products = getAllProducts($db);
+			$products = filterProductsKeys($products);
+			$products_json = convertProductsInJSON($db, $products);
+			
+			if(($prod_response = sendData($db ,'products', $products_json, 'http://127.0.0.1/billing/get_test/test_get_products.php')) && !preg_match('/not found/', $prod_response)){
+				insertIntoLogFile('products_response.log', $prod_response, date("Y-m-d H:i:s"));
+			}
+				
 			}
 			else{
 				$response['data'] = 'Product with such name already exists in the system';
@@ -46,6 +56,15 @@ if(isset($_POST['delete'])){
 		$response['data'] = 'You have been successfully deleted product';
 		$response['deleted'] = true;
 		$response['success'] = true;
+		
+		$products = getAllProducts($db);
+		$products = filterProductsKeys($products);
+		$products_json = convertProductsInJSON($db, $products, date("Y-m-d H:i:s"));
+			
+			if(($prod_response = sendData($db ,'products', $products_json, 'http://127.0.0.1/billing/get_test/test_get_products.php')) && !preg_match('/not found/', $prod_response)){
+				insertIntoLogFile('products_response.log', $prod_response);
+			}
+		
 	}
 	else{
 		$response['data'] = 'Probably, the product was deleted by other agent before you';
@@ -104,5 +123,4 @@ if($response['deleted'])	header('Refresh: '.$pause.'; URL=index.php');
 ?>
 
 </body>
-
 

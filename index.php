@@ -15,13 +15,11 @@ function page_index() {
 		$products = getAllProducts($db);
 		$products = filterProductsKeys($products);
 		$products_json = convertProductsInJSON($db, $products);
-		$prod_response = sendData($db ,'products', $products_json, 'http://dev.school-server/billing_v1/get_test/test_get_producs.php');
-		if($prod_response != 'File not found.'){
-			insertIntoLogFile('products_response.log', $prod_response);
-		}
-		//sending product 
-		//sendData()
-		//adding success response into log file, if response is false than failed script listening
+		
+			if(($prod_response = sendData($db ,'products', $products_json, 'http://127.0.0.1/billing/get_test/test_get_products.php')) && !preg_match('/not found/', $prod_response)){
+				insertIntoLogFile('products_response.log', $prod_response, date("Y-m-d H:i:s"));
+			}
+			
 		}
 		else $product_message['data'] = 'Product with such name alredy exists in the system';
     }

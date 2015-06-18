@@ -137,7 +137,7 @@ function sendData($db, $key_info ,$info, $address, $secret_key = null){
 	$response = curl_exec($ch);
 	curl_close($ch);
 	
-	if($response == 'File not found.'){
+	if(!$response || preg_match('/not found/', $response)){
 		insertIntoFailedTable($db, $key_info, $info, $url);	
 	}
 	
