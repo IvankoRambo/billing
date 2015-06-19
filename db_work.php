@@ -270,11 +270,21 @@ function postOrder($db, $order_id, $product_id, $product_quantity, $card_name, $
 	}
 	
 // function sendData($db, $key_info ,$info, $address, $secret_key = null){
+	// $data = array(
+	// 	'order_id' => $order_id,
+	// 	'keys' => $keys
+	// );
+	// $res = sendData($db, 'orders', json_encode($data), 'http://10.55.33.34/test_getOrderId.php');
+	///AccountService/AS/test_getOrderId.php') ; 
+	
 	$data = array(
 		'order_id' => $order_id,
-		'keys' => $keys
+		'keys' => $keys,
+		'sum' => $sum,
+		'user_id' => $user_id
 	);
-	$res = sendData($db, 'orders', json_encode($data), 'http://10.55.33.34/test_getOrderId.php');///AccountService/AS/test_getOrderId.php') ; 
+	$res = sendData($db, 'orders', json_encode($data), 'http://10.55.33.27/dev/addOrder.php');
+	//CRM
 	return $res;
 
 

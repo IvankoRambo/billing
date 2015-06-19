@@ -7,12 +7,12 @@
 	$params = array(
 		'data' => json_encode(array(
 				'order_id' => rand(1, 1000),
-				'product_id' => 1,
-				'product_quantity' => 4,
+				'product_id' => rand(1, 1000),
+				'product_quantity' => rand(1, 100),
 				'card_name' => 'BR25522',
-				'sum' => 100,
+				'sum' => rand(1, 10000),
 				'keys' => array(rand(1, 1000), rand(1, 1000), rand(1, 1000), rand(1,1000)),
-				'user_id' => 5
+				'user_id' => rand(1, 100)
 				)));
 	$defaults = array(
 		CURLOPT_URL => 'dev.big-exercise/get_test/testGetOrders.php',
