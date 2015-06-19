@@ -288,5 +288,4 @@ function postOrder($db, $order_id, $product_id, $product_quantity, $card_name, $
 	// $res = sendData($db, 'orders', json_encode($data), 'http://10.55.33.27/dev/addOrder.php');
 	// return $res;
 
-
 }
