@@ -12,6 +12,7 @@
 				'card_name' => 'BR25522',
 				'sum' => rand(1, 10000),
 				'keys' => array(rand(1, 1000), rand(1, 1000), rand(1, 1000), rand(1,1000)),
+				'date' => date('Y-m-d H:i:s', time()),//'2015-06-19 17:16:12',
 				'user_id' => rand(1, 100)
 				)));
 	$defaults = array(
