@@ -10,18 +10,20 @@ function page_index() {
 	);
 	
     if (isset($_POST['add'])) {
-        if(insertIntoProducts($db, $_POST['name'], $_POST['price'])){
+        if(insertIntoProducts($db, $_POST['name'], $_POST['price'], $_POST['description'])){
         $product_message['data'] = 'New product was added successfully';
 		$products = getAllProducts($db);
 		$products = filterProductsKeys($products);
 		$products_json = convertProductsInJSON($db, $products);
-		$prod_response = sendData($db ,'products', $products_json, 'http://dev.school-server/billing_v1/get_test/test_get_producs.php');
-		if($prod_response != 'File not found.'){
-			insertIntoLogFile('products_response.log', $prod_response);
-		}
-		//sending product 
-		//sendData()
-		//adding success response into log file, if response is false than failed script listening
+		
+			if(($prod_response = sendData($db ,'products', $products_json, 'http://10.55.33.34/get_products.php')) && !preg_match('/not found/', $prod_response)){
+				insertIntoLogFile('products_response.log', $prod_response, date("Y-m-d H:i:s"));
+			}
+			if(($prod_response = sendData($db ,'products', $products_json, 'http://10.55.33.28/billing/GetProductsFromBilling.php')) && !preg_match('/not found/', $prod_response)){
+				insertIntoLogFile('products_response.log', $prod_response, date("Y-m-d H:i:s"));
+			}
+			
+			
 		}
 		else $product_message['data'] = 'Product with such name alredy exists in the system';
     }
@@ -36,6 +38,7 @@ function page_index() {
 
                 <form method="post">
                     <p><input type="text" name="name" required placeholder="name"/>
+                    <input type="text" name="description" required placeholder="description"/>
                     <input type="text" name="price" required placeholder="price"/>
                     <input type="submit" name="add" value="Add" class="btn btn-primary btn-sm"/></p>
                 </form>
@@ -47,6 +50,7 @@ function page_index() {
                 <thead>
                 <tr>
                     <th>Name</th>
+                    <th>Description</th>
                     <th>Price</th>
                     <th></th>
                 </tr>
@@ -54,7 +58,14 @@ function page_index() {
                 <?php for ($i = 0; $i < count($products); $i++) : ?>
                     <tr>
                         <td><?= $products[$i]['name'] ?></td>
+                        <td><?= $products[$i]['description'] ?></td>
+                        <?php if(preg_match('/\.0{4}/', $products[$i]['price'])) : ?>
+                        <td><?= rtrim($products[$i]['price'], "\.0{4}") ?></td>
+                        <?php elseif(preg_match('/0+$/', $products[$i]['price'])) : ?>
+                        <td><?= rtrim($products[$i]['price'], "0+") ?></td>
+                        <?php else : ?>
                         <td><?= $products[$i]['price'] ?></td>
+                        <?php endif; ?>
                         <td><a href="<?= "single_product.php?product_id={$products[$i]['id']}"; ?>" class="btn btn-info pull-right">
                                 <span class="glyphicon glyphicon-pencil"></span>
                             </a></td>

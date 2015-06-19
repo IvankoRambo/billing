@@ -58,10 +58,11 @@ function filterProductsKeys($product_info){
 }
 
 
-function insertIntoProducts($db, $name, $price){
-	$query = $db->prepare("INSERT INTO products (name, price) VALUE (:name, :price)");
+function insertIntoProducts($db, $name, $price, $description){
+	$query = $db->prepare("INSERT INTO products (name, price, description) VALUE (:name, :price, :description)");
 	$query->bindParam(":name", $name, PDO::PARAM_STR);
 	$query->bindParam(":price", $price, PDO::PARAM_STR);
+	$query->bindParam(":description", $description, PDO::PARAM_STR);
 	
 	return ( $query->execute() ) ? true : false;
 }
@@ -137,7 +138,7 @@ function sendData($db, $key_info ,$info, $address, $secret_key = null){
 	$response = curl_exec($ch);
 	curl_close($ch);
 	
-	if($response == 'File not found.'){
+	if(!$response || preg_match('/not found/', $response)){
 		insertIntoFailedTable($db, $key_info, $info, $url);	
 	}
 	
@@ -162,11 +163,12 @@ function sendData($db, $key_info ,$info, $address, $secret_key = null){
  *	updates and deletes of products 
 */
 
-function updateProduct($db, $id, $name, $price) {
-	$query = $db->prepare("UPDATE products SET name=:name, price=:price WHERE id=:id");
+function updateProduct($db, $id, $name, $price, $description) {
+	$query = $db->prepare("UPDATE products SET name=:name, price=:price, description=:description WHERE id=:id");
 	$price = (string)$price;
 	$query->bindParam(':name', $name, PDO::PARAM_STR);
 	$query->bindParam(':price', $price, PDO::PARAM_STR);
+	$query->bindParam(":description", $description, PDO::PARAM_STR);
 	$query->bindParam(':id', $id, PDO::PARAM_INT);
 	return ($query->execute());
 }
@@ -179,7 +181,7 @@ function deleteProduct($db, $id) {
 
 
 function getProductsViaId($db, $id){
-	$query = $db->prepare("SELECT name, price FROM products WHERE id=:id");
+	$query = $db->prepare("SELECT name, price, description FROM products WHERE id=:id");
 	$query->bindParam(":id", $id, PDO::PARAM_INT);
 	$query->execute();
 	
@@ -279,3 +281,9 @@ function postOrder($db, $order_id, $product_id, $product_quantity, $card_name, $
 
 
 }
+
+/*
+ * Working with refunds
+ */
+ 
+ 
