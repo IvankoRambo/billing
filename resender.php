@@ -2,6 +2,15 @@
 require __DIR__ . '/db_work.php';
 $db = getConnection(__DIR__.'/config/db.ini');
 
+
+// URLs
+$AS = 'localhost';
+$PP = 'localhost';
+$CRM = 'localhost';
+$destinations = array('AS' => 'AccountService',
+                      'PP' => 'Payment Processor');
+
+
 ///**
 // * @param $db PDO
 // * @param $tableName string
@@ -124,3 +133,26 @@ function check($myProducts, $myOrders) {
 getMy($myProducts, $myOrders);
 
 
+
+// =================================================
+$localhost = 'http://dev.school-server/billing/billing/testResender.php';
+
+
+function sendRequest($data, $url) {
+    $params = ['data' => $data];
+//    $params = 'myParams=myParam';
+    $defaults = array(
+        CURLOPT_URL => $url,
+        CURLOPT_POST => true,
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_POSTFIELDS => $params
+    );
+
+    $ch = curl_init();
+    curl_setopt_array($ch, $defaults);
+    $response = curl_exec($ch);
+    echo $response;
+    curl_close($ch);
+}
+
+sendRequest('myVeryBigJsonString', $localhost);
