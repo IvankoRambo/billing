@@ -190,30 +190,7 @@ function getProductsViaId($db, $id){
 
 
 /*
- * This functions are in process now, expecting for confirming of refund and order data
- 
- 
- function addNewRefund($db, $refund_id, $order_id, $product_id, $product_quantity, $refund_sum = 0, $date = NULL){
-	
-	$query = $db->prepare('INSERT INTO refund VALUE (:id, :order_id, :product_id, :product_quantity, :refund_sum, :date)');
-	$query->bindParam(':id', $refund_id, PDO::PARAM_INT);
-	$query->bindParam(':order_id', $order_id, PDO::PARAM_INT);
-	$query->bindParam(':product_id', $product_id, PDO::PARAM_INT);
-	$query->bindParam(':product_quantity', $product_quantity, PDO::PARAM_INT);
-	$query->bindParam(':refund_sum', $refund_sum, PDO::PARAM_INT);
-	if(!is_null($date)) $date = string($date);
-	$query->bindParam(':date', $date, PDO::PARAM_STR);
-	
-	return ( $query->execute() );
-	
- }
-
-
-function getOrder($db, $product_id, $product_quantity, $card_name, $sum, $user_id = NULL) {
-	$query = $db->prepare('INSERT INTO `orders` (`product_id`, `product_quantity`)');
-}
-
-
+ * Working with orders 
 */
 
 function postOrder($db, $order_id, $product_id, $product_quantity, $card_name, $sum, $keys, $date, $user_id = NULL) {
@@ -272,24 +249,6 @@ function postOrder($db, $order_id, $product_id, $product_quantity, $card_name, $
 		echo '</pre>';
 	}
 	
-// function sendData($db, $key_info ,$info, $address, $secret_key = null){
-	///AccountService/AS/test_getOrderId.php') ; 
-	// $data = array(
-	// 	'order_id' => $order_id,
-	// 	'keys' => $keys
-	// );
-	// $res = sendData($db, 'orders', json_encode($data), 'http://10.55.33.34/test_getOrderId.php');
-	
-	// CRM
-	// $data = array(
-	// 	'order_id' => $order_id,
-	// 	'keys' => $keys,
-	// 	'sum' => $sum,
-	// 	'user_id' => $user_id
-	// );
-	// $res = sendData($db, 'orders', json_encode($data), 'http://10.55.33.27/dev/addOrder.php');
-	// return $res;
-
 }
 
 /*
