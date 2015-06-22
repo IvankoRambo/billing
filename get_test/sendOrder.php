@@ -12,9 +12,19 @@
 				'product_quantity' => 4,
 				'card_name' => 'BR25522',
 				'sum' => 100,
+<<<<<<< HEAD
 				'keys' => array(rand(1, 1000000), rand(1, 1000000), rand(1, 1000000), rand(1,1000000)),
 				'date' => date('Y-m-d H:i:s', time()),//'2015-06-19 17:16:12',
 				'user_id' => 0
+=======
+				'keys' => array(rand(1, 1000), rand(1, 1000), rand(1, 1000), rand(1,1000)),
+<<<<<<< HEAD
+				'date' => date('Y-m-d H:i:s', time()),//'2015-06-19 17:16:12',
+				'user_id' => rand(1, 100)
+=======
+				'user_id' => 5
+>>>>>>> origin/dev
+>>>>>>> origin/dev
 				)));
 	echo $order_id.'<br>';
 	$defaults = array(
@@ -31,7 +41,7 @@
 	// curl_setopt($ch, CURLOPT_URL);
 	// curl_setopt($ch, CURLOPT_HEADER, 0);
 
-	echo curl_exec($ch);
+	curl_exec($ch);
 
 	curl_close($ch);
 ?>

@@ -1,7 +1,5 @@
 <?php
 
-include __DIR__.'/loggings.php';
-
 $config_path = 'config/db.ini';
 
 function getConnection($config_path){
@@ -196,6 +194,7 @@ function getProductsViaId($db, $id){
 */
 
 function postOrder($db, $order_id, $product_id, $product_quantity, $card_name, $sum, $keys, $date, $user_id = NULL) {
+<<<<<<< HEAD
 	$tables = array('orders', 'orders_log');
 	foreach ($tables as $table) {	
 		$query = $db->prepare("INSERT INTO `$table`".
@@ -227,7 +226,27 @@ function postOrder($db, $order_id, $product_id, $product_quantity, $card_name, $
 		}
 	}
 
+=======
+	$query = $db->prepare('INSERT INTO `orders`'.
+						  '(`order_id`, `product_id`, `product_quantity`, `card_name`, `sum`, `date`, `user_id`)'.
+						  'VALUES'.
+						  '(:order_id, :product_id, :product_quantity, :card_name, :sum, :date, :user_id)');
+	$query->bindParam(':order_id', $order_id, PDO::PARAM_INT);
+	$query->bindParam(':product_id', $product_id, PDO::PARAM_INT);
+	$query->bindParam(':product_quantity', $product_quantity, PDO::PARAM_INT);
+	$query->bindParam(':card_name', $card_name, PDO::PARAM_STR);
+	$query->bindParam(':sum', $sum, PDO::PARAM_INT);
+	$query->bindParam(':date', $date, PDO::PARAM_STR);
+	$query->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+	$res = $query->execute();
+	
+	if (!$res) {
+		echo '<pre>';
+		var_dump($query->errorInfo());
+		echo '</pre>';
+>>>>>>> origin/dev
 
+	}
 	// echo $res? "True" : "False";
 
 	$query_str = 'INSERT INTO `order_keys`'.
@@ -262,6 +281,7 @@ function postOrder($db, $order_id, $product_id, $product_quantity, $card_name, $
 		echo '<pre>';
 		var_dump($query->errorInfo());
 		echo '</pre>';
+<<<<<<< HEAD
 
 		insertIntoLogFile(__DIR__.'/log_error_files/orders_error', 
 				'Unsuccessful adding order and keys to database table order_keys. Error message: '.
@@ -311,6 +331,9 @@ function postOrder($db, $order_id, $product_id, $product_quantity, $card_name, $
 	}
 	$res .= $res1;
 	return $res;
+=======
+	}
+>>>>>>> origin/dev
 	
 }
 
@@ -318,4 +341,8 @@ function postOrder($db, $order_id, $product_id, $product_quantity, $card_name, $
  * Working with refunds
  */
  
+<<<<<<< HEAD
  
+=======
+ 
+>>>>>>> origin/dev
