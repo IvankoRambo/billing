@@ -1,5 +1,5 @@
 <?php
-include 'vendor/autoload.php';
+include __DIR__.'/vendor/autoload.php';
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Matcher\UrlMaster;
