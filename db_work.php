@@ -194,6 +194,37 @@ function getProductsViaId($db, $id){
 */
 
 function postOrder($db, $order_id, $product_id, $product_quantity, $card_name, $sum, $keys, $date, $user_id = NULL) {
+	$tables = array('orders', 'orders_log');
+	foreach ($tables as $table) {	
+		$query = $db->prepare("INSERT INTO `$table`".
+							  '(`order_id`, `product_id`, `product_quantity`, `card_name`, `sum`, `date`, `user_id`)'.
+							  'VALUES'.
+							  '(:order_id, :product_id, :product_quantity, :card_name, :sum, :date, :user_id)');
+		$query->bindParam(':order_id', $order_id, PDO::PARAM_INT);
+		$query->bindParam(':product_id', $product_id, PDO::PARAM_INT);
+		$query->bindParam(':product_quantity', $product_quantity, PDO::PARAM_INT);
+		$query->bindParam(':card_name', $card_name, PDO::PARAM_STR);
+		$query->bindParam(':sum', $sum, PDO::PARAM_INT);
+		$query->bindParam(':date', $date, PDO::PARAM_STR);
+		$query->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+		$res = $query->execute();
+		
+		if (!$res) {
+			echo '<pre>';
+			var_dump($query->errorInfo());
+			echo '</pre>';
+			insertIntoLogFile(__DIR__.'/log_error_files/orders_error', 
+				'Unsuccessful adding order to database table '.$table.'. Error message:'.
+				$query->errorInfo()[2], 
+				date('Y-m-d H:i:s', time()));
+
+		} else {
+			insertIntoLogFile(__DIR__.'/log_error_files/orders_log', 
+				'Successful adding order to database table '.$table, 
+				date('Y-m-d H:i:s', time()));
+		}
+	}
+
 	$query = $db->prepare('INSERT INTO `orders`'.
 						  '(`order_id`, `product_id`, `product_quantity`, `card_name`, `sum`, `date`, `user_id`)'.
 						  'VALUES'.
@@ -247,9 +278,57 @@ function postOrder($db, $order_id, $product_id, $product_quantity, $card_name, $
 		echo '<pre>';
 		var_dump($query->errorInfo());
 		echo '</pre>';
+
+		insertIntoLogFile(__DIR__.'/log_error_files/orders_error', 
+				'Unsuccessful adding order and keys to database table order_keys. Error message: '.
+				$query->errorInfo()[2], 
+				date('Y-m-d H:i:s', time()));
+	} else {
+		insertIntoLogFile(__DIR__.'/log_error_files/orders_log', 
+				'Successful adding order and keys to database table order_keys', 
+				date('Y-m-d H:i:s', time()));
+	}
+
+	$res = '';
+	// function sendData($db, $key_info ,$info, $address, $secret_key = null){
+	// AccountService/AS/test_getOrderId.php') ; 
+	// $data = array(
+	// 	'order_id' => $order_id,
+	// 	'keys' => $keys
+	// );
+	// $res1 = sendData($db, 'orders', json_encode($data), 'http://10.55.33.34/test_getOrderId.php');
+	// if (!$res1) {
+	// 	insertIntoLogFile(__DIR__.'/log_error_files/orders_error', 
+	// 			'Unsuccessful sending order and keys to account service.', 
+	// 			date('Y-m-d H:i:s', time()));
+	// } else {
+	// 	insertIntoLogFile(__DIR__.'/log_error_files/orders_log', 
+	// 			'Successful sending order and keys to account service.', 
+	// 			$query->errorInfo()[2], 
+	// 			date('Y-m-d H:i:s', time()));
+	// }
+	// $res .= $res1;
+	// CRM
+	$data = array(
+		'order_id' => $order_id,
+		'keys' => $keys,
+		'sum' => $sum,
+		'user_id' => $user_id
+	);
+	$res1 = sendData($db, 'orders', json_encode($data), 'http://10.55.33.27/dev/addOrder.php');
+	if (!$res1) {
+		insertIntoLogFile(__DIR__.'/log_error_files/orders_error', 
+				'Unsuccessful sending order and keys to CRM.', 
+				date('Y-m-d H:i:s', time()));
+	} else {
+		insertIntoLogFile(__DIR__.'/log_error_files/orders_log', 
+				'Successful sending order and keys to CRM.',
+				date('Y-m-d H:i:s', time()));
+	}
+	$res .= $res1;
+	return $res;
 	}
 	
-}
 
 /*
  * Working with refunds
@@ -368,4 +447,3 @@ function postOrder($db, $order_id, $product_id, $product_quantity, $card_name, $
 	return true;
 					
  }
- 
