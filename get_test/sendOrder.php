@@ -4,17 +4,19 @@
 //function postOrder($db, $order_id, $product_id, $product_quantity, $card_name, $sum, $keys, $user_id = NULL) {
 
 
+	$order_id = rand(1, 1000);
 	$params = array(
 		'data' => json_encode(array(
-				'order_id' => rand(1, 1000),
+				'order_id' => $order_id,
 				'product_id' => 1,
 				'product_quantity' => 4,
 				'card_name' => 'BR25522',
 				'sum' => 100,
-				'keys' => array(rand(1, 1000), rand(1, 1000), rand(1, 1000), rand(1,1000)),
+				'keys' => array(rand(1, 1000000), rand(1, 1000000), rand(1, 1000000), rand(1,1000000)),
 				'date' => date('Y-m-d H:i:s', time()),//'2015-06-19 17:16:12',
-				'user_id' => rand(1, 100)
+				'user_id' => 0
 				)));
+	echo $order_id.'<br>';
 	$defaults = array(
 		CURLOPT_URL => 'dev.big-exercise/get_test/testGetOrders.php',
 		CURLOPT_POST => true,
