@@ -255,4 +255,117 @@ function postOrder($db, $order_id, $product_id, $product_quantity, $card_name, $
  * Working with refunds
  */
  
+ function getAssociativeRefundArray($ref_array){
+ 	
+	$ref_array_output = array();
+	
+	foreach($ref_array->keys as $key_id=>$status){
+		$ref_array_output['keys'][] = array('key_id' => $key_id, 'status' => $status);
+	}
+	
+	$ref_array_output['key_num'] = count($ref_array_output['keys']);
+	$ref_array_output['refund_id'] = $ref_array->refund_id;
+	$ref_array_output['percent'] = $ref_array->percent;
+	
+	return $ref_array_output;
+	
+ }
+ 
+ function isThisKeyExistsInOrder($db, $key_id){
+ 	
+ 	$query = $db->prepare("SELECT order_id, key_id FROM order_keys WHERE key_id = :key_id");
+	$key_id = (int)$key_id;
+	$query->bindParam(":key_id", $key_id, PDO::PARAM_INT);
+	$query->execute();
+	
+	return ( $query->fetchAll(PDO::FETCH_ASSOC) );
+	
+ }
+ 
+ 
+ function findKeysOrders($db, $ref_array){
+ 			
+ 		for($i = 0; $i < count($ref_array['keys']); $i++){
+ 			$order_info = isThisKeyExistsInOrder($db, $ref_array['keys'][$i]['key_id']);
+ 			if(!empty($order_info)){
+ 				$ref_array['keys'][$i]['order_id'] = $order_info[0]['order_id'];
+ 			}
+			else{
+				return $ref_array['keys'][$i]['key_id'];
+			}
+ 		}
+		
+		return $ref_array;
+ }
+ 
+ 
+ function getAmountOfKeysForOrders($ref_array){
+ 	
+	$keys_amount = array();
+	
+	for($i = 0; $i < count($ref_array['keys']); $i++){
+		
+		if(!isset($keys_amount[$ref_array['keys'][$i]['order_id']])){
+			$keys_amount[$ref_array['keys'][$i]['order_id']] = 1;	
+		}
+		else{
+			$keys_amount[$ref_array['keys'][$i]['order_id']] += 1;	
+		}
+	}
+	
+	return $keys_amount;
+	
+ }
+ 
+ function wasnotKeyCanceled($db, $key_id){
+ 	$query = $db->prepare('SELECT * FROM refund_keys WHERE canceled_keys = :key_id');
+	$key_id = (int)$key_id;
+	$query->bindParam(':key_id', $key_id, PDO::PARAM_INT);
+	$query->execute();
+	
+	$check = $query->fetchAll(PDO::FETCH_ASSOC);
+	return ( empty($check) );
+ }
+ 
+ function getCanceledKeys($db, $id_refund){
+ 	$query = $db->prepare('SELECT canceled_keys FROM refund_keys WHERE id_refund = :id_refund');
+	$id_refund = (int)$id_refund;
+	$query->bindParam(':id_refund', $id_refund, PDO::PARAM_INT);
+	$query->execute();
+	
+	$key_array = $query->fetchAll(PDO::FETCH_NUM);
+	$key_array_output = array();
+	for($i = 0; $i < count($key_array); $i++){
+		$key_array_output[] = $key_array[$i][0];
+	}
+	
+	return $key_array_output;
+	
+ }
+ 
+ 
+ function insertCanceledKeys($db, $ref_array){
+	
+	for($i = 0; $i < count($ref_array['keys']); $i++){
+		if($ref_array['keys'][$i]['status'] == 1){
+		
+			if(wasnotKeyCanceled($db, $ref_array['keys'][$i]['key_id'])){		
+				$query = $db->prepare('INSERT INTO refund_keys (id_refund, id_order, canceled_keys) VALUE (:id_refund, :id_order, :canceled_keys)');
+				$id_refund = (int)$ref_array['refund_id'];
+				$id_order = (int)$ref_array['keys'][$i]['order_id'];
+				$key_id = (int)$ref_array['keys'][$i]['key_id'];
+				$query->bindParam(':id_refund', $id_refund, PDO::PARAM_INT);
+				$query->bindParam(":id_order", $id_order, PDO::PARAM_INT);
+				$query->bindParam(':canceled_keys', $key_id, PDO::PARAM_INT);
+				$query->execute();
+			}
+			else{
+				return $ref_array['keys'][$i]['key_id'];
+			}
+		}
+	}
+	
+	return true;
+					
+ }
  
