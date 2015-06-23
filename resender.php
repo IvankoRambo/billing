@@ -1,4 +1,7 @@
 <?php
+require "vendor/autoload.php";
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 require __DIR__ . '/db_work.php';
 $db = getConnection(__DIR__.'/config/db.ini');
 
@@ -57,7 +60,11 @@ function getLastRecord($db, $tableName) {
 //    $query->bindParam(':tableName', $tableName, PDO::PARAM_STR);
 //    return ($query->execute());
 //}
-
+/**
+ * @param $db PDO
+ * @param $tableName string
+ * @return mixed
+ */
 function deleteLastRecord($db, $tableName) {
     $query = $db->prepare("DELETE FROM $tableName ORDER BY id DESC LIMIT 1");
 //    $query->bindParam(':tableName', $tableName, PDO::PARAM_STR);
@@ -77,9 +84,14 @@ function generateRandomText($quantity) {
     return $text;
 }
 
+/**
+ * @param $db PDO
+ * @param $tableName string
+ * @return mixed
+ */
 function generateRecords($db, $tableName) {
     $query = $db->prepare("INSERT INTO $tableName (data, destination) VALUE (:data, :destination)");
-    $data = '{"products":[{"id":"' . rand(1,30) . '","name":"' . generateRandomText(rand(4,12)) . '","price":"' . rand(100, 1000) . '"}]}';
+    $data = '{"' . $tableName . '":[{"id":"' . rand(1,30) . '","name":"' . generateRandomText(rand(4,12)) . '","price":"' . rand(100, 1000) . '"}]}';
 
     $destinations = ['AS', 'PP', 'CRM'];
     $destination = $destinations[rand(0, 2)];
@@ -93,6 +105,7 @@ function generateRecords($db, $tableName) {
 /**
  * @param $data
  * @param $url
+ * @return Response
  */
 function sendRequest($data, $url) {
     $params = ['data' => $data];
@@ -107,8 +120,9 @@ function sendRequest($data, $url) {
     $ch = curl_init();
     curl_setopt_array($ch, $defaults);
     $response = curl_exec($ch);
-    echo $response;
+//    echo $response;
     curl_close($ch);
+    return $response;
 }
 
 /**
@@ -117,7 +131,7 @@ function sendRequest($data, $url) {
 function doWork($db) {
     while(checkTables($db)) {
     if (getLastRecord($db, checkTables($db))) {
-        print("sending data to => " . getLastRecord($db, checkTables($db))->destination . "<br>");
+        print("sending" . getLastRecord($db, checkTables($db))->data . " data to => " . getLastRecord($db, checkTables($db))->destination . "<br>");
 //        sendRequest(getLastRecord($db, checkTables($db))->data, $localhost);
 //         if response true, we delete record from db
         deleteLastRecord($db, checkTables($db));
@@ -132,24 +146,41 @@ function doWork($db) {
  * @param $db PDO
  */
 function doWorkOnce($db) {
-    $localhost = 'http://dev.school-server/billing/billing/testResender.php';
-//    while(checkTables($db)) {
+    $url = 'http://dev.school-server/billing/billing/testResender.php';
+//    $url = 'http://10.55.33.38/billing_v1/get_test/test_gen.php';
         if (getLastRecord($db, checkTables($db))) {
-            print("sending data to => " . getLastRecord($db, checkTables($db))->destination . "<br>");
-            sendRequest(getLastRecord($db, checkTables($db))->data, $localhost);
-//         if response true, we delete record from db
-            deleteLastRecord($db, checkTables($db));
+            print("sending" . getLastRecord($db, checkTables($db))->data . " data to => " . getLastRecord($db, checkTables($db))->destination . "<br>");
+            if (sendRequest(getLastRecord($db, checkTables($db))->data, $url) == Response::HTTP_OK) {
+                deleteLastRecord($db, checkTables($db));
+            }
         } else {
             echo 'There are no failed products to send!<br>';
         }
-//    }
 }
 
 //var_dump(getLastRecord($db, 'failed_products'));
 //var_dump(getLastRecord($db, 'failed_orders'));
 
-//generateRecords($db, 'failed_products');
+
+function generateTables($db)
+{
+    $r = rand(20, 40);
+    $r2 = rand(5, 20);
+    $r3 = rand(10, 20);
+    for ($i = 0; $i < $r; $i++) {
+        generateRecords($db, 'failed_products');
+    }
+    for ($i = 0; $i < $r2; $i++) {
+        generateRecords($db, 'failed_orders');
+    }
+    for ($i = 0; $i < $r3; $i++) {
+        generateRecords($db, 'failed_refunds');
+    }
+}
 //deleteLastRecord($db, 'failed_products');
 
+//generateTables($db);
+
 //doWork($db);
-//doWorkOnce($db);
+doWorkOnce($db);
+
