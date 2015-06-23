@@ -1,6 +1,12 @@
 <?php
 
 //var_dump($_POST);
+
+require "vendor/autoload.php";
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+
+
 require('db_work.php');
 $db = getConnection(__DIR__.'/config/db.ini');
 
@@ -12,6 +18,6 @@ function insertIntoFailedProducts($db, $data, $destination){
     return ( $query->execute() ) ? true : false;
 }
 
-//echo insertIntoFailedProducts($db, $_POST['data'], 'AS');
-//var_dump($_POST['data']);
-var_dump($_POST);
+if (isset($_POST)) {
+    echo Response::HTTP_OK;
+}
