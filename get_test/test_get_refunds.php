@@ -8,15 +8,16 @@ $db = getConnection($config_path);
 $refund_json = '{"refund_id":10,"keys":{"3":"1","4":"1","5":"0"},"percent":"7.00"}';
 
 $refund = json_decode($refund_json);
-print_r($refund_json);
 
-echo "<br />";
 $refund = getAssociativeRefundArray($refund);
+print_r($refund);
 $refund_order = findKeysOrders($db, $refund);
 print_r($refund_order);
 $keys_amount = getAmountOfKeysForOrders($refund_order);
 insertCanceledKeys($db, $refund_order);
 $canceled_keys = getCanceledKeys($db, $refund_order['refund_id']);
+$ref_res = calculateRefund($db, $refund_order, $keys_amount);
+print_r($ref_res['refund']);
 
 
 // Block for sending info to AC

@@ -422,6 +422,25 @@ function postOrder($db, $order_id, $product_id, $product_quantity, $card_name, $
 	
  }
  
+ function getAmountOfCanceledKeys($db, $id_refund, $id_order){
+ 	$query = $db->prepare('SELECT canceled_keys FROM refund_keys WHERE id_refund = :id_refund AND id_order = :id_order');
+	$id_refund = (int)$id_refund;
+	$id_order = (int)$id_order;
+	$query->bindParam(':id_refund', $id_refund, PDO::PARAM_INT);
+	$query->bindParam(':id_order', $id_order, PDO::PARAM_INT);
+	$query->execute();
+	
+	$canceled_keys = $query->fetchAll(PDO::FETCH_NUM);
+	$canceled_keys_output = array();
+	
+	for($i = 0; $i < count($canceled_keys); $i++){
+		$canceled_keys_output[] = $canceled_keys[$i][0];
+	}
+	
+	return count($canceled_keys_output);
+	
+ }
+ 
  
  function insertCanceledKeys($db, $ref_array){
 	
@@ -446,4 +465,105 @@ function postOrder($db, $order_id, $product_id, $product_quantity, $card_name, $
 	
 	return true;
 					
+ }
+ 
+ 
+ function isOrderCanceled($db, $id_order){
+ 	$query = $db->prepare('SELECT product_quantity, sum FROM orders WHERE order_id = :id_order');
+	$id_order = (int)$id_order;
+	$query->bindParam(':id_order', $id_order, PDO::PARAM_INT);
+	$query->execute();
+	
+	$order_info = $query->fetchAll(PDO::FETCH_ASSOC);
+	return ( ($order_info[0]['product_quantity'] <= 0) || ($order_info[0]['sum'] <= 0) ) ? true : false;
+ }
+ 
+ 
+ function getOrder($db, $id_order){
+ 	$query = $db->prepare('SELECT * FROM orders WHERE order_id = :id_order');
+	$id_order = (int)$id_order;
+	$query->bindParam(':id_order', $id_order, PDO::PARAM_INT);
+	$query->execute();
+	
+	return ( $query->fetchAll(PDO::FETCH_ASSOC) );
+ }
+
+
+ function insertProductPriceInOrder($db, $id_order, $order_price){
+ 	$query = $db->prepare('INSERT INTO order_price (id_order, price) VALUES (:id_order, :price)');
+	$order_price = (string)$order_price;
+	$query->bindParam(':id_order', $id_order, PDO::PARAM_INT);
+	$query->bindParam(':price', $order_price, PDO::PARAM_STR);
+	return $query->execute();
+ }
+ 
+ 
+ function getProductPriceInOrder($db, $id_order){
+ 	$query = $db->prepare('SELECT * FROM order_price WHERE id_order = :id_order');
+	$id_order = (int)$id_order;
+	$query->bindParam(':id_order', $id_order, PDO::PARAM_INT);
+	$query->execute();
+	
+	return ( $query->fetchAll(PDO::FETCH_ASSOC) );
+	
+ }
+ 
+
+ function calculateRefund($db, $ref_array, $keys_amount){
+ 	
+	$response = array(
+		'refund' => null,
+		'data' => null
+	);
+	$percent = (float)$ref_array['percent'];
+	$refund_id = (int)$ref_array['refund_id'];
+	
+	foreach($keys_amount as $order_id=>$key_num){
+		
+		if(!isOrderCanceled($db, $order_id)){
+			
+			$price_info = getProductPriceInOrder($db, $order_id);
+			$order_info = getOrder($db, $order_id);
+			$sum = (float)$order_info[0]['sum'];
+			$quantity = (int)$order_info[0]['product_quantity'];
+			$order_info = getOrder($db, $order_id);
+			if(empty($price_info)){
+				$price_for_product = $sum/$quantity;
+				insertProductPriceInOrder($db, $order_id, $price_for_product);
+			}
+			else{
+				$price_for_product = $price_info[0]['price'];
+			}
+			
+			$refund_sum = ($percent/100)*$price_for_product*(int)$key_num;
+			$response['refund'][] = array('id_order' => $order_id, 'sum' => $refund_sum, 'card' => $order_info[0]['card_name']);
+			
+			$query = $db->prepare('INSERT INTO refunds (id_order, num_keys, sum, id_refund) VALUES (:id_order, :num_keys, :sum, :id_refund)');
+			$num_keys = (int)$key_num;
+			$order_id = (int)$order_id;
+			$refund_sum = (string)$refund_sum;
+			$query->bindParam(':id_order', $order_id, PDO::PARAM_INT);
+			$query->bindParam(':num_keys', $num_keys, PDO::PARAM_INT);
+			$query->bindParam(':sum', $refund_sum, PDO::PARAM_INT);
+			$query->bindParam(':id_refund', $refund_id, PDO::PARAM_INT);
+			$query->execute();
+			
+			$canceled_keys_amount = getAmountOfCanceledKeys($db, $refund_id, $order_id);
+			$current_sum = $sum - $refund_sum;
+			$current_sum = (string)$current_sum;
+			$current_quantity = $quantity-$canceled_keys_amount;
+			$query = $db->prepare("UPDATE orders SET sum = :current_sum, product_quantity = :current_quantity WHERE order_id=:id_order");
+			$query->bindParam(':current_sum', $current_sum, PDO::PARAM_STR);
+			$query->bindParam(':current_quantity', $current_quantity, PDO::PARAM_INT);
+			$query->bindParam(':id_order', $order_id, PDO::PARAM_INT);
+			$query->execute();
+		}
+		else{
+			$response['data'][] = 'Order '.$order_id.' is already fully refunded';
+		}
+		
+	}
+
+	return $response;
+	
  }
