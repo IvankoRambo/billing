@@ -18,20 +18,9 @@ function getConnection($config_path){
 }
 
 /*
- * checking is right password for admin or not 
+ * Products
 */
 
-function isRightPassword($db, $name, $password){
-	$query = $db->prepare("SELECT id FROM admins WHERE name = :name AND password = :password");
-	$query->bindParam(":name", $name, PDO::PARAM_STR);
-	$query->bindParam(":password", $password, PDO::PARAM_STR);
-	$query->execute();
-	$check = $query->fetchAll(PDO::FETCH_NUM);
-	
-
-	return ( !empty($check) );
-
-}
 
 function getAllProducts($db){
 	$query = $db->prepare("SELECT * FROM products");
@@ -158,6 +147,18 @@ function sendData($db, $key_info ,$info, $address, $secret_key = null){
 	return ( $query->execute() );
 	
  }
+ 
+ function isRightPassword($db, $name, $password){
+	$query = $db->prepare("SELECT id FROM admins WHERE name = :name AND password = :password");
+	$query->bindParam(":name", $name, PDO::PARAM_STR);
+	$query->bindParam(":password", $password, PDO::PARAM_STR);
+	$query->execute();
+	$check = $query->fetchAll(PDO::FETCH_NUM);
+	
+
+	return ( !empty($check) );
+
+}	
  
 /*
  *	updates and deletes of products 

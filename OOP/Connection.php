@@ -1,7 +1,7 @@
 <?php
 
 /*
-* Service locator pattern for connection to database, ought to remake for PDO module
+* Connection to db
 */
 
 
@@ -42,14 +42,11 @@ class ServiceLocator{
 		self::$_connection = $connection;
 	}
 	
-	public static function getConnection(){
-		$config_path = 'db.ini';
-		if(!isset(self::$_connection)){
-			self::$_connection = new Connection($config_path);
-		}
+	public static function getConnection($config_path = 'db.ini'){
+		self::$_connection = new Connection($config_path);
 		return self::$_connection;
 	}
-		
+
 }
 
 $connection = ServiceLocator::getConnection();
