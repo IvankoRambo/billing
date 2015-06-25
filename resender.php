@@ -7,11 +7,12 @@ $db = getConnection(__DIR__.'/config/db.ini');
 
 
 // URLs
-$AS = 'localhost';
-$PP = 'localhost';
-$CRM = 'localhost';
-$destinations = array('AS' => 'AccountService',
-                      'PP' => 'Payment Processor');
+$AS = 'http://dev.school-server/billing/billing/testResenderAS.php';
+$PP = 'http://dev.school-server/billing/billing/testResenderPP.php';
+$CRM = 'http://dev.school-server/billing/billing/testResenderCRM.php';
+$destinations = array('AS' => $AS,
+                      'PP' => $PP,
+                      'CRM' => $CRM);
 
 $localhost = 'http://dev.school-server/billing/billing/testResender.php';
 
@@ -132,7 +133,7 @@ function doWork($db) {
     while(checkTables($db)) {
     if (getLastRecord($db, checkTables($db))) {
         print("sending" . getLastRecord($db, checkTables($db))->data . " data to => " . getLastRecord($db, checkTables($db))->destination . "<br>");
-//        sendRequest(getLastRecord($db, checkTables($db))->data, $localhost);
+//        sendRequest(getLastRecord($db, checkTables($db))->data, $url);
 //         if response true, we delete record from db
         deleteLastRecord($db, checkTables($db));
     } else {
@@ -140,7 +141,6 @@ function doWork($db) {
     }
     }
 }
-
 
 /**
  * @param $db PDO
@@ -182,5 +182,16 @@ function generateTables($db)
 //generateTables($db);
 
 //doWork($db);
-doWorkOnce($db);
+//doWorkOnce($db);
+
+
+function getLastProduct2($db){
+    $query = $db->prepare("SELECT * FROM products where id=(SELECT MAX(id) FROM products)");
+    $query->execute();
+
+    return ( $query->fetch(PDO::FETCH_OBJ) );
+}
+
+var_dump(getLastProduct2($db)->name);
+
 
