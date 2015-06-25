@@ -363,18 +363,20 @@ function postOrder($db, $order_id, $product_id, $product_quantity, $card_name, $
  
  
  function findKeysOrders($db, $ref_array){
- 			
+ 		
+		$existed = '';
+			
  		for($i = 0; $i < count($ref_array['keys']); $i++){
  			$order_info = isThisKeyExistsInOrder($db, $ref_array['keys'][$i]['key_id']);
  			if(!empty($order_info)){
  				$ref_array['keys'][$i]['order_id'] = $order_info[0]['order_id'];
  			}
 			else{
-				return $ref_array['keys'][$i]['key_id'];
+				$existed .= $ref_array['keys'][$i]['order_id'].',';
 			}
  		}
 		
-		return $ref_array;
+		return ($existed != false) ? rtrim($existed, ',') : $ref_array;
  }
  
  
@@ -444,6 +446,8 @@ function postOrder($db, $order_id, $product_id, $product_quantity, $card_name, $
  
  function insertCanceledKeys($db, $ref_array){
 	
+	$canceled = '';
+	
 	for($i = 0; $i < count($ref_array['keys']); $i++){
 		if($ref_array['keys'][$i]['status'] == 1){
 		
@@ -458,12 +462,12 @@ function postOrder($db, $order_id, $product_id, $product_quantity, $card_name, $
 				$query->execute();
 			}
 			else{
-				return $ref_array['keys'][$i]['key_id'];
+				$canceled = $ref_array['keys'][$i]['key_id'].',';
 			}
 		}
 	}
 	
-	return true;
+	return ($canceled != false) ? rtrim($canceled, ',') : true;
 					
  }
  

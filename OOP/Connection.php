@@ -1,41 +1,59 @@
 <?php
 
 /*
-* Singleton class for connection to database, ought to remake for PDO module
+* Service locator pattern for connection to database, ought to remake for PDO module
 */
 
-/*
+
 class Connection{
-private $dbhost = '127.0.0.1',
-$dbname = 'billing',
-$dbuser = 'root',
-$dbpass = 'kolaider';
-protected static $_instance;
-public static function getInstance(){
-if(is_null(self::$_instance)) self::$_instance = new self;
-return self::$_instance;
+	
+	protected $db;
+	
+	public function __construct($config_path){
+		$config = parse_ini_file($config_path);
+		try{
+			$this->db = new PDO("mysql:host={$config['host']};dbname={$config['db_name']}", $config['user'], $config['password']);
+		}
+		catch(PDOException $e){
+			echo 'Connection is failed: '.$e->getMessage();
+		}
+	}
+	
+	
+	public function getDBSource(){
+		if(!isset($this->db)){
+			echo 'There was no connnection to database';
+			return;
+		}
+		else{
+			return $this->db;
+		}
+	}
+	
 }
-private function __construct(){
-$this->connect = @mysql_connect($this->dbhost, $this->dbuser, $this->dbpass);
-if(!$this->connect){
-echo '<p>The error in mysql connection</p>';
-exit();
+
+
+class ServiceLocator{
+	
+	protected static $_connection;
+	private function __construct(){ }
+	
+	public static function provideConnection(Connection $connection){
+		self::$_connection = $connection;
+	}
+	
+	public static function getConnection(){
+		$config_path = 'db.ini';
+		if(!isset(self::$_connection)){
+			self::$_connection = new Connection($config_path);
+		}
+		return self::$_connection;
+	}
+		
 }
-if(!mysql_select_db($this->dbname, $this->connect)){
-echo '<p>Can\'t connect to appropriate database</p>';
-exit();
-}
-}
-public function query($query){
-if(isset(self::$_instance->connect)){
-$result = mysql_query($query) or die("<p>The appropriate query doesnt get a response</p>");;
-return $result;
-}
-else {
-echo "<p>There is still no object and connection to database</p>";
-}
-}
-}
-*/
+
+$connection = ServiceLocator::getConnection();
+$db = $connection->getDBSource();
+
 
 ?>
