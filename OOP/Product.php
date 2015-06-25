@@ -98,17 +98,27 @@ class Product {
     //---Database---
 
     public static function getProductByID($id){
+
+        $connection = ServiceLocator::getConnection();
+        $db = $connection->getDBSource();
+
+        self::$connection = $db;
         $query = self::$connection->prepare("SELECT * FROM products WHERE id=:id");
-        $query->bindParam(":id", self::$id, PDO::PARAM_INT);
+        $query->bindParam(":id", $id, PDO::PARAM_INT);
         $query->execute();
 
-        return ( $query->fetch(PDO::FETCH_OBJ) );
+        $product = $query->fetch(PDO::FETCH_OBJ);
+        self::$id = $product->id;
+        self::$name = $product->name;
+        self::$price = $product->price;
+        if (isset($product->description)) {
+            self::$description = $product->desription;
+        }
     }
 
 
 
 }
-
 
 var_dump(Product::getProductByID(3));
 
