@@ -16,6 +16,8 @@ $refund = getAssociativeRefundArray($refund);
 $refund_order = findKeysOrders($db, $refund);
 
 if(is_string($refund_order)){
+	$refund_order = explode(',', $refund_order);
+	
 	echo sendData($db, 'refunds', "{'status':'notexists'; 'id_keys': [{$refund_order}]; 'id_refund': {$refund['refund_id']}; 'success': false}", '10.55.33.27/dev/receiveRefundResponse.php');
 	return;
 }
@@ -24,6 +26,7 @@ elseif(is_array($refund_order)){
 	$inserted = insertCanceledKeys($db, $refund_order);
 	
 	if(is_string($inserted)){
+		$inserted = explode(',', $inserted);
 		echo sendData($db, 'refunds', "{'status': 'canceled', 'id_keys': [{$inserted}], 'id_refund': {$refund['refund_id']}, 'success': false}", '10.55.33.27/dev/receiveRefundResponse.php');
 		return;
 	}
