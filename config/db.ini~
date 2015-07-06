@@ -1,0 +1,5 @@
+[db]
+host='10.55.33.23'
+db_name='billing'
+user='root'
+password='kolaider'
