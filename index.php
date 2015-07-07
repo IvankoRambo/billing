@@ -20,7 +20,7 @@ try{
 			$layout = Zend_Layout::getMvcInstance();
 			$view = $layout->getView();
 			
-			$globalSession = new Zend_Session_Namespace('global_data');
+			$view->session = new Zend_Session_Namespace('global_data');
 			$config_path = 'config/db.ini';
 			$connection = OOP\ServiceLocator::getConnection($config_path);
 			$db = $connection->getDBSource();
@@ -34,8 +34,8 @@ try{
 			if(!is_null($this->getRequest()->getPost('sign_in'))){
 				$Agent = new OOP\Agent($db, $data['name'], $data['password']);
 			    if($Agent->checkPassword()){
-			        $globalSession->name = $data['name'];
-			        $globalSession->isLogged = true;
+			        $view->session->name = $data['name'];
+			        $view->session->isLogged = true;
 			    } else {
 			        $view->data = "<h3>Access denied!</h3>";
 			    }

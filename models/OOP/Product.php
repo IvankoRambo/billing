@@ -1,5 +1,6 @@
 <?php
-require "../../vendor/autoload.php";
+namespace OOP;
+use \PDO;
 
 /**
  * Class Product
@@ -99,7 +100,8 @@ class Product {
 
     //---Database---
 
-    public static function getProductByID($id) {
+    public static function getProductByID($db ,$id) {
+    	self::$connection = $db;
         $query = self::$connection->prepare("SELECT * FROM products WHERE id=:id");
         $query->bindParam(":id", $id, PDO::PARAM_INT);
         $query->execute();
@@ -117,8 +119,8 @@ class Product {
         return ($query->execute($data)) ? true : false;
     }
 	
-	public function get_all(){
-		
+	public static function get_all($db){
+		self::$connection = $db;
 		$query = self::$connection->prepare("SELECT * FROM products");
 		$query->execute();
 	
@@ -126,8 +128,8 @@ class Product {
 		
 	}
 	
-	public function get_last(){
-		
+	public static function get_last($db){
+		self::$connection = $db;
 		$query = self::$connection->prepare("SELECT * FROM products where id=(SELECT MAX(id) FROM products)");
 		$query->execute();
 	

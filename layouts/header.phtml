@@ -14,8 +14,8 @@
 	
 <div class="row pull-right">
     <div class="" id="top_panel">
-        <?php if (!empty($_SESSION['isLogged'])): ?>
-            <h4>Welcome <?=$_SESSION['name']?></a></h4>
+        <?php if (isset($this->session->isLogged)): ?>
+            <h4>Welcome <?= $this->session->name; ?></a></h4>
             <a href="logout" class="btn btn-primary" role="button">Logout</a>
         <?php else: ?>
             <form method="post" action="<?php echo htmlspecialchars($_SERVER["REQUEST_URI"]);?>">

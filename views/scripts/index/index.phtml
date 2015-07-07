@@ -1,0 +1,53 @@
+
+   <?php if ( $this->session->isLogged === true ) : ?>
+       <div id="product_message"><?= $this->product_message[0]; ?></div>
+        <div class="row">
+            <div class="add_product_form">
+                <h4>Adding new product:</h4>
+
+                <form method="post">
+                    <p><input type="text" name="name" required placeholder="name"/>
+                    <input type="text" name="description" required placeholder="description"/>
+                    <input type="text" name="price" required placeholder="price"/>
+                    <input type="submit" name="add" value="Add" class="btn btn-primary btn-sm"/></p>
+                </form>
+            </div>
+        </div>
+
+        <form method="post">
+            <table class="products_table">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Price</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <?php for ($i = 0; $i < count($this->products); $i++) : ?>
+                    <tr>
+                        <td><?= $this->products[$i]['name'] ?></td>
+                        <td><?= $this->products[$i]['description'] ?></td>
+                        <?php if(preg_match('/\.0{4}/', $this->products[$i]['price'])) : ?>
+                        <td><?= rtrim($this->products[$i]['price'], "\.0{4}") ?></td>
+                        <?php elseif(preg_match('/0+$/', $this->products[$i]['price'])) : ?>
+                        <td><?= rtrim($this->products[$i]['price'], "0+") ?></td>
+                        <?php else : ?>
+                        <td><?= $this->products[$i]['price'] ?></td>
+                        <?php endif; ?>
+                        <td><a href="<?="single_product?product_id={$this->products[$i]['id']}"; ?>" class="btn btn-info pull-right">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                            </a></td>
+                    </tr>
+
+
+                <?php endfor; ?>
+            </table>
+        </form>
+    <?php else : ?>
+        <div class="row center-row">
+            <div class="center">
+                <h1 align=center>Hi, please sign in to continue...</h1>
+            </div>
+        </div>
+    <?php endif; ?>
