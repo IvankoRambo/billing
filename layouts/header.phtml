@@ -1,6 +1,29 @@
-<html>
-	<head>
-		<title>Billing</title>
-	</head>
-	<body>
-		<?php echo $this->whatever; ?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link href="styles/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles/style.css" type="text/css">
+    <meta charset="UTF-8">
+    <title>Agent UI</title>
+</head>
+<body>
+<div class="container-fluid">
+	<?php if(isset($this->data)) : ?>
+		<?= $this->data; ?>
+	<?php endif; ?>
+	
+<div class="row pull-right">
+    <div class="" id="top_panel">
+        <?php if (!empty($_SESSION['isLogged'])): ?>
+            <h4>Welcome <?=$_SESSION['name']?></a></h4>
+            <a href="logout" class="btn btn-primary" role="button">Logout</a>
+        <?php else: ?>
+            <form method="post" action="<?php echo htmlspecialchars($_SERVER["REQUEST_URI"]);?>">
+                <p><input type="text" name="name" placeholder="login" required /></p>
+                <p><input type="password" name="password" placeholder="password" required /></p>
+                <input type="submit" name="sign_in" value="Sign in" class="btn btn-success"/>
+                <a href="registration" class="btn btn-primary" role="button">Register</a>
+            </form>
+        <?php endif; ?>
+    </div>
+</div>

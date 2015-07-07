@@ -4,10 +4,6 @@ $lib_path = '/usr/share/php/Zend';
 
 require_once $lib_path.'/Loader/Autoloader.php';
 require_once $lib_path.'/Controller/Front.php';
-require_once $lib_path.'/Loader/StandardAutoloader.php';
-require_once $lib_path.'/Layout.php';
-require_once $lib_path.'/Controller/Plugin/Abstract.php';
-require_once $lib_path.'/Controller/Request/Abstract.php';
 
 try{
 	Zend_Loader::loadClass('Zend_Controller_Front');
@@ -15,6 +11,7 @@ try{
 	Zend_Loader::loadClass('Zend_Layout');
 	Zend_Loader::loadClass('Zend_Controller_Plugin_Abstract');
 	Zend_Loader::loadClass('Zend_Controller_Request_Abstract');
+	Zend_Loader::loadClass('Zend_Session_Namespace');
 	
 	
 	class HeaderLayoutPlugin extends Zend_Controller_Plugin_Abstract{
@@ -23,7 +20,27 @@ try{
 			$layout = Zend_Layout::getMvcInstance();
 			$view = $layout->getView();
 			
-			$view->whatever = 'whatever';
+			$globalSession = new Zend_Session_Namespace('global_data');
+			$config_path = 'config/db.ini';
+			$connection = OOP\ServiceLocator::getConnection($config_path);
+			$db = $connection->getDBSource();
+			
+			$data['name'] = ( !is_null( $this->getRequest()->getPost('name') ) ) ? Zend_Filter::filterStatic($this->getRequest()->getPost('name'), 'StripTags') : null;
+			$data['password'] = ( !is_null( $this->getRequest()->getPost('password') ) ) ? Zend_Filter::filterStatic($this->getRequest()->getPost('password'), 'StripTags') : null;
+			
+			$view->data = null;
+			$view->success = false;
+			
+			if(!is_null($this->getRequest()->getPost('sign_in'))){
+				$Agent = new OOP\Agent($db, $data['name'], $data['password']);
+			    if($Agent->checkPassword()){
+			        $globalSession->name = $data['name'];
+			        $globalSession->isLogged = true;
+			    } else {
+			        $view->data = "<h3>Access denied!</h3>";
+			    }
+			}
+			
 		}
 		
 	}

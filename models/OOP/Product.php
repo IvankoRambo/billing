@@ -12,13 +12,23 @@ class Product {
 
     private static $connection;
 
-    function __construct($name, $price, $description = null)
+    function __construct($name, $price, $description = null, $db=null, $config_path = null)
     {
         $this->name = $name;
         $this->price = $price;
         isset($description) ? $this->description = $description : $this->description = null;
-
-        $connection = OOP\ServiceLocator::getConnection(realpath(__DIR__ . '/../../config/db.ini'));
+		
+		if( !is_null($db) ){
+			self::$connection = $db;
+			return;
+		}
+		
+		if($config_path){
+        $connection = OOP\ServiceLocator::getConnection($config_path);
+		}
+		else{
+		$connection = OOP\ServiceLocator::getConnection(realpath(__DIR__ . '/../../config/db.ini'));	
+		}
         self::$connection = $connection->getDBSource();
     }
 
@@ -106,6 +116,75 @@ class Product {
                       'description' => $this->getDescription());
         return ($query->execute($data)) ? true : false;
     }
+	
+	public function get_all(){
+		
+		$query = self::$connection->prepare("SELECT * FROM products");
+		$query->execute();
+	
+		return ( $query->fetchAll(PDO::FETCH_ASSOC) );
+		
+	}
+	
+	public function get_last(){
+		
+		$query = self::$connection->prepare("SELECT * FROM products where id=(SELECT MAX(id) FROM products)");
+		$query->execute();
+	
+		return ( $query->fetchAll(PDO::FETCH_ASSOC) );
+	}
+	
+	
+	public function filterProductsKeys($product_info){
+		$keys = [];
+		for($i = 0; $i<count($product_info); $i++){
+			$keys[] = $product_info[$i]['id'];
+		}
+		
+		return $keys;
+	}
+	
+	public function convertProductsInJSON($products_keys){
+		
+		$products_keys_str = '';
+		
+		for($i = 0; $i<count($products_keys); $i++){
+			if($i == count($products_keys)-1)	$products_keys_str .= $products_keys[$i];
+			else $products_keys_str .= $products_keys[$i].', ';
+		}
+		
+		$query = self::$connection->prepare("SELECT * FROM products where id IN ($products_keys_str)");
+		$query->execute();
+		
+		$JSON_products = array("products" => array());
+		$array_products = $query->fetchAll(PDO::FETCH_ASSOC);
+		
+		
+		
+		for($i = 0; $i<count($array_products); $i++) $JSON_products['products'][] = $array_products[$i];
+		
+		return json_encode($JSON_products);
+	
+	}
+	
+	public function updateProduct($id) {
+		$query = self::$connection->prepare("UPDATE products SET name=:name, price=:price, description=:description WHERE id=:id");
+		$price = $this->getPrice();
+		$price = (string)$price;
+		$name = $this->getName();
+		$description = $this->getDescription();
+		$query->bindParam(':name', $name, PDO::PARAM_STR);
+		$query->bindParam(':price', $price, PDO::PARAM_STR);
+		$query->bindParam(":description", $description, PDO::PARAM_STR);
+		$query->bindParam(':id', $id, PDO::PARAM_INT);
+		return ($query->execute());
+	}
+	
+	function deleteProduct($id) {
+		$query = self::$connection->prepare('DELETE FROM products WHERE id=:id');
+		$query->bindParam(':id', $id, PDO::PARAM_INT);
+		return ($query->execute());
+	}
 
 //    public function add2(){
 //        $query = self::$connection->prepare("INSERT INTO products (name, price, description) VALUES (?, ? ,?)");
@@ -125,11 +204,11 @@ class Product {
 
 }
 
-$product = new Product('Super product', 150, 'Best product ever');
+/*$product = new Product('Super product', 150, 'Best product ever');
 $product2 = Product::getProductByID(5);
 var_dump($product);
 var_dump($product2);
-$product->add();
+$product->add();*/
 
 // TODO encode to json and send to AS
 // {"products":[{"id":"1","name":"Some Ant","price":"123"},{"id":"3","name":"Lost Good","price":"66"}]}
