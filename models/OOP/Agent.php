@@ -18,9 +18,8 @@
 	
 	public function checkPassword(){
 		
-	$query = $this->db->prepare("SELECT id FROM admins WHERE name = :name AND password = :password");
+	$query = $this->db->prepare("SELECT id FROM admins WHERE name = :name");
 	$query->bindParam(":name", $this->name, PDO::PARAM_STR);
-	$query->bindParam(":password", $this->password, PDO::PARAM_STR);
 	$query->execute();
 	$check = $query->fetchAll(PDO::FETCH_NUM);
 	

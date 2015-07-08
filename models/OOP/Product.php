@@ -106,7 +106,7 @@ class Product {
         $query->bindParam(":id", $id, PDO::PARAM_INT);
         $query->execute();
 
-        $product = $query->fetch(PDO::FETCH_OBJ);
+        $product = $query->fetchAll(PDO::FETCH_ASSOC);
         return $product;
     }
 
@@ -137,7 +137,7 @@ class Product {
 	}
 	
 	
-	public function filterProductsKeys($product_info){
+	public static function filterProductsKeys($product_info){
 		$keys = [];
 		for($i = 0; $i<count($product_info); $i++){
 			$keys[] = $product_info[$i]['id'];
@@ -146,8 +146,8 @@ class Product {
 		return $keys;
 	}
 	
-	public function convertProductsInJSON($products_keys){
-		
+	public static function convertProductsInJSON($db, $products_keys){
+		self::$connection = $db;
 		$products_keys_str = '';
 		
 		for($i = 0; $i<count($products_keys); $i++){
@@ -182,7 +182,8 @@ class Product {
 		return ($query->execute());
 	}
 	
-	function deleteProduct($id) {
+	public static function deleteProduct($db, $id) {
+		self::$connection = $db;
 		$query = self::$connection->prepare('DELETE FROM products WHERE id=:id');
 		$query->bindParam(':id', $id, PDO::PARAM_INT);
 		return ($query->execute());

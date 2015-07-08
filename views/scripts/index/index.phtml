@@ -26,16 +26,10 @@
                 </thead>
                 <?php for ($i = 0; $i < count($this->products); $i++) : ?>
                     <tr>
-                        <td><?= $this->products[$i]['name'] ?></td>
-                        <td><?= $this->products[$i]['description'] ?></td>
-                        <?php if(preg_match('/\.0{4}/', $this->products[$i]['price'])) : ?>
-                        <td><?= rtrim($this->products[$i]['price'], "\.0{4}") ?></td>
-                        <?php elseif(preg_match('/0+$/', $this->products[$i]['price'])) : ?>
-                        <td><?= rtrim($this->products[$i]['price'], "0+") ?></td>
-                        <?php else : ?>
-                        <td><?= $this->products[$i]['price'] ?></td>
-                        <?php endif; ?>
-                        <td><a href="<?="single_product?product_id={$this->products[$i]['id']}"; ?>" class="btn btn-info pull-right">
+                        <td><?= $this->escape($this->products[$i]['name']) ?></td>
+                        <td><?= $this->escape($this->products[$i]['description']) ?></td>
+                        <td><?= $this->escape((float)$this->products[$i]['price']) ?></td>
+                        <td><a href="<?="single-product?product_id={$this->products[$i]['id']}"; ?>" class="btn btn-info pull-right">
                                 <span class="glyphicon glyphicon-pencil"></span>
                             </a></td>
                     </tr>

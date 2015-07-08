@@ -12,6 +12,7 @@ try{
 	Zend_Loader::loadClass('Zend_Controller_Plugin_Abstract');
 	Zend_Loader::loadClass('Zend_Controller_Request_Abstract');
 	Zend_Loader::loadClass('Zend_Session_Namespace');
+	Zend_Loader::loadClass('Zend_Controller_Router_Route');
 	
 	
 	class HeaderLayoutPlugin extends Zend_Controller_Plugin_Abstract{
@@ -58,13 +59,17 @@ try{
 	));
 	
 	$frontController = Zend_Controller_Front::getInstance();
+	$frontController->setControllerDirectory(__DIR__.'/controllers');
 	$frontController->registerPlugin(new HeaderLayoutPlugin());
 	$frontController->throwExceptions(true);
 	$frontController->setParam('noViewRendered', false);
 	$frontController->setParam('noErrorHandler', true);
 	$frontController->setControllerDirectory(__DIR__.'/controllers');
-	$frontController->dispatch();
 	
+	$routes = $frontController->getRouter();
+	$routes->addRoute('single-product', new Zend_Controller_Router_Route('single-product', array('controller' => 'singleproduct', 'action' => 'index')));
+	
+	$frontController->dispatch();
 
 	
 }

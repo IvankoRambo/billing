@@ -1,0 +1,24 @@
+	<?php if(!$this->r_response['success']) : ?>
+		<div>Registration of a new user</div> <br />
+	<form method="POST">
+		<span>Your name:</span><br />
+		<input type="text" name="user_name" required  /><br />
+		<span>Your password:</span><br />
+		<input type="password" name="password" required /><br />
+		<button name="sign_up">Register</button>
+	</form>
+	<?php endif; ?>
+	
+	<?php if(!empty($this->r_POST)) : ?>
+		<div id="reg_info"><?= $this->r_response['data']; ?></div>
+	<?php endif; ?>
+	
+	<?php if($this->r_response['success']) : ?>
+	<form method="POST">
+        <a href="registration">Go back</a>
+	</form>
+	<?php endif; ?>
+	
+	<br />
+
+    <a href="index">Exit</a>
