@@ -1,9 +1,10 @@
 <?php
 
-$lib_path = '/usr/share/php/Zend';
+set_include_path(__DIR__.'/ZendFramework/library'.PATH_SEPARATOR.get_include_path());
+// $lib_path = '/usr/share/php/Zend';
 
-require_once $lib_path.'/Loader/Autoloader.php';
-require_once $lib_path.'/Controller/Front.php';
+require_once /*$lib_path.'/*/'Zend/Loader/Autoloader.php';
+require_once /*$lib_path.'/*/'Zend/Controller/Front.php';
 
 try{
 	Zend_Loader::loadClass('Zend_Controller_Front');
