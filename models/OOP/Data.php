@@ -1,5 +1,4 @@
 <?php
-
 namespace OOP;
 use \PDO;
 
@@ -48,10 +47,9 @@ class Data implements iData{
 	}
 	
 	
-	public function receiveData($data, $db = null, SecretKey $obj = null){
+	public function receiveData($data, $db = null, SecretKey $obj = null, $arrayed = false){
 		$this->receive_data_json = $data;
-	
-		return ( $this->isJson($data) ) ? json_decode($this->receive_data_json) : $this->receive_data_json;		
+		return ( $this->isJson($data) ) ? json_decode($this->receive_data_json, $arrayed) : $this->receive_data_json;		
 	}
 	
 	

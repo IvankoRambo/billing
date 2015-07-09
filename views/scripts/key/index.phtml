@@ -1,0 +1,21 @@
+<?php if ( $this->session->isLogged === true ) : ?>
+	
+	<div style="text-align:center;">Secret Key Adding Page</div>
+	<div class="container">
+	<form method="POST">
+		<span>Partner name:</span><br />
+		<input type="text" name="partner" /><br />
+		<span>Secret Key:</span><br />
+		<input type="password" name="secret_key" /><br /><br />
+		<button name="b_k" class="btn btn-large btn-primary">Add a Key</button>	
+	</form>
+
+	<br /></div>
+	
+	
+	
+	<?php if(!is_null($this->k_response['data'])) : ?>
+		<span id="response_message"><?= $this->escape($this->k_response['data']); ?></div>
+	<?php endif; ?>
+	
+<?php endif; ?>	

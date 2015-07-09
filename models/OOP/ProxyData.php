@@ -50,7 +50,7 @@ class ProxyData implements iData{
 		
 	}
 
-	public function receiveData($data, $db = null, SecretKey $obj = null){
+	public function receiveData($data, $db = null, SecretKey $obj = null, $arrayed = false){
 		
 		$_get = $_GET;
 		$check_info = $obj->selectSecretKey($db, $_get['asid']);
@@ -72,7 +72,7 @@ class ProxyData implements iData{
 				if(NULL == $this->_data){
 					$this->makeData();
 				}
-				return $this->_data->receiveData($data);
+				return $this->_data->receiveData($data, null, null, $arrayed);
 			}
 			
 		}

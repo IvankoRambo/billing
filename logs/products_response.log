@@ -1,0 +1,153 @@
+<pre class='xdebug-var-dump' dir='ltr'>
+<b>array</b> <i>(size=25)</i>
+  0 <font color='#888a85'>=&gt;</font> 
+    <b>array</b> <i>(size=4)</i>
+      'id' <font color='#888a85'>=&gt;</font> <small>string</small> <font color='#cc0000'>'59'</font> <i>(length=2)</i>
+      'name' <font color='#888a85'>=&gt;</font> <small>string</small> <font color='#cc0000'>'fsdfgsdg'</font> <i>(length=8)</i>
+      'price' <font color='#888a85'>=&gt;</font> <small>string</small> <font color='#cc0000'>'0.0000'</font> <i>(length=6)</i>
+      'description' <font color='#888a85'>=&gt;</font> <small>string</small> <font color='#cc0000'>'423r5'</font> <i>(length=5)</i>
+  1 <font color='#888a85'>=&gt;</font> 
+    <b>array</b> <i>(size=4)</i>
+      'id' <font color='#888a85'>=&gt;</font> <small>string</small> <font color='#cc0000'>'62'</font> <i>(length=2)</i>
+      'name' <font color='#888a85'>=&gt;</font> <small>string</small> <font color='#cc0000'>'Lo12'</font> <i>(length=4)</i>
+      'price' <font color='#888a85'>=&gt;</font> <small>string</small> <font color='#cc0000'>'12.0000'</font> <i>(length=7)</i>
+      'description' <font color='#888a85'>=&gt;</font> <small>string</small> <font color='#cc0000'>'fds'</font> <i>(length=3)</i>
+  2 <font color='#888a85'>=&gt;</font> 
+    <b>array</b> <i>(size=4)</i>
+      'id' <font color='#888a85'>=&gt;</font> <small>string</small> <font color='#cc0000'>'63'</font> <i>(length=2)</i>
+      'name' <font color='#888a85'>=&gt;</font> <small>string</small> <font color='#cc0000'>'rfsd'</font> <i>(length=4)</i>
+      'price' <font color='#888a85'>=&gt;</font> <small>string</small> <font color='#cc0000'>'12.0000'</font> <i>(length=7)</i>
+      'description' <font color='#888a85'>=&gt;</font> <small>string</small> <font color='#cc0000'>'fsd'</font> <i>(length=3)</i>
+  3 <font color='#888a85'>=&gt;</font> 
+    <b>array</b> <i>(size=4)</i>
+      'id' <font color='#888a85'>=&gt;</font> <small>string</small> <font color='#cc0000'>'64'</font> <i>(length=2)</i>
+      'name' <font color='#888a85'>=&gt;</font> <small>string</small> <font color='#cc0000'>'adfsef'</font> <i>(length=6)</i>
+      'price' <font color='#888a85'>=&gt;</font> <small>string</small> <font color='#cc0000'>'0.0000'</font> <i>(length=6)</i>
+      'description' <font color='#888a85'>=&gt;</font> <small>string</small> <font color='#cc0000'>'13423'</font> <i>(length=5)</i>
+  4 <font color='#888a85'>=&gt;</font> 
+    <b>array</b> <i>(size=4)</i>
+      'id' <font color='#888a85'>=&gt;</font> <small>string</small> <font color='#cc0000'>'65'</font> <i>(length=2)</i>
+      'name' <font color='#888a85'>=&gt;</font> <small>string</small> <font color='#cc0000'>'sd'</font> <i>(length=2)</i>
+      'price' <font color='#888a85'>=&gt;</font> <small>string</small> <font color='#cc0000'>'0.0000'</font> <i>(length=6)</i>
+      'description' <font color='#888a85'>=&gt;</font> <small>string</small> <font color='#cc0000'>'12e3'</font> <i>(length=4)</i>
+  5 <font color='#888a85'>=&gt;</font> 
+    <b>array</b> <i>(size=4)</i>
+      'id' <font color='#888a85'>=&gt;</font> <small>string</small> <font color='#cc0000'>'66'</font> <i>(length=2)</i>
+      'name' <font color='#888a85'>=&gt;</font> <small>string</small> <font color='#cc0000'>'Iokds'</font> <i>(length=5)</i>
+      'price' <font color='#888a85'>=&gt;</font> <small>string</small> <font color='#cc0000'>'0.0000'</font> <i>(length=6)</i>
+      'description' <font color='#888a85'>=&gt;</font> <small>string</small> <font color='#cc0000'>'1213'</font> <i>(length=4)</i>
+  6 <font color='#888a85'>=&gt;</font> 
+    <b>array</b> <i>(size=4)</i>
+      'id' <font color='#888a85'>=&gt;</font> <small>string</small> <font color='#cc0000'>'68'</font> <i>(length=2)</i>
+      'name' <font color='#888a85'>=&gt;</font> <small>string</small> <font color='#cc0000'>'rew'</font> <i>(length=3)</i>
+      'price' <font color='#888a85'>=&gt;</font> <small>string</small> <font color='#cc0000'>'0.0000'</font> <i>(length=6)</i>
+      'description' <font color='#888a85'>=&gt;</font> <small>string</small> <font color='#cc0000'>'rwer'</font> <i>(length=4)</i>
+  7 <font color='#888a85'>=&gt;</font> 
+    <b>array</b> <i>(size=4)</i>
+      'id' <font color='#888a85'>=&gt;</font> <small>string</small> <font color='#cc0000'>'69'</font> <i>(length=2)</i>
+      'name' <font color='#888a85'>=&gt;</font> <small>string</small> <font color='#cc0000'>'Lostewrfwetf'</font> <i>(length=12)</i>
+      'price' <font color='#888a85'>=&gt;</font> <small>string</small> <font color='#cc0000'>'0.0000'</font> <i>(length=6)</i>
+      'description' <font color='#888a85'>=&gt;</font> <small>string</small> <font color='#cc0000'>'ewer'</font> <i>(length=4)</i>
+  8 <font color='#888a85'>=&gt;</font> 
+    <b>array</b> <i>(size=4)</i>
+      'id' <font color='#888a85'>=&gt;</font> <small>string</small> <font color='#cc0000'>'70'</font> <i>(length=2)</i>
+      'name' <font color='#888a85'>=&gt;</font> <small>string</small> <font color='#cc0000'>'Vera'</font> <i>(length=4)</i>
+      'price' <font color='#888a85'>=&gt;</font> <small>string</small> <font color='#cc0000'>'1.0000'</font> <i>(length=6)</i>
+      'description' <font color='#888a85'>=&gt;</font> <small>string</small> <font color='#cc0000'>'12'</font> <i>(length=2)</i>
+  9 <font color='#888a85'>=&gt;</font> 
+    <b>array</b> <i>(size=4)</i>
+      'id' <font color='#888a85'>=&gt;</font> <small>string</small> <font color='#cc0000'>'71'</font> <i>(length=2)</i>
+      'name' <font color='#888a85'>=&gt;</font> <small>string</small> <font color='#cc0000'>'Vilo'</font> <i>(length=4)</i>
+      'price' <font color='#888a85'>=&gt;</font> <small>string</small> <font color='#cc0000'>'12.0000'</font> <i>(length=7)</i>
+      'description' <font color='#888a85'>=&gt;</font> <small>string</small> <font color='#cc0000'>'12e'</font> <i>(length=3)</i>
+  10 <font color='#888a85'>=&gt;</font> 
+    <b>array</b> <i>(size=4)</i>
+      'id' <font color='#888a85'>=&gt;</font> <small>string</small> <font color='#cc0000'>'72'</font> <i>(length=2)</i>
+      'name' <font color='#888a85'>=&gt;</font> <small>string</small> <font color='#cc0000'>'era'</font> <i>(length=3)</i>
+      'price' <font color='#888a85'>=&gt;</font> <small>string</small> <font color='#cc0000'>'0.0000'</font> <i>(length=6)</i>
+      'description' <font color='#888a85'>=&gt;</font> <small>string</small> <font color='#cc0000'>'123'</font> <i>(length=3)</i>
+  11 <font color='#888a85'>=&gt;</font> 
+    <b>array</b> <i>(size=4)</i>
+      'id' <font color='#888a85'>=&gt;</font> <small>string</small> <font color='#cc0000'>'73'</font> <i>(length=2)</i>
+      'name' <font color='#888a85'>=&gt;</font> <small>string</small> <font color='#cc0000'>'ewr'</font> <i>(length=3)</i>
+      'price' <font color='#888a85'>=&gt;</font> <small>string</small> <font color='#cc0000'>'12.5400'</font> <i>(length=7)</i>
+      'description' <font color='#888a85'>=&gt;</font> <small>string</small> <font color='#cc0000'>'21e3'</font> <i>(length=4)</i>
+  12 <font color='#888a85'>=&gt;</font> 
+    <b>array</b> <i>(size=4)</i>
+      'id' <font color='#888a85'>=&gt;</font> <small>string</small> <font color='#cc0000'>'74'</font> <i>(length=2)</i>
+      'name' <font color='#888a85'>=&gt;</font> <small>string</small> <font color='#cc0000'>'Loldass'</font> <i>(length=7)</i>
+      'price' <font color='#888a85'>=&gt;</font> <small>string</small> <font color='#cc0000'>'12.2100'</font> <i>(length=7)</i>
+      'description' <font color='#888a85'>=&gt;</font> <small>string</small> <font color='#cc0000'>'123'</font> <i>(length=3)</i>
+  13 <font color='#888a85'>=&gt;</font> 
+    <b>array</b> <i>(size=4)</i>
+      'id' <font color='#888a85'>=&gt;</font> <small>string</small> <font color='#cc0000'>'75'</font> <i>(length=2)</i>
+      'name' <font color='#888a85'>=&gt;</font> <small>string</small> <font color='#cc0000'>'werr'</font> <i>(length=4)</i>
+      'price' <font color='#888a85'>=&gt;</font> <small>string</small> <font color='#cc0000'>'0.0000'</font> <i>(length=6)</i>
+      'description' <font color='#888a85'>=&gt;</font> <small>string</small> <font color='#cc0000'>'324'</font> <i>(length=3)</i>
+  14 <font color='#888a85'>=&gt;</font> 
+    <b>array</b> <i>(size=4)</i>
+      'id' <font color='#888a85'>=&gt;</font> <small>string</small> <font color='#cc0000'>'76'</font> <i>(length=2)</i>
+      'name' <font color='#888a85'>=&gt;</font> <small>string</small> <font color='#cc0000'>'Loldassweq'</font> <i>(length=10)</i>
+      'price' <font color='#888a85'>=&gt;</font> <small>string</small> <font color='#cc0000'>'0.0000'</font> <i>(length=6)</i>
+      'description' <font color='#888a85'>=&gt;</font> <small>string</small> <font color='#cc0000'>'ett'</font> <i>(length=3)</i>
+  15 <font color='#888a85'>=&gt;</font> 
+    <b>array</b> <i>(size=4)</i>
+      'id' <font color='#888a85'>=&gt;</font> <small>string</small> <font color='#cc0000'>'77'</font> <i>(length=2)</i>
+      'name' <font color='#888a85'>=&gt;</font> <small>string</small> <font color='#cc0000'>'fdsfd'</font> <i>(length=5)</i>
+      'price' <font color='#888a85'>=&gt;</font> <small>string</small> <font color='#cc0000'>'0.0000'</font> <i>(length=6)</i>
+      'description' <font color='#888a85'>=&gt;</font> <small>string</small> <font color='#cc0000'>'sfdsd'</font> <i>(length=5)</i>
+  16 <font color='#888a85'>=&gt;</font> 
+    <b>array</b> <i>(size=4)</i>
+      'id' <font color='#888a85'>=&gt;</font> <small>string</small> <font color='#cc0000'>'79'</font> <i>(length=2)</i>
+      'name' <font color='#888a85'>=&gt;</font> <small>string</small> <font color='#cc0000'>'dawewq'</font> <i>(length=6)</i>
+      'price' <font color='#888a85'>=&gt;</font> <small>string</small> <font color='#cc0000'>'0.0000'</font> <i>(length=6)</i>
+      'description' <font color='#888a85'>=&gt;</font> <small>string</small> <font color='#cc0000'>'qweqw'</font> <i>(length=5)</i>
+  17 <font color='#888a85'>=&gt;</font> 
+    <b>array</b> <i>(size=4)</i>
+      'id' <font color='#888a85'>=&gt;</font> <small>string</small> <font color='#cc0000'>'80'</font> <i>(length=2)</i>
+      'name' <font color='#888a85'>=&gt;</font> <small>string</small> <font color='#cc0000'>'opas'</font> <i>(length=4)</i>
+      'price' <font color='#888a85'>=&gt;</font> <small>string</small> <font color='#cc0000'>'14.0000'</font> <i>(length=7)</i>
+      'description' <font color='#888a85'>=&gt;</font> <small>string</small> <font color='#cc0000'>'234'</font> <i>(length=3)</i>
+  18 <font color='#888a85'>=&gt;</font> 
+    <b>array</b> <i>(size=4)</i>
+      'id' <font color='#888a85'>=&gt;</font> <small>string</small> <font color='#cc0000'>'82'</font> <i>(length=2)</i>
+      'name' <font color='#888a85'>=&gt;</font> <small>string</small> <font color='#cc0000'>'asdasf'</font> <i>(length=6)</i>
+      'price' <font color='#888a85'>=&gt;</font> <small>string</small> <font color='#cc0000'>'0.0000'</font> <i>(length=6)</i>
+      'description' <font color='#888a85'>=&gt;</font> <small>string</small> <font color='#cc0000'>'srf23'</font> <i>(length=5)</i>
+  19 <font color='#888a85'>=&gt;</font> 
+    <b>array</b> <i>(size=4)</i>
+      'id' <font color='#888a85'>=&gt;</font> <small>string</small> <font color='#cc0000'>'83'</font> <i>(length=2)</i>
+      'name' <font color='#888a85'>=&gt;</font> <small>string</small> <font color='#cc0000'>'sol'</font> <i>(length=3)</i>
+      'price' <font color='#888a85'>=&gt;</font> <small>string</small> <font color='#cc0000'>'12.0000'</font> <i>(length=7)</i>
+      'description' <font color='#888a85'>=&gt;</font> <small>string</small> <font color='#cc0000'>'12'</font> <i>(length=2)</i>
+  20 <font color='#888a85'>=&gt;</font> 
+    <b>array</b> <i>(size=4)</i>
+      'id' <font color='#888a85'>=&gt;</font> <small>string</small> <font color='#cc0000'>'84'</font> <i>(length=2)</i>
+      'name' <font color='#888a85'>=&gt;</font> <small>string</small> <font color='#cc0000'>'prod14'</font> <i>(length=6)</i>
+      'price' <font color='#888a85'>=&gt;</font> <small>string</small> <font color='#cc0000'>'13.0000'</font> <i>(length=7)</i>
+      'description' <font color='#888a85'>=&gt;</font> <small>string</small> <font color='#cc0000'>'qwe'</font> <i>(length=3)</i>
+  21 <font color='#888a85'>=&gt;</font> 
+    <b>array</b> <i>(size=4)</i>
+      'id' <font color='#888a85'>=&gt;</font> <small>string</small> <font color='#cc0000'>'85'</font> <i>(length=2)</i>
+      'name' <font color='#888a85'>=&gt;</font> <small>string</small> <font color='#cc0000'>'prod15'</font> <i>(length=6)</i>
+      'price' <font color='#888a85'>=&gt;</font> <small>string</small> <font color='#cc0000'>'123.0000'</font> <i>(length=8)</i>
+      'description' <font color='#888a85'>=&gt;</font> <small>string</small> <font color='#cc0000'>'asdasdasd'</font> <i>(length=9)</i>
+  22 <font color='#888a85'>=&gt;</font> 
+    <b>array</b> <i>(size=4)</i>
+      'id' <font color='#888a85'>=&gt;</font> <small>string</small> <font color='#cc0000'>'86'</font> <i>(length=2)</i>
+      'name' <font color='#888a85'>=&gt;</font> <small>string</small> <font color='#cc0000'>'Io1'</font> <i>(length=3)</i>
+      'price' <font color='#888a85'>=&gt;</font> <small>string</small> <font color='#cc0000'>'14.0000'</font> <i>(length=7)</i>
+      'description' <font color='#888a85'>=&gt;</font> <small>string</small> <font color='#cc0000'>'e123'</font> <i>(length=4)</i>
+  23 <font color='#888a85'>=&gt;</font> 
+    <b>array</b> <i>(size=4)</i>
+      'id' <font color='#888a85'>=&gt;</font> <small>string</small> <font color='#cc0000'>'91'</font> <i>(length=2)</i>
+      'name' <font color='#888a85'>=&gt;</font> <small>string</small> <font color='#cc0000'>'ads'</font> <i>(length=3)</i>
+      'price' <font color='#888a85'>=&gt;</font> <small>string</small> <font color='#cc0000'>'0.0000'</font> <i>(length=6)</i>
+      'description' <font color='#888a85'>=&gt;</font> <small>string</small> <font color='#cc0000'>'s'</font> <i>(length=1)</i>
+  24 <font color='#888a85'>=&gt;</font> 
+    <b>array</b> <i>(size=4)</i>
+      'id' <font color='#888a85'>=&gt;</font> <small>string</small> <font color='#cc0000'>'92'</font> <i>(length=2)</i>
+      'name' <font color='#888a85'>=&gt;</font> <small>string</small> <font color='#cc0000'>'sfs'</font> <i>(length=3)</i>
+      'price' <font color='#888a85'>=&gt;</font> <small>string</small> <font color='#cc0000'>'0.0000'</font> <i>(length=6)</i>
+      'description' <font color='#888a85'>=&gt;</font> <small>string</small> <font color='#cc0000'>'sdfs'</font> <i>(length=4)</i>
+</pre> [2015-07-09 17:42:18]

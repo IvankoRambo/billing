@@ -68,10 +68,11 @@ try{
 	$frontController->setControllerDirectory(__DIR__.'/controllers');
 	
 	$routes = $frontController->getRouter();
+	$routes->addRoute('key-ui', new Zend_Controller_Router_Route('key-ui', array('controller' => 'key', 'action' => 'index')));
+	$routes->addRoute('get-refund', new Zend_Controller_Router_Route('get-refund', array('controller' => 'refund', 'action' => 'index')));
 	$routes->addRoute('single-product', new Zend_Controller_Router_Route('single-product', array('controller' => 'singleproduct', 'action' => 'index')));
 	
 	$frontController->dispatch();
-
 	
 }
 catch(Exception $exp){
