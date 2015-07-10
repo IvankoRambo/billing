@@ -42,7 +42,7 @@ body {
 }
 
 #top_panel {
-    /*width:210px;*/
+    width:200px;
     background-color: #5bc0de;
     padding: 18px;
     border: 1px solid black;
@@ -64,6 +64,17 @@ body {
     float:none;
 }
 
+#hello {
+    vertical-align: middle;
+    width: 1655px;
+    height: 650px;
+    text-align: center;
+}
+
+#center-text {
+    padding-left: 120px;
+}
+
 pre.json-obj {
     border : 1px solid black;
     background-color: inherit;
@@ -78,4 +89,58 @@ pre.json-obj:hover {
     margin-bottom: 9px;
     background-color: lightblue;
     transition: background-color 0s;
+}
+
+/* Sidebar */
+.sidebar-nav {
+    position: absolute;
+    top: 0;
+    width: 200px;
+    right:0;
+    margin: 112px 0 0 0;
+    padding: 0;
+    list-style: none;
+}
+
+.sidebar-nav li {
+    text-indent: 20px;
+    line-height: 34px;
+}
+
+.sidebar-nav li a {
+    display: block;
+    text-decoration: none;
+    /*color: #999999;*/
+}
+
+.sidebar-nav li a:hover {
+    text-decoration: none;
+    color: #363;
+    background: rgba(255,255,255,0.2);
+}
+
+.sidebar-nav li a:active,
+.sidebar-nav li a:focus {
+    text-decoration: none;
+}
+
+.sidebar-nav > .sidebar-brand {
+    height: 65px;
+    font-size: 18px;
+    line-height: 60px;
+}
+
+.sidebar-nav > .sidebar-brand a {
+    color: #000;
+}
+
+.sidebar-nav > .sidebar-brand a:hover {
+    color: #fff;
+    background: none;
+}
+
+@media(max-width:768px) {
+    .sidebar-nav {
+        width: 0;
+    }
 }

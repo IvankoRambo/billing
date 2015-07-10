@@ -46,6 +46,18 @@ try{
 		}
 		
 	}
+
+
+    class SidebarLayoutPlugin extends Zend_Controller_Plugin_Abstract{
+
+        public function preDispatch(Zend_Controller_Request_Abstract $request){
+            $layout = Zend_Layout::getMvcInstance();
+            $view = $layout->getView();
+
+
+        }
+
+    }
 	
 	
 	$loader = new Zend_Loader_StandardAutoloader(array('autoregister_zf' => true));
@@ -62,6 +74,7 @@ try{
 	$frontController = Zend_Controller_Front::getInstance();
 	$frontController->setControllerDirectory(__DIR__.'/controllers');
 	$frontController->registerPlugin(new HeaderLayoutPlugin());
+	$frontController->registerPlugin(new SidebarLayoutPlugin());
 	$frontController->throwExceptions(true);
 	$frontController->setParam('noViewRendered', false);
 	$frontController->setParam('noErrorHandler', true);
