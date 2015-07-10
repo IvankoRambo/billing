@@ -148,10 +148,11 @@ class Refund {
 					$query->execute();
 				}
 				else{
-					$canceled = $this->ref_array['keys'][$i]['key_id'].',';
+					$canceled .= $this->ref_array['keys'][$i]['key_id'].',';
 				}
 			}
 		}
+		
 		
 		return ($canceled != false) ? rtrim($canceled, ',') : true;
 					
