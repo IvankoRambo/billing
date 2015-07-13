@@ -63,6 +63,7 @@ try{
 	$loader = new Zend_Loader_StandardAutoloader(array('autoregister_zf' => true));
 	$loader->registerNamespace('Model', __DIR__.'/models');
 	$loader->registerNamespace('OOP', __DIR__.'/models/OOP');
+	$loader->registerNamespace('Component', __DIR__.'/component');
 	$loader->setFallbackAutoloader(true);
 	$loader->register();
 	
@@ -84,6 +85,7 @@ try{
 	$routes->addRoute('key-ui', new Zend_Controller_Router_Route('key-ui', array('controller' => 'key', 'action' => 'index')));
 	$routes->addRoute('get-refund', new Zend_Controller_Router_Route('get-refund', array('controller' => 'refund', 'action' => 'index')));
 	$routes->addRoute('single-product', new Zend_Controller_Router_Route('single-product', array('controller' => 'singleproduct', 'action' => 'index')));
+	$routes->addRoute('view-db', new Zend_Controller_Router_Route('view-db', array('controller' => 'viewdb', 'action' => 'index')));
 	
 	$frontController->dispatch();
 	

@@ -76,14 +76,7 @@ class RefundController extends Zend_Controller_Action{
 								//insertIntoLogFile("../refunds_response.log", $AC_res, date("Y-m-d H:i:s"));
 							}
 							
-							$refunds_data = $ref_res['refund'];
-							$refunds_data_j = json_encode($refunds_data);
-							echo $refunds_data_j;
-							echo "<br />";
-							//sending data to PP
-							if(($PP_response = $Data_trial->sendData($this->db, 'refunds', $refunds_data_j, 'http://10.55.33.21/without_routing/discard.php')) && !preg_match('/not found/', $PP_response)){
-								//insertIntoLogFile('../refunds_response.log', $response, date("Y-m-d H:i:s"));
-							}
+
 							$id_keys = array();
 							if(!is_null($ref_res['data'])){
 								for($i = 0; $i < count($ref_res['data']); $i++){
@@ -98,6 +91,16 @@ class RefundController extends Zend_Controller_Action{
 								}						
 							}
 							$id_keys = json_encode($id_keys);
+							$refunds_data['refunds'] = $ref_res['refund'];
+							$refunds_data['id_refund'] = $refund['refund_id'];
+							$refunds_data['id_keys'] = $id_keys;
+							$refunds_data_j = json_encode($refunds_data);
+							
+							//sending data to PP
+							if(($PP_response = $Data_trial->sendData($this->db, 'refunds', $refunds_data_j, 'http://10.55.33.21/without_routing/discard.php')) && !preg_match('/not found/', $PP_response)){
+								//insertIntoLogFile('../refunds_response.log', $response, date("Y-m-d H:i:s"));
+							}
+							
 							echo "{'success': true, 'id_keys': {$id_keys}, 'status': 'OK', 'id_refund': {$refund['refund_id']}, 'payment': {$PP_response}}";
 							$CRM_res = $Data->sendData($this->db, 'refunds', "{'success': true, 'id_keys': {$id_keys}, 'status': 'OK', 'id_refund': {$refund['refund_id']}, 'payment': {$PP_response}}", null, null, 'http://10.55.33.27/', 'refund/receiveResponse', 'CRM', '1');
 							$Logging->insertIntoLogFile($CRM_res, date("Y-m-d H:i:s"));	
