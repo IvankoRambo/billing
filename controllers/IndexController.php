@@ -3,7 +3,7 @@
 Zend_Loader::loadClass('Zend_Controller_Action');
 
 
-class IndexController extends Zend_Controller_Action{
+class IndexController extends Component\BaseController{
 	
 	protected $db;
 	

@@ -3,7 +3,7 @@
 Zend_Loader::loadClass('Zend_Controller_Action');
 
 
-class SingleProductController extends Zend_Controller_Action{
+class SingleProductController extends Component\BaseController{
 	
 	protected $db;
 	

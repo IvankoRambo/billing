@@ -3,7 +3,7 @@
 Zend_Loader::loadClass('Zend_Controller_Action');
 
 
-class RegistrationController extends Zend_Controller_Action{
+class RegistrationController extends Component\BaseController{
 	
 	protected $db;
 	

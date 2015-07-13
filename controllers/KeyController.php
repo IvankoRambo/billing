@@ -3,7 +3,7 @@
 Zend_Loader::loadClass('Zend_Controller_Action');
 
 
-class KeyController extends Zend_Controller_Action{
+class KeyController extends Component\BaseController{
 	
 	protected $db;
 	

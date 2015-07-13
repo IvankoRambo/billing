@@ -3,15 +3,8 @@
 Zend_Loader::loadClass('Zend_Controller_Action');
 
 
-class RefundController extends Zend_Controller_Action{
+class RefundController extends Component\BaseController{
 	
-	protected $db;
-	
-	public function init(){
-		 $config_path = 'config/db.ini';
-		 $connection = OOP\ServiceLocator::getConnection($config_path);
-		 $this->db = $connection->getDBSource();
-	}
 	
 	public function indexAction(){
 		
@@ -38,7 +31,12 @@ class RefundController extends Zend_Controller_Action{
 					$refund_order = explode(',', $refund_order);
 					$refund_order = json_encode($refund_order);
 					echo "{'status':'notexists'; 'id_keys': {$refund_order}; 'id_refund': {$refund['refund_id']}; 'success': false}";
-					$CRM_res = $Data->sendData($this->db, 'refunds', "{'status':'notexists'; 'id_keys': {$refund_order}; 'id_refund': {$refund['refund_id']}; 'success': false}", null, null, 'http://10.55.33.27/', 'refund/receiveResponse', 'CRM', '1');
+					$ref_request['status'] = 'notexists';
+					$ref_request['id_keys'] = $refund_order;
+					$ref_request['id_refund'] = $refund['refund_id'];
+					$ref_request['success'] = false;
+					$ref_request_j = json_encode($ref_request);
+					$CRM_res = $Data->sendData($this->db, 'refunds', $ref_request_j, null, null, 'http://10.55.33.27/', 'refund/receiveResponse', 'CRM', '1');
 					$Logging->insertIntoLogFile($CRM_res, date("Y-m-d H:i:s"));
 					return;
 				}
@@ -50,7 +48,12 @@ class RefundController extends Zend_Controller_Action{
 						$inserted = explode(',', $inserted);
 						$inserted = json_encode($inserted);
 						echo "{'status': 'canceled', 'id_keys': {$inserted}, 'id_refund': {$refund['refund_id']}, 'success': false}";
-						$CRM_res = $Data->sendData($this->db, 'refunds', "{'status': 'canceled', 'id_keys': {$inserted}, 'id_refund': {$refund['refund_id']}, 'success': false}", null, null, 'http://10.55.33.27/', 'refund/receiveResponse', 'CRM', '1');
+						$ref_request['status'] = 'canceled';
+						$ref_request['id_keys'] = $inserted;
+						$ref_request['id_refund'] = $refund['refund_id'];
+						$ref_request['success'] = false;
+						$ref_request_j = json_encode($ref_request);
+						$CRM_res = $Data->sendData($this->db, 'refunds', $ref_request_j, null, null, 'http://10.55.33.27/', 'refund/receiveResponse', 'CRM', '1');
 						$Logging->insertIntoLogFile($CRM_res, date("Y-m-d H:i:s"));
 						return;
 					}
@@ -64,7 +67,12 @@ class RefundController extends Zend_Controller_Action{
 							}
 							$response_f = trim($response_f, ',');
 							echo "{'status': 'all', 'success': false,  'id_keys': [], 'id_refund': {$refund['refund_id']}}, 'success': false}";
-							$CRM_res = $Data->sendData($this->db, 'refunds', "{'status': 'all', 'success': false,  'id_keys': [], 'id_refund': {$refund['refund_id']}}, 'success': false}", null, null, 'http://10.55.33.27/', 'refund/receiveResponse', 'CRM', '1');
+							$ref_request['status'] = 'all';
+							$ref_request['id_keys'] = [];
+							$ref_request['id_refund'] = $refund['refund_id'];
+							$ref_request['success'] = false;
+							$ref_request_j = json_encode($ref_request);
+							$CRM_res = $Data->sendData($this->db, 'refunds', $ref_request_j, null, null, 'http://10.55.33.27/', 'refund/receiveResponse', 'CRM', '1');
 							$Logging->insertIntoLogFile($CRM_res, date("Y-m-d H:i:s"));
 						}
 						else{
@@ -102,7 +110,13 @@ class RefundController extends Zend_Controller_Action{
 							}
 							
 							echo "{'success': true, 'id_keys': {$id_keys}, 'status': 'OK', 'id_refund': {$refund['refund_id']}, 'payment': {$PP_response}}";
-							$CRM_res = $Data->sendData($this->db, 'refunds', "{'success': true, 'id_keys': {$id_keys}, 'status': 'OK', 'id_refund': {$refund['refund_id']}, 'payment': {$PP_response}}", null, null, 'http://10.55.33.27/', 'refund/receiveResponse', 'CRM', '1');
+							$ref_request['status'] = 'OK';
+							$ref_request['id_keys'] = $inserted;
+							$ref_request['id_refund'] = $id_keys;
+							$ref_request['success'] = true;
+							$ref_request['payment'] = $PP_response;
+							$ref_request_j = json_encode($ref_request);
+							$CRM_res = $Data->sendData($this->db, 'refunds', $req_request_j, null, null, 'http://10.55.33.27/', 'refund/receiveResponse', 'CRM', '1');
 							$Logging->insertIntoLogFile($CRM_res, date("Y-m-d H:i:s"));	
 						}
 					}
