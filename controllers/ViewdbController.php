@@ -22,19 +22,19 @@ class ViewdbController extends Component\BaseController{
 		
 		$this->view->logFilesPathes = $logFilesPathes;
 		
-		$this->view->records = array();
+		$tableRecords = array();
+		$keyRecords = array();
 		foreach ($tableList as $table){
 			$tableObj = $this->connection->getTable($table);
 			$records = $tableObj->getRecordsFromTable();
 			if(count($records) != 0) {
 				$keys = array_keys($records[0]);
-				$this->view->keys = $keys;
+				$keyRecords[] = $keys;
 			}
-			$records = array_reverse($records);
-			$this->view->records[] = $records;
+			$tableRecords[] = array_reverse($records);
 		}
 		
-		$this->view->log_records = array();
+		$logRecords = array();
 		foreach ($logFilesPathes as $key => $logFilePath){
 			$file = fopen($logFilePath, 'r');
 			$records = array();
@@ -46,10 +46,13 @@ class ViewdbController extends Component\BaseController{
 			fclose($file);
 
 			$log_records = array_reverse($records);
-			$this->view->log_records[] = $log_records;
+			$logRecords[] = $log_records;
 			
 		}
-			
+		
+		$this->view->tableRecords = $tableRecords;
+		$this->view->keyRecords = $keyRecords;
+		$this->view->logRecords = $logRecords;	
 	}
 		
 }
