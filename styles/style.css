@@ -1,4 +1,3 @@
-
 body {
     background-color: #dde;
 }
@@ -12,7 +11,8 @@ body {
 }
 
 
-.products_table {
+
+.products_table, .database_table {
     font-family:"Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
     font-size:12px;
     background:#dde;
@@ -22,7 +22,12 @@ body {
     margin:20px;
 }
 
-.products_table th{
+.database_table {
+    width: 100%;
+    border:1px solid black;
+}
+
+.products_table th, .database_table th{
     font-size:14px;
     font-weight:normal;
     color:#039;
@@ -31,18 +36,22 @@ body {
     vertical-align: top;
 }
 
-.products_table td{
+.products_table td, .database_table td{
     color:#669;
     padding: 9px 8px 0;
     vertical-align: top;
 }
+
+/*.database_table tr {
+    width: 100px;
+}*/
 
 .products_table tbody tr:hover td{
     color:#009;
 }
 
 #top_panel {
-    width:200px;
+    /*width:210px;*/
     background-color: #5bc0de;
     padding: 18px;
     border: 1px solid black;
@@ -62,17 +71,6 @@ body {
     display:table-cell;
     vertical-align:middle;
     float:none;
-}
-
-#hello {
-    vertical-align: middle;
-    width: 1655px;
-    height: 650px;
-    text-align: center;
-}
-
-#center-text {
-    padding-left: 120px;
 }
 
 pre.json-obj {
@@ -147,4 +145,3 @@ pre.json-obj:hover {
     .sidebar-nav {
         width: 0;
     }
-}
