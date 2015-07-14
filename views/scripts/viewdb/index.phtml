@@ -1,10 +1,37 @@
 <?php
-$beauty_helper = $this->beautyTransform();
+	// var_dump($this->tableList);
+	function makePrettyValue($field) {
+		$data = json_decode($field);
+		if ($data == NULL) {
+			$data = str_replace("'", '"', $field);
+			$data = json_decode($data);
+			if ($data == NULL) {
+				$data = str_replace('"', '\"', $field);
+				$data = json_decode('"'.$data.'"');
+
+			}
+		} 
+		$res = json_encode($data, JSON_PRETTY_PRINT);
+		// $res = htmlspecialchars($res);
+		$res = str_replace(array('\"', '\/'), array('"', '/'), $res);
+
+		return '<pre class="json-obj">'
+		.$res
+		.'</pre>';
+
+	}
 ?>
 
 <script type="application/javascript" src="js/viewDatabase.js"></script>
 
-<div align="left" style="width:63%;">
+<!--
+<script>
+	var loadingBar = new LoadingBar();
+ 	loadingBar.setLoadFactor(0.25);
+</script>
+-->
+
+<div align="left" style="width:63%">
 <table style="width: 100%; border: 1px solid black">
 <tr><td>
 <h4>Select table that you want to view:</h4>
@@ -34,41 +61,39 @@ $beauty_helper = $this->beautyTransform();
 </table>
 
 <table id="tableData" style="width:100%">
+	<!-- Database tables -************************************************- -->
 
-
-	<?php foreach ($this->tableList as $table): ?>
+	<?php 
+		for ($i = 0; $i < count($this->tableList); $i++): 
+	?>
 		<tr><td align="center" style="width:100px">
-		<table id=<?='"'.$table.'"'?> class="database_table" style="display:none">
+		<table id=<?='"'.$this->tableList[$i].'"'?> class="database_table" style="display:none">
 		<tr>
-			<?php for($i = 0; $i < count($this->keyRecords); $i++) : ?>
-			<?php foreach ($this->keyRecords[$i] as $key) :?>
+			<?php foreach ($this->keysList[$i] as $key) :?>
 			<th>
 				<?=$key?>
 			</th>
 			<?php endforeach;?>
-			<?php endfor; ?>
-			
 		</tr>
-		
-		<?php for($i = 0; $i < count($this->tableRecords); $i++) : ?>
-		<?php foreach($this->tableRecords[$i] as $record) :?>
+		<?php foreach ($this->recordsList[$i] as $record) :?>
 			<tr>
 				<?php foreach ($record as $field) :?>
 					<td>
 					<?php
-						$result = $beauty_helper->makePrettyValue($field);
-						echo $result;
+						echo makePrettyValue($field);
 					?>
 					</td>
 				<?php endforeach; ?>
 			</tr>
 		<?php endforeach;?>
 		</table></td></tr>
-			<?php endfor; ?>
-		<?php endforeach; ?>
+	<?php endfor; ?>
 
+	<!-- LOgFiles *************************************************************** -->
 
-	<?php foreach ($this->logFilesPathes as $key => $logFilePath): ?>
+	<?php 
+		foreach ($this->logFilesPathes as $key => $logFilePath): 
+	?>
 		<tr><td align="center" style="width:100px">
 		<table id=<?='"'.$this->logFiles[$key].'LF"'?> class="database_table" style="display:none">
 		<tr>
@@ -77,20 +102,19 @@ $beauty_helper = $this->beautyTransform();
 			</th>
 			
 		</tr>
-		<?php for($i = 0; $i < count($this->logRecords); $i++) : ?>
-		<?php foreach ($this->logRecords[$i] as $record) :?>
+		<?php foreach ($this->logRecordsList[$key] as $record) :?>
 			<tr>
 				<td>
-					<?php 
-					$result = $beauty_helper->makePrettyValue($record);
-					echo $result;
-					 ?>
+					<?php echo (makePrettyValue(htmlspecialchars($record))); ?>
 				</td>
 			</tr>
 		<?php endforeach;?>
-		<?php endfor; ?>
 		</table></td></tr>
 	<?php endforeach; ?>
 
 </table>
 </div>
+
+</body>
+
+</html>
