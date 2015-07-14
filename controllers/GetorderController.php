@@ -1,13 +1,8 @@
 <?php
 Zend_Loader::loadClass('Zend_Controller_Action');
 
-class GetorderController extends Zend_Controller_Action {
-	protected $db;
+class GetorderController extends Component\BaseController{
 
-	public function init() {
-		$connection = OOP\ServiceLocator::getConnection();
-		$this->db = $connection->getDBSource();
-	}
 
 	public function indexAction() {
 		$this->_invokeArgs['noViewRenderer'] = true;

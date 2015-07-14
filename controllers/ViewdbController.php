@@ -6,36 +6,14 @@ Zend_Loader::loadClass('Zend_Controller_Action');
 class ViewdbController extends Component\BaseController{
 	
 	
-	
-	protected function makePrettyValue($field){
-		
-		$data = json_decode($field);
-		if ($data == NULL) {
-			$data = str_replace("'", '"', $field);
-			$data = json_decode($data);
-			if ($data == NULL) {
-				$data = str_replace('"', '\"', $field);
-				$data = json_decode('"'.$data.'"');
-
-			}
-		} 
-		$res = json_encode($data, JSON_PRETTY_PRINT);
-		// $res = htmlspecialchars($res);
-		$res = str_replace(array('\"', '\/'), array('"', '/'), $res);
-
-		return '<pre class="json-obj">'
-		.$res
-		.'</pre>';	
-		
-	}
-	
-	
 	public function indexAction(){
-			
-		$this->view->tableList = $this->connection->getTablesList();
-		$logDir = __DIR__.'/../logs/';
+		
+		$tableList = $this->connection->getTablesList();
+		$this->view->tableList = $tableList;
+		$logDir = 'logs/';
 		$logFiles = scandir($logDir);
-		$this->view->logFiles = array_splice($logFiles, 2);
+		$logFiles = array_splice($logFiles, 2);
+		$this->view->logFiles = $logFiles;
 		
 		$logFilesPathes = array();
 		foreach ($logFiles as $key => $logFile) {
@@ -44,25 +22,20 @@ class ViewdbController extends Component\BaseController{
 		
 		$this->view->logFilesPathes = $logFilesPathes;
 		
-		foreach ($this->view->tableList as $table){
+		$this->view->records = array();
+		foreach ($tableList as $table){
 			$tableObj = $this->connection->getTable($table);
 			$records = $tableObj->getRecordsFromTable();
 			if(count($records) != 0) {
-				$this->view->keys = array_keys($records[0]);
+				$keys = array_keys($records[0]);
+				$this->view->keys = $keys;
 			}
-			$this->view->records = array_reverse($records);
-			
-			foreach($records as $record){
-				//$this->view->prettyValue[] = array();
-				foreach ($record as $field){
-						//$this->view->prettyValue[][] = $this->makePrettyValue($field);
-				}
-			}
-			
+			$records = array_reverse($records);
+			$this->view->records[] = $records;
 		}
 		
+		$this->view->log_records = array();
 		foreach ($logFilesPathes as $key => $logFilePath){
-			$this->view->logPrettyValue = array(); 
 			$file = fopen($logFilePath, 'r');
 			$records = array();
 			while (!feof($file)) {
@@ -72,16 +45,10 @@ class ViewdbController extends Component\BaseController{
 
 			fclose($file);
 
-			$records = array_reverse($records);
+			$log_records = array_reverse($records);
+			$this->view->log_records[] = $log_records;
 			
-			
-			foreach ($records as $record){
-					$this->view->prettyValue = $this->makePrettyValue($record);
-			}
-			
-			
-		}		
-			
+		}
 			
 	}
 		

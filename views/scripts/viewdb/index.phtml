@@ -1,3 +1,84 @@
 <?php
-var_dump($this->records);
+
+$beauty_helper = $this->beautyTransform();
 ?>
+
+<div align="left" style="width:63%">
+<table style="width: 100%; border: 1px solid black">
+<tr><td>
+<h4>Select table that you want to view:</h4>
+</td></tr>
+<tr><td align="center">
+<select id="tableSelect">
+	<option>Table</option>
+	<?php foreach ($this->tableList as $table) : ?>
+		<option><?=$table?></option>
+	<?php endforeach; ?>
+
+</select>
+</td></tr>
+<tr><td>
+<h4>OR select logfile that you want to view:</h4>
+</td></tr>
+<tr><td align="center">
+<select id="logFileSelect">
+
+	<option>Logfile</option>
+	<?php foreach ($this->logFiles as $logFile) : ?>
+		<option><?=$logFile?></option>
+	<?php endforeach; ?>
+
+</select>
+</td></tr>
+</table>
+
+<table id="tableData" style="width:100%">
+	<!-- Database tables -************************************************- -->
+
+	<?php foreach ($this->tableList as $table): ?>
+		<tr><td align="center" style="width:100px">
+		<table id=<?='"'.$table.'"'?> class="database_table" style="display:none">
+		<tr>
+			<?php foreach ($this->keys as $key) :?>
+			<th>
+				<?=$key?>
+			</th>
+			<?php endforeach;?>
+		</tr>
+		<?php foreach ($this->records as $record) :?>
+			<tr>
+				<?php foreach ($record as $field) :?>
+					<td>
+					<?php
+						echo $beaty_helper->makePrettyValue($field);
+					?>
+					</td>
+				<?php endforeach; ?>
+			</tr>
+		<?php endforeach;?>
+		</table></td></tr>
+	<?php endforeach; ?>
+
+	<!-- LOgFiles *************************************************************** -->
+
+	<?php foreach ($this->logFilesPathes as $key => $logFilePath): ?>
+		<tr><td align="center" style="width:100px">
+		<table id=<?='"'.$this->logFiles[$key].'LF"'?> class="database_table" style="display:none">
+		<tr>
+			<th>
+				Records:
+			</th>
+			
+		</tr>
+		<?php foreach ($this->log_records[0] as $record) :?>
+			<tr>
+				<td>
+					<?php  ?>
+				</td>
+			</tr>
+		<?php endforeach;?>
+		</table></td></tr>
+	<?php endforeach; ?>
+
+</table>
+</div>

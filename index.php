@@ -14,6 +14,7 @@ try{
 	Zend_Loader::loadClass('Zend_Controller_Request_Abstract');
 	Zend_Loader::loadClass('Zend_Session_Namespace');
 	Zend_Loader::loadClass('Zend_Controller_Router_Route');
+	Zend_Loader::loadClass('Zend_Controller_Action_HelperBroker');
 	
 	
 	class HeaderLayoutPlugin extends Zend_Controller_Plugin_Abstract{
@@ -95,6 +96,10 @@ try{
 			'action' => 'index')));
 
 	$routes->addRoute('view-db', new Zend_Controller_Router_Route('view-db', array('controller' => 'viewdb', 'action' => 'index')));
+	
+	$viewRenderer = Zend_Controller_Action_HelperBroker::getStaticHelper('viewRenderer');
+	$viewRenderer->initView();
+	$viewRenderer->view->addHelperPath(__DIR__.'/view/helpers');
 	
 	$frontController->dispatch();
 	

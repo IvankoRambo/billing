@@ -5,13 +5,6 @@ Zend_Loader::loadClass('Zend_Controller_Action');
 
 class RegistrationController extends Component\BaseController{
 	
-	protected $db;
-	
-	public function init(){
-		 $config_path = 'config/db.ini';
-		 $connection = OOP\ServiceLocator::getConnection($config_path);
-		 $this->db = $connection->getDBSource();
-	}
 	
 	
 	public function indexAction(){
