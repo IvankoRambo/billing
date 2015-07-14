@@ -139,6 +139,10 @@ pre.json-obj:hover {
     background: none;
 }
 
+#block_message, #login_blocker_message{
+	color:red;
+}
+
 @media(max-width:768px) {
     .sidebar-nav {
         width: 0;

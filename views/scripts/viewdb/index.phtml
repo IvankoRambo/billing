@@ -35,10 +35,9 @@ $beauty_helper = $this->beautyTransform();
 
 <table id="tableData" style="width:100%">
 
-
 	<?php foreach ($this->tableList as $table): ?>
 		<tr><td align="center" style="width:100px">
-		<table id=<?='"'.$table.'"'?> class="database_table" style="display:none">
+		<table style="display:none;" class="database_table" id=<?='"'.$table.'"'?>>
 		<tr>
 			<?php for($i = 0; $i < count($this->keyRecords); $i++) : ?>
 			<?php foreach ($this->keyRecords[$i] as $key) :?>

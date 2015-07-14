@@ -8,12 +8,12 @@
                 <form method="post">
                     <p><input type="text" name="name" required placeholder="name"/>
                     <input type="text" name="description" required placeholder="description"/>
-                    <input type="text" name="price" required placeholder="price"/>
+                    <input type="text" id="price_input" name="price" required placeholder="price"/>
                     <input type="submit" name="add" value="Add" class="btn btn-primary btn-sm"/></p>
                 </form>
             </div>
         </div>
-
+		<span id="block_message">Only digit and a point separator are allowed for typing in price field.</span>
         <form method="post">
             <table class="products_table">
                 <thead>
@@ -45,3 +45,5 @@
             </div>
         </div>
     <?php endif; ?>
+    
+	<script type="application/javascript" src="js/price_blocker.js"></script>

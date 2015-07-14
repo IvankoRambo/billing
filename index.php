@@ -55,8 +55,6 @@ try{
         public function preDispatch(Zend_Controller_Request_Abstract $request){
             $layout = Zend_Layout::getMvcInstance();
             $view = $layout->getView();
-            $frontController = Zend_Controller_Front::getInstance();
-            var_dump($frontController->getRouter()->getRoutes());
         }
 
     }

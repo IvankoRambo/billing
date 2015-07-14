@@ -23,8 +23,7 @@ class IndexController extends Component\BaseController{
 			$Data = new OOP\ProxyData();
 			$Logging = new OOP\Logging('logs/products_response.log');
 			
-				if(($prod_response = $Data->sendData($this->db, 'products', $products_json, null, null, 'http://10.55.33.21/', 'get', 'AccountService', 'password')) && !preg_match('/not found/', $prod_response)){
-					$this->view->prod_response = $prod_response;
+				if(($prod_response = $Data->sendData($this->db, 'products', $products_json, null, null, 'http://10.55.33.34/', 'get', 'AccountService', 'password')) && !preg_match('/not found/', $prod_response)){
 					$Logging->insertIntoLogFile($prod_response, date("Y-m-d H:i:s"));
 				}
 				

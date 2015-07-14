@@ -80,7 +80,7 @@ class RefundController extends Component\BaseController{
 							$canceled_keys = $Refund->getCanceledKeys($refund_order['refund_id']);
 							$canceled_keys_j = json_encode($canceled_keys);
 							//sending this keys to Accaunt service
-							if(($AC_res = $Data->sendData($this->db, 'refunds', $canceled_keys_j, null, null, 'http://10.55.33.34/', 'discard', 'AccountService', 'password')) && !preg_match('/not found/', $AC_res)){
+							if(($AC_res = $Data->sendData($this->db, 'refunds', $canceled_keys_j, null, null, 'http://10.55.33.21/', 'discard', 'AccountService', 'password')) && !preg_match('/not found/', $AC_res)){
 								//insertIntoLogFile("../refunds_response.log", $AC_res, date("Y-m-d H:i:s"));
 							}
 							
@@ -105,8 +105,9 @@ class RefundController extends Component\BaseController{
 							$refunds_data_j = json_encode($refunds_data);
 							
 							//sending data to PP
-							if(($PP_response = $Data_trial->sendData($this->db, 'refunds', $refunds_data_j, 'http://10.55.33.21/without_routing/discard.php')) && !preg_match('/not found/', $PP_response)){
-								//insertIntoLogFile('../refunds_response.log', $response, date("Y-m-d H:i:s"));
+							echo $refunds_data_j;
+							if(($PP_response = $Data_trial->sendData($this->db, 'refunds', $refunds_data_j, 'http://10.55.33.36/refund.php')) && !preg_match('/not found/', $PP_response)){
+								$Logging->insertIntoLogFile($PP_response, date("Y-m-d H:i:s"));	
 							}
 							
 							echo "{'success': true, 'id_keys': {$id_keys}, 'status': 'OK', 'id_refund': {$refund['refund_id']}, 'payment': {$PP_response}}";

@@ -5,9 +5,11 @@
     <link rel="stylesheet" href="styles/style.css" type="text/css">
     <meta charset="UTF-8">
     <title>Agent UI</title>
+    <script type="application/javascript" src="js/jquery-2.1.4.js"></script>
 </head>
 <body>
 <div class="container-fluid">
+	<span id="login_blocker_message">Space symbol and 'Alt+Something, Ctrl+Something, Shift+Something' symbols are not permitted for login.</span>
 	<?php if(isset($this->data)) : ?>
 		<?= $this->data; ?>
 	<?php endif; ?>
@@ -19,7 +21,7 @@
             <a href="logout" class="btn btn-primary" role="button">Logout</a>
         <?php else: ?>
             <form method="post" action="<?php echo htmlspecialchars($_SERVER["REQUEST_URI"]);?>">
-                <p><input type="text" name="name" placeholder="login" required /></p>
+                <p><input type="text" name="name" data-item="login_blocker" placeholder="login" required /></p>
                 <p><input type="password" name="password" placeholder="password" required /></p>
                 <input type="submit" name="sign_in" value="Sign in" class="btn btn-success"/>
                 <a href="registration" class="btn btn-primary" role="button">Register</a>
