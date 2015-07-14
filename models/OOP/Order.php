@@ -262,7 +262,7 @@ class Order {
         return json_encode(array(
             'code' => 1, 
             'data' => 'OK', 
-            'transaction_id' => $order_id));
+            'order_id' => $order_id));
         
     }
 
