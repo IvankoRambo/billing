@@ -259,7 +259,10 @@ class Order {
                     date('Y-m-d H:i:s', time()));
         }
         
-        return json_encode(array('code' => 1, 'data' => 'OK'));
+        return json_encode(array(
+            'code' => 1, 
+            'data' => 'OK', 
+            'transaction_id' => $order_id));
         
     }
 
@@ -292,7 +295,7 @@ class Order {
         );
         // $res1 = sendData($db, 'orders', json_encode($data), 'http://10.55.33.34/mark');
         $res1 = $proxyData->sendData($db, 'orders', json_encode($data), null, null, 
-            'http://10.55.33.34/', 'mark', 'AccountService', 'password');
+            'http://10.55.33.21/', 'mark', 'AccountService', 'password');
         if (!$res1) {
             $erroring->insertIntoLogFile( 
                     'Unsuccessful sending order and keys to account service.', 
@@ -313,7 +316,8 @@ class Order {
             'sum' => $sum,
             'user_id' => $user_id
         );
-        $res1 = $proxyData->sendData($db, 'orders', json_encode($data), 'http://10.55.33.27/dev/addOrder.php');
+        $res1 = $proxyData->sendData($db, 'orders', json_encode($data), null, null, 'http://10.55.33.27/', 'dev/addOrder.php',
+            '', '');
         if (!$res1) {
             $erroring->insertIntoLogFile( 
                     'Unsuccessful sending order and keys to CRM.', 

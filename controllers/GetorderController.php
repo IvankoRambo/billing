@@ -14,6 +14,8 @@ class GetorderController extends Component\BaseController{
 		$request = $this->getRequest();
 		$getReq = $request->getQuery();
 		$postReq = $request->getPost();
+		
+		$logging = new OOP\Logging('logs/orders_log');
 
 
 		$pr1 = isset($getReq['data']);
@@ -31,7 +33,12 @@ class GetorderController extends Component\BaseController{
 			$order = $Data->receiveData($getData, $db, $secret_obj);
 
 			if (!$order) {
-				$resFinal['code'] = 2;
+		  //       $erroring = new Logging(realpath('logs/orders_error'));
+				// $erroring->insertIntoLogFile( 
+    //                 'Unsuccessful adding order and keys to database table order_keys. Error message: '.
+    //                 $query->errorInfo()[2], 
+    //                 date('Y-m-d H:i:s', time()));
+            	$resFinal['code'] = 2;
 				$resFinal['data'] = 'Invalid URL: not match!';
 				echo json_encode($resFinal);
 				return;
@@ -47,7 +54,8 @@ class GetorderController extends Component\BaseController{
 			$res = $order->postOrder();
 			$resDecoded = json_decode($res);
 			if ($resDecoded->code == 1) {
-				$order->sendOrder();
+				$newRes = $order->sendOrder();
+				// echo $newRes;
 			}
 			// $res = postOrder($db, 
 			// 		  $order->order_id,
@@ -59,8 +67,17 @@ class GetorderController extends Component\BaseController{
 			// 		  $order->date,
 			// 		  $order->user_id);
 			echo $res;
+			$logging->insertIntoLogFile( 
+                     'Result:'."\n".
+                     $res."\n", 
+                     date('Y-m-d H:i:s', time()));
 			// var_dump($order);
 		} else {
+			// $erroring = new Logging(realpath('logs/orders_error'));
+			// 	$erroring->insertIntoLogFile( 
+   //                  'Unsuccessful adding order and keys to database table order_keys. Error message: '.
+   //                  $query->errorInfo()[2], 
+   //                  date('Y-m-d H:i:s', time()));
 			$resFinal['code'] = 3;
 			$resFinal['data'] = 'Invalid data: $_GET["data"] or $_POST["data"] must be non-empty';
 			echo json_encode($resFinal);
