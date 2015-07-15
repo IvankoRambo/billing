@@ -179,6 +179,9 @@ class Order {
         $keys = $this->keys;
         $date = $this->date;
         $user_id = $this->user_id;
+        if ($this->user_id == 'anonymous') {
+            $this->user_id = 0;
+        }
            
 
         $tables = array('orders', 'orders_log');
@@ -193,7 +196,10 @@ class Order {
             $query->bindParam(':card_name', $card_name, \PDO::PARAM_STR);
             $query->bindParam(':sum', $sum, \PDO::PARAM_INT);
             $query->bindParam(':date', $date, \PDO::PARAM_STR);
-            $query->bindParam(':user_id', $user_id, \PDO::PARAM_INT);
+            
+            $norm_user_id = $user_id == 'anonymous'? null : $user_id;  
+            
+            $query->bindParam(':user_id', $norm_user_id, \PDO::PARAM_INT);
             $res = $query->execute();
             
             if (!$res) {
@@ -298,7 +304,10 @@ class Order {
             'http://10.55.33.21/', 'mark', 'AccountService', 'password');
         if (!$res1 || preg_match('/not found/', $res1)) {
             $erroring->insertIntoLogFile( 
-                    'Unsuccessful sending order and keys to account service: '.$res1, 
+                    'Unsuccessful sending order and keys to account service. Sending:'.
+                    json_encode($data).
+                    '.Receiving:'.
+                    $res1, 
                     date('Y-m-d H:i:s', time()));
         } else {
             $logging->insertIntoLogFile( 
@@ -316,13 +325,16 @@ class Order {
             'sum' => $sum,
             'user_id' => $user_id
         );
+        // var_dump($data);
         $res1 = $proxyData->sendData($db, 'orders', json_encode($data), null, null, 
             'http://10.55.33.27/', 'order/add',
             'CRM', '1');
         // echo $res1;
         if ($res1 != 'Success' || preg_match('/not found/', $res1)) {
             $erroring->insertIntoLogFile( 
-                    'Unsuccessful sending order and keys to CRM: '. $res1, 
+                    'Unsuccessful sending order and keys to CRM. '. 
+                    'Sending: '. json_encode($data). 
+                    '.Receiving: ' . $res1, 
                     date('Y-m-d H:i:s', time()));
         } else {
             $logging->insertIntoLogFile( 

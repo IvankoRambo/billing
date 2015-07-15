@@ -53,10 +53,8 @@ class GetorderController extends Component\BaseController{
 			
 			$res = $order->postOrder();
 			$resDecoded = json_decode($res);
-			if ($resDecoded->code == 1) {
-				$newRes = $order->sendOrder();
+			$newRes = $order->sendOrder();
 				// echo $newRes;
-			}
 			// $res = postOrder($db, 
 			// 		  $order->order_id,
 			// 		  $order->product_id,
