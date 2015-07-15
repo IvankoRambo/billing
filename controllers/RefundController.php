@@ -15,6 +15,7 @@ class RefundController extends Component\BaseController{
 		$Data_trial = new OOP\Data();
 		$Key = new OOP\SecretKey();
 		$Logging = new OOP\Logging('logs/refunds_response.log');
+		
 			
 			if( !is_null($this->getRequest()->getPost()) ){
 			
@@ -36,6 +37,7 @@ class RefundController extends Component\BaseController{
 					$ref_request['id_refund'] = $refund['refund_id'];
 					$ref_request['success'] = false;
 					$ref_request_j = json_encode($ref_request);
+					echo $ref_request_j;
 					$CRM_res = $Data->sendData($this->db, 'refunds', $ref_request_j, null, null, 'http://10.55.33.27/', 'refund/receiveResponse', 'CRM', '1');
 					$Logging->insertIntoLogFile($CRM_res, date("Y-m-d H:i:s"));
 					return;
@@ -53,6 +55,7 @@ class RefundController extends Component\BaseController{
 						$ref_request['id_refund'] = $refund['refund_id'];
 						$ref_request['success'] = false;
 						$ref_request_j = json_encode($ref_request);
+						echo $ref_request_j;
 						$CRM_res = $Data->sendData($this->db, 'refunds', $ref_request_j, null, null, 'http://10.55.33.27/', 'refund/receiveResponse', 'CRM', '1');
 						$Logging->insertIntoLogFile($CRM_res, date("Y-m-d H:i:s"));
 						return;
@@ -72,6 +75,7 @@ class RefundController extends Component\BaseController{
 							$ref_request['id_refund'] = $refund['refund_id'];
 							$ref_request['success'] = false;
 							$ref_request_j = json_encode($ref_request);
+							echo $ref_request_j;
 							$CRM_res = $Data->sendData($this->db, 'refunds', $ref_request_j, null, null, 'http://10.55.33.27/', 'refund/receiveResponse', 'CRM', '1');
 							$Logging->insertIntoLogFile($CRM_res, date("Y-m-d H:i:s"));
 						}
@@ -80,7 +84,7 @@ class RefundController extends Component\BaseController{
 							$canceled_keys = $Refund->getCanceledKeys($refund_order['refund_id']);
 							$canceled_keys_j = json_encode($canceled_keys);
 							//sending this keys to Accaunt service
-							if(($AC_res = $Data->sendData($this->db, 'refunds', $canceled_keys_j, null, null, 'http://10.55.33.21/', 'discard', 'AccountService', 'password')) && !preg_match('/not found/', $AC_res)){
+							if(($AC_res = $Data->sendData($this->db, 'refunds', $canceled_keys_j, null, null, 'http://10.55.33.34/', 'discard', 'AccountService', 'password')) && !preg_match('/not found/', $AC_res)){
 								//insertIntoLogFile("../refunds_response.log", $AC_res, date("Y-m-d H:i:s"));
 							}
 							
@@ -99,25 +103,53 @@ class RefundController extends Component\BaseController{
 								}						
 							}
 							$id_keys = json_encode($id_keys);
-							$refunds_data['refunds'] = $ref_res['refund'];
-							$refunds_data['id_refund'] = $refund['refund_id'];
-							$refunds_data['id_keys'] = $id_keys;
-							$refunds_data_j = json_encode($refunds_data);
+							//$id_keys_payment = array();
 							
-							//sending data to PP
-							echo $refunds_data_j;
-							if(($PP_response = $Data_trial->sendData($this->db, 'refunds', $refunds_data_j, 'http://10.55.33.36/refund.php')) && !preg_match('/not found/', $PP_response)){
-								$Logging->insertIntoLogFile($PP_response, date("Y-m-d H:i:s"));	
+							for($i = 0; $i < count($ref_res['refund']); $i++){
+								
+								//sending data to PP
+								//print_r($ref_res);
+								$refunds_data['id_order'] = $ref_res['refund'][$i]['id_order'];
+								$refunds_data['sum'] = $ref_res['refund'][$i]['sum'];
+								$refunds_data['card'] = $ref_res['refund'][$i]['card'];
+								$refunds_data['id_refund'] = $refund['refund_id'];
+								$refunds_data['id_keys'] = $id_keys;
+								$refunds_data_j = json_encode($refunds_data);
+								/*if(($PP_response = $Data_trial->sendData($this->db, 'refunds', $refunds_data_j, 'http://10.55.33.36/refund.php')) && !preg_match('/not found/', $PP_response)){
+									$Logging->insertIntoLogFile($PP_response, date("Y-m-d H:i:s"));	
+								}
+								
+								try{
+									$PP_response_data = json_decode($PP_response, true);
+									
+									if(json_last_error() !== JSON_ERROR_NONE){
+										throw new Exception("The response of PP is not a JSON");						
+									}
+									
+								}
+								catch(Exception $e){
+									echo 'Exception: '.$e->getMessage();
+								}
+								
+								if( (int)$PP_response_data['code'] !== 1) {
+									$p_keys = $Refund->getCanceledKeys($ref_res['id_refund'], $ref_res[$i]['id_order']);
+									
+									for($i = 0; $i < count($p_keys); $i++){
+										array_push($id_keys_payment[], $p_keys[$i]);	
+									}
+									
+								}*/
+								
 							}
-							
-							echo "{'success': true, 'id_keys': {$id_keys}, 'status': 'OK', 'id_refund': {$refund['refund_id']}, 'payment': {$PP_response}}";
+							$ref_request = array();
 							$ref_request['status'] = 'OK';
-							$ref_request['id_keys'] = $inserted;
-							$ref_request['id_refund'] = $id_keys;
+							$ref_request['id_keys'] = $id_keys;
+							$ref_request['id_refund'] = $refund['refund_id'];;
 							$ref_request['success'] = true;
-							$ref_request['payment'] = $PP_response;
+							//$ref_request['id_keys_payment'] = $id_keys_payment;
 							$ref_request_j = json_encode($ref_request);
-							$CRM_res = $Data->sendData($this->db, 'refunds', $req_request_j, null, null, 'http://10.55.33.27/', 'refund/receiveResponse', 'CRM', '1');
+							echo $ref_request_j;
+							$CRM_res = $Data->sendData($this->db, 'refunds', $ref_request_j, null, null, 'http://10.55.33.27/', 'refund/receiveResponse', 'CRM', '1');
 							$Logging->insertIntoLogFile($CRM_res, date("Y-m-d H:i:s"));	
 						}
 					}

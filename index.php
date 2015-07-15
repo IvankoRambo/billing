@@ -86,6 +86,7 @@ try{
 	$routes = $frontController->getRouter();
 	$routes->addRoute('key-ui', new Zend_Controller_Router_Route('key-ui', array('controller' => 'key', 'action' => 'index')));
 	$routes->addRoute('get-refund', new Zend_Controller_Router_Route('get-refund', array('controller' => 'refund', 'action' => 'index')));
+	$routes->addRoute('product-search', new Zend_Controller_Router_Route('product-search', array('controller' => 'productsearch', 'action' => 'index')));
 	$routes->addRoute('single-product', new Zend_Controller_Router_Route('single-product', array('controller' => 'singleproduct', 'action' => 'index')));
 	$routes->addRoute('getOrder', 
 		new Zend_Controller_Router_Route('getOrder', array(

@@ -11,14 +11,14 @@ class SendorderController extends Component\BaseController{
 		$order_id = rand(1, 1000);
 		echo $order_id.'<br>';
 		$order = array(
-					'order_id' => $order_id,
+					'order_id' => 166,
 					'product_id' => 1,
 					'product_quantity' => 4,
 					'card_name' => 'BR25522',
-					'sum' => 100,
-					'keys' => implode(",",array(rand(1,1000000), rand(1, 1000000), rand(1, 1000000), rand(1,1000000))),
+					'sum' => 13,
+					'keys' => '13711',//implode(",",array(rand(1,1000000), rand(1, 1000000), rand(1, 1000000), rand(1,1000000))),
 					'date' => date('Y-m-d H:i:s', time()),//'2015-06-19 17:16:12',
-					'user_id' => rand(1, 100)
+					'user_id' => 'anonymous'
 					);
 		$params = $order;
 		// $params = array(

@@ -152,6 +152,14 @@ pre.json-obj:hover {
     padding-left: 120px;
 }
 
+#form-product, #q{
+	display: inline-block;
+}
+
+#q{
+	margin-left: 50px;
+}
+
 @media(max-width:768px) {
     .sidebar-nav {
         width: 0;
