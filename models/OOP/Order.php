@@ -301,7 +301,7 @@ class Order {
         );
         // $res1 = sendData($db, 'orders', json_encode($data), 'http://10.55.33.34/mark');
         $res1 = $proxyData->sendData($db, 'orders', json_encode($data), null, null, 
-            'http://10.55.33.21/', 'mark', 'AccountService', 'password');
+            'http://10.55.33.34/', 'mark', 'AccountService', 'password');
         if (!$res1 || preg_match('/not found/', $res1)) {
             $erroring->insertIntoLogFile( 
                     'Unsuccessful sending order and keys to account service. Sending:'.
