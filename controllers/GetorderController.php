@@ -53,10 +53,8 @@ class GetorderController extends Component\BaseController{
 			
 			$res = $order->postOrder();
 			$resDecoded = json_decode($res);
-			if ($resDecoded->code == 1) {
-				$newRes = $order->sendOrder();
+			$newRes = $order->sendOrder();
 				// echo $newRes;
-			}
 			// $res = postOrder($db, 
 			// 		  $order->order_id,
 			// 		  $order->product_id,
@@ -67,10 +65,10 @@ class GetorderController extends Component\BaseController{
 			// 		  $order->date,
 			// 		  $order->user_id);
 			echo $res;
-			$logging->insertIntoLogFile( 
-                     'Result:'."\n".
-                     $res."\n", 
-                     date('Y-m-d H:i:s', time()));
+			// $logging->insertIntoLogFile( 
+   //                   'Result:'."\n".
+   //                   $res."\n", 
+   //                   date('Y-m-d H:i:s', time()));
 			// var_dump($order);
 		} else {
 			// $erroring = new Logging(realpath('logs/orders_error'));

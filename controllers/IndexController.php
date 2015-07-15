@@ -46,6 +46,10 @@ class IndexController extends Component\BaseController{
 		
 		$this->view->products = OOP\Product::get_all($this->db);
 		
+		$urls = new OOP\Urls();
+		var_dump($urls->getDomain('AS', 'sendOrder'));
+				var_dump($urls->getPath('CRM', 'sendOrder'));
+
 	}
 	
 }

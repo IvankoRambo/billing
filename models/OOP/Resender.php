@@ -3,6 +3,7 @@ namespace OOP;
 use \PDO;
 //require __DIR__ . "/../../vendor/autoload.php";
 require "/../../vendor/autoload.php";
+//require "/../../vendor/autoload.php";
 //use Symfony\Component\HttpFoundation\Response;
 
 $localhost = 'http://dev.school-server/billing/billing/testResender.php';
