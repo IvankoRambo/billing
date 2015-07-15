@@ -16,7 +16,6 @@ try{
 	Zend_Loader::loadClass('Zend_Controller_Router_Route');
 	Zend_Loader::loadClass('Zend_Controller_Action_HelperBroker');
 	
-
 	
 	class HeaderLayoutPlugin extends Zend_Controller_Plugin_Abstract{
 		
@@ -34,7 +33,6 @@ try{
 			
 			$view->data = null;
 			$view->success = false;
-
 			
 			if(!is_null($this->getRequest()->getPost('sign_in'))){
 				$Agent = new OOP\Agent($db, $data['name'], $data['password']);
@@ -50,15 +48,18 @@ try{
 		
 	}
 
+
     class SidebarLayoutPlugin extends Zend_Controller_Plugin_Abstract{
 
         public function preDispatch(Zend_Controller_Request_Abstract $request){
             $layout = Zend_Layout::getMvcInstance();
             $view = $layout->getView();
+			$frontController = Zend_Controller_Front::getInstance();
+			$view->router = $frontController->getRouter();            $frontController = Zend_Controller_Front::getInstance();
+
         }
 
     }
-
 	
 	
 	$loader = new Zend_Loader_StandardAutoloader(array('autoregister_zf' => true));
@@ -97,7 +98,6 @@ try{
 
 	$routes->addRoute('view-db', new Zend_Controller_Router_Route('view-db', array('controller' => 'viewdb', 'action' => 'index')));
 	
-	// var_dump($routes);
 	$viewRenderer = Zend_Controller_Action_HelperBroker::getStaticHelper('viewRenderer');
 	$viewRenderer->initView();
 	$viewRenderer->view->addHelperPath(__DIR__.'/view/helpers');
