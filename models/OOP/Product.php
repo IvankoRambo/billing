@@ -136,7 +136,15 @@ class Product {
 		return ( $query->fetchAll(PDO::FETCH_ASSOC) );
 	}
 	
+	public static function get_like($db, $query){
+		self::$connection = $db;
+		$query = self::$connection->prepare("SELECT * FROM products WHERE name LIKE '$query%'");
+		$query->execute();
+		
+		return ( $query->fetchAll(PDO::FETCH_ASSOC) );			
+	}
 	
+
 	public static function filterProductsKeys($product_info){
 		$keys = [];
 		for($i = 0; $i<count($product_info); $i++){

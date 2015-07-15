@@ -93,10 +93,21 @@ class Refund {
 		return ( empty($check) );
  	}
 	
-	public function getCanceledKeys($id_refund){
-	 	$query = $this->connection->prepare('SELECT canceled_keys FROM refund_keys WHERE id_refund = :id_refund');
-		$id_refund = (int)$id_refund;
-		$query->bindParam(':id_refund', $id_refund, PDO::PARAM_INT);
+	public function getCanceledKeys($id_refund, $id_order = null){
+		
+		if(is_null($id_order)){
+		 	$query = $this->connection->prepare('SELECT canceled_keys FROM refund_keys WHERE id_refund = :id_refund');		
+			$id_refund = (int)$id_refund;
+			$query->bindParam(':id_refund', $id_refund, PDO::PARAM_INT);
+		}
+		else{
+			$query = $this->connection->prepare('SELECT canceled_keys FROM refund_keys WHERE id_refund = :id_refund AND id_order = :id_order');
+			$id_refund = (int)$id_refund;
+			$id_order = (int)$id_order;
+			$query->bindParam(':id_refund', $id_refund, PDO::PARAM_INT);
+			$query->bindParam(':id_order', $id_order, PDO::PARAM_INT);
+		}
+		
 		$query->execute();
 		
 		$key_array = $query->fetchAll(PDO::FETCH_NUM);

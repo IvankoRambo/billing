@@ -5,17 +5,21 @@
             <div class="add_product_form">
                 <h4>Adding new product:</h4>
 
-                <form method="post">
+                <form method="post" id="form-product">
                     <p><input type="text" name="name" required placeholder="name"/>
                     <input type="text" name="description" required placeholder="description"/>
                     <input type="text" id="price_input" name="price" required placeholder="price"/>
-                    <input type="submit" name="add" value="Add" class="btn btn-primary btn-sm"/></p>
+                    <input type="submit" name="add" value="Add" class="btn btn-primary btn-sm"/>
+                    </p>
                 </form>
+                
+               <p id="q"><input type="text" name="product-search" id="product-search" placeholder="Search for product"/></p>
+               
             </div>
         </div>
 		<span id="block_message">Only digit and a point separator are allowed for typing in price field.</span>
         <form method="post">
-            <table class="products_table">
+            <table class="products_table" id="old_prod">
                 <thead>
                 <tr>
                     <th>Name</th>
@@ -38,6 +42,24 @@
                 <?php endfor; ?>
             </table>
         </form>
+        
+        
+                <form method="post">
+            <table class="new_products_table products_table">
+                <thead id="new_thead">
+                <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Price</th>
+                    <th></th>
+                </tr>
+                </thead>
+
+				
+            </table>
+        </form>
+        
+        
     <?php else : ?>
         <div class="row center-row">
             <div class="center" id="hello">
@@ -47,3 +69,4 @@
     <?php endif; ?>
     
 	<script type="application/javascript" src="js/price_blocker.js"></script>
+	<script type="application/javascript" src="js/search-product.js"></script>
