@@ -67,10 +67,10 @@ class GetorderController extends Component\BaseController{
 			// 		  $order->date,
 			// 		  $order->user_id);
 			echo $res;
-			$logging->insertIntoLogFile( 
-                     'Result:'."\n".
-                     $res."\n", 
-                     date('Y-m-d H:i:s', time()));
+			// $logging->insertIntoLogFile( 
+   //                   'Result:'."\n".
+   //                   $res."\n", 
+   //                   date('Y-m-d H:i:s', time()));
 			// var_dump($order);
 		} else {
 			// $erroring = new Logging(realpath('logs/orders_error'));
