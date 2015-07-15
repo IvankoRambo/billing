@@ -141,6 +141,17 @@ pre.json-obj:hover {
 	color:red;
 }
 
+#hello {
+    vertical-align: middle;
+    width: 1655px;
+    height: 650px;
+    text-align: center;
+}
+
+#hello-text {
+    padding-left: 120px;
+}
+
 @media(max-width:768px) {
     .sidebar-nav {
         width: 0;
