@@ -1,8 +1,13 @@
 <?php
 namespace OOP;
+//require __DIR__ . "/ServiceLocator.php";
+//require __DIR__ . "/Connection.php";
+//require __DIR__ . "/ProxyData.php";
+//require __DIR__ . "/iData.php";
+
 use \PDO;
 //require __DIR__ . "/../../vendor/autoload.php";
-require "/../../vendor/autoload.php";
+//require "/../../vendor/autoload.php";
 //require "/../../vendor/autoload.php";
 //use Symfony\Component\HttpFoundation\Response;
 
@@ -146,12 +151,30 @@ class Resender {
 
 // doesn't work ??
     public static function send($data, $urlDomain, $urlPath, $destination) {
+//        $proxyData = new ProxyData();
         $proxyData = new ProxyData();
-        $response = $proxyData->sendData(self::$connection, null, $data, null, null,
-            $urlDomain, $urlPath, $destination, 'password');
+        $Data = new ProxyData();
+        $Logging = new Logging('logs/products_response.log');
+
+//        $response = $proxyData->sendData(self::$connection, null, $data, null, null,
+//            $urlDomain, $urlPath, $destination, 'password');
+
+//        if(($prod_response = $Data->sendData($this->db, 'products', $data, null, null, 'http://10.55.33.34/', 'get', 'AccountService', 'password')) && !preg_match('/not found/', $prod_response)){
+//            $Logging->insertIntoLogFile($prod_response, date("Y-m-d H:i:s"));
+//        }
+
+        if(($prod_response = $Data->sendData($this->db, 'products', $data, null, null, $urlDomain, $urlPath, 'AccountService', 'password')) && !preg_match('/not found/', $prod_response)){
+            $Logging->insertIntoLogFile($prod_response, date("Y-m-d H:i:s"));
+        }
+
         echo "var_dump from send in Resender ->";
-        var_dump($response);
-        return $response;
+        var_dump($prod_response);
+        return $$prod_response;
+    }
+
+
+    public static function sendProducts($data, $urlDomain, $urlPath, $destination) {
+
     }
 
 
@@ -189,11 +212,20 @@ class Resender {
         if ($record) {
             print("sending" . $record->data . " data to => " . $record->destination . "<br>");
 //            if (self::send($record->data, self::$destinations[$record->destination]['urlDomain'], self::$destinations['$record->destination']['urlPath'], $record->destination) == 200/*Response::HTTP_OK*/) {
-            if (self::send($record->data, 'http://dev.school-server', 'testResender.php', $record->destination) == 200/*Response::HTTP_OK*/) {
-                self::deleteLastRecord($tableName);
-            } else {
-                var_dump(self::send($record->data, 'http://dev.school-server', 'testResender.php', $record->destination));
-            }
+
+
+
+//            if (self::send($record->data, 'http://dev.school-server', 'testResender.php', $record->destination) == 200/*Response::HTTP_OK*/) {
+//                self::deleteLastRecord($tableName);
+//                echo "table $tableName deleted";
+//            } else {
+//                echo "else<br>";
+//                var_dump(self::send($record->data, 'http://dev.school-server', 'testResender.php', $record->destination));
+//            }
+            self::send($record->data, 'http://dev.school-server', 'testResender.php', $record->destination);
+            self::deleteLastRecord($tableName);
+
+
         } else {
             echo 'There are no failed items to send!<br>';
         }
@@ -202,9 +234,9 @@ class Resender {
 }
 
 
-Resender::init();
+//Resender::init();
 //Resender::run();
 //Resender::runOnce();
 
-$config = parse_ini_file(__DIR__ . '../../config/urls.ini');
-var_dump($config);
+//$config = parse_ini_file(__DIR__ . '../../config/urls.ini');
+//var_dump($config);
