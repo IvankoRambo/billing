@@ -9,7 +9,8 @@ class Urls {
 		if ($filepath == null) {
 			$filepath = realpath(__DIR__.'/../../config/urls.ini');
 		}
-		$this->urls = parse_ini_file($filepath);
+		$this->iniFilePath = $filepath;
+		$this->urls = parse_ini_file($filepath, true);
 	}
 
 	public function getDomain($partner, $action) {
@@ -22,7 +23,7 @@ class Urls {
 		return $this->urls[$partner][$action]['urlDomain'];
 	}
 
-	public function getPath() {
+	public function getPath($partner, $action) {
 		if (!isset($this->urls[$partner])) {
 			return false;
 		}

@@ -275,7 +275,7 @@ class Order {
     public function sendOrder() {
         $logging = new Logging(realpath(__DIR__.'/../../logs/orders_log'));
         $erroring = new Logging(realpath(__DIR__.'/../../logs/orders_error'));
-
+        $urls = new Urls();
 
         $db = self::$connection;
         $order_id = $this->order_id;
@@ -301,7 +301,9 @@ class Order {
         );
         // $res1 = sendData($db, 'orders', json_encode($data), 'http://10.55.33.34/mark');
         $res1 = $proxyData->sendData($db, 'orders', json_encode($data), null, null, 
-            'http://10.55.33.21/', 'mark', 'AccountService', 'password');
+            $urls->getDomain('AS', 'sendOrder'),//'http://10.55.33.21/', 
+            $urls->getPath('AS', 'sendOrder'),//'mark', 
+            'AccountService', 'password');
         if (!$res1 || preg_match('/not found/', $res1)) {
             $erroring->insertIntoLogFile( 
                     'Unsuccessful sending order and keys to account service. Sending:'.
@@ -327,7 +329,8 @@ class Order {
         );
         // var_dump($data);
         $res1 = $proxyData->sendData($db, 'orders', json_encode($data), null, null, 
-            'http://10.55.33.27/', 'order/add',
+            $urls->getDomain('CRM', 'sendOrder'),//'http://10.55.33.27/', 
+            $urls->getPath('CRM', 'sendOrder'),//'order/add',
             'CRM', '1');
         // echo $res1;
         if ($res1 != 'Success' || preg_match('/not found/', $res1)) {
