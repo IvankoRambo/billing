@@ -309,11 +309,12 @@ class Order {
                     'Unsuccessful sending order and keys to account service. Sending:'.
                     json_encode($data).
                     '.Receiving:'.
-                    $res1, 
+                    str_replcace("\n", ' ', $res1), 
                     date('Y-m-d H:i:s', time()));
         } else {
             $logging->insertIntoLogFile( 
-                    'Successful sending order and keys to account service: '.$res1, 
+                    'Successful sending order and keys to account service: '
+                    .str_replcace("\n", ' ', $res1), 
                     date('Y-m-d H:i:s', time()));
         }
         $res .= 'Account Service result:<br>';
@@ -337,11 +338,12 @@ class Order {
             $erroring->insertIntoLogFile( 
                     'Unsuccessful sending order and keys to CRM. '. 
                     'Sending: '. json_encode($data). 
-                    '.Receiving: ' . $res1, 
+                    '.Receiving: ' . str_replcace("\n", ' ', $res1), 
                     date('Y-m-d H:i:s', time()));
         } else {
             $logging->insertIntoLogFile( 
-                    'Successful sending order and keys to CRM: '.$res1,
+                    'Successful sending order and keys to CRM: '
+                    .str_replcace("\n", ' ', $res1),
                     date('Y-m-d H:i:s', time()));
         }
         $res .= 'CRM result:<br>';
