@@ -1,5 +1,7 @@
 <?php
 namespace OOP;
+//require __DIR__ . "/ServiceLocator.php";
+//require "Connection.php";
 use \PDO;
 
 /**
@@ -25,10 +27,10 @@ class Product {
 		}
 		
 		if($config_path){
-        $connection = OOP\ServiceLocator::getConnection($config_path);
+            $connection = ServiceLocator::getConnection($config_path);
 		}
 		else{
-		$connection = OOP\ServiceLocator::getConnection(realpath(__DIR__ . '/../../config/db.ini'));	
+		$connection = ServiceLocator::getConnection(realpath(__DIR__ . '/../../config/db.ini'));
 		}
         self::$connection = $connection->getDBSource();
     }
@@ -215,11 +217,11 @@ class Product {
 
 }
 
-/*$product = new Product('Super product', 150, 'Best product ever');
-$product2 = Product::getProductByID(5);
-var_dump($product);
-var_dump($product2);
-$product->add();*/
+//$product = new Product('Super product', 150, 'Best product ever');
+//$product2 = Product::getProductByID(5);
+//var_dump($product);
+//var_dump($product2);
+//$product->add();
 
 // TODO encode to json and send to AS
 // {"products":[{"id":"1","name":"Some Ant","price":"123"},{"id":"3","name":"Lost Good","price":"66"}]}

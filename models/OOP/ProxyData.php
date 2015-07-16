@@ -45,8 +45,8 @@ class ProxyData implements iData{
 		if(NULL == $this->_data){
 			$this->makeData();
 		}
-		
-		return $this->_data->sendData($db, $key_info, $info, $address);
+
+		return $this->_data->sendData($db, $key_info, $info, $address, null, null, null, $partner);
 		
 	}
 
@@ -63,7 +63,7 @@ class ProxyData implements iData{
 		    $s = $urlPath.$check_info[0]['secret_key'];
 		    $check_key = "";
 		    $check_key = base64_encode(pack('H*', md5($s)));
-		    $check_key = str_replace(array("+", "/", "="), array(".", "_", "-"), $check_key);;
+		    $check_key = str_replace(array("+", "/", "="), array(".", "_", "-"), $check_key);
 			
 			if($check_key != $_get['hash']){
 				return false;

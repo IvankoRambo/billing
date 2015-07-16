@@ -1,8 +1,13 @@
 <?php
 namespace OOP;
+//require __DIR__ . "/ServiceLocator.php";
+//require __DIR__ . "/Connection.php";
+//require __DIR__ . "/ProxyData.php";
+//require __DIR__ . "/iData.php";
+
 use \PDO;
 //require __DIR__ . "/../../vendor/autoload.php";
-require "/../../vendor/autoload.php";
+//require "/../../vendor/autoload.php";
 //require "/../../vendor/autoload.php";
 //use Symfony\Component\HttpFoundation\Response;
 
@@ -21,38 +26,33 @@ class Resender {
         $connection = ServiceLocator::getConnection(realpath(__DIR__ . '/../../config/db.ini'));
         self::$connection = $connection->getDBSource();
 
-        $destinations = array(
-            'AS' => array(
-                'urlDomain' => 'http://10.55.33.21/',
-                'urlPath' => 'getProducts.php'),
-            'PP' => array(
-                'urlDomain' => 'http://10.55.33.28',
-                'urlPath' => 'billing/GetProductsFromBilling.php'),
-            'CRM' => array(
-                'urlDomain' => 'http://10.55.33.28',
-                'urlPath' => 'billing/GetProductsFromBilling.php'));
+//        $destinations = array(
+//            'AS' => array(
+//                'urlDomain' => 'http://10.55.33.21/',
+//                'urlPath' => 'getProducts.php'),
+//            'PP' => array(
+//                'urlDomain' => 'http://10.55.33.28',
+//                'urlPath' => 'billing/GetProductsFromBilling.php'),
+//            'CRM' => array(
+//                'urlDomain' => 'http://10.55.33.28',
+//                'urlPath' => 'billing/GetProductsFromBilling.php'));
     }
 
-    /**
-     * @param self::$connection PDO
-     * @return string name of table that has records
-     */
-    public static function checkTables() {
-        $products = self::$connection->prepare("SELECT id FROM failed_products");
-        $products->execute();
 
-        $orders = self::$connection->prepare("SELECT id FROM failed_orders");
-        $orders->execute();
+    public static function isEmpty($tableName) {
+        $records = self::$connection->prepare("SELECT id FROM $tableName");
+        $records->execute();
+        if ($records->rowCount() > 0) {
+            return false;
+        } else return true;
+    }
 
-        $refunds = self::$connection->prepare("SELECT id FROM failed_refunds");
-        $refunds->execute();
-
-        if (($products->rowCount() > 0)) {
-            return 'failed_products';
-        } elseif (($orders->rowCount() > 0)) {
-            return 'failed_orders';
-        } elseif (($refunds->rowCount() > 0)) {
-            return 'failed_refunds';
+    public static function getDestination($tableName) {
+        $sth = self::$connection->prepare("SELECT destination FROM $tableName ORDER BY id DESC LIMIT 1");
+        $sth->execute();
+        if ($sth->rowCount() > 0) {
+//            return ($sth->fetch(PDO::FETCH_OBJ)->destination);
+            return ($sth->fetch(PDO::FETCH_OBJ));
         } else return false;
     }
 
@@ -78,6 +78,124 @@ class Resender {
 //    $query->bindParam(':tableName', $tableName, PDO::PARAM_STR);
         return ($query->execute());
     }
+
+
+    public static function sendProducts($urlDomain, $urlPath, $destination) {
+        $products = Product::get_all(self::$connection);
+        $products = Product::filterProductsKeys($products);
+        $products_json = Product::convertProductsInJSON(self::$connection, $products);
+        $Data = new ProxyData();
+        $logging = new Logging(realpath(__DIR__.'/../../logs/failed_products.log'));
+
+//        if(($prod_response = $Data->sendData(null, 'products', $products_json, null, null, 'http://10.55.33.34/', 'get', 'AccountService', 'password')) && !preg_match('/not found/', $prod_response)){
+//            $Logging->insertIntoLogFile($prod_response, date("Y-m-d H:i:s"));
+//        }
+
+        if(($prod_response = $Data->sendData(self::$connection, 'products', $products_json, null, null, $urlDomain, $urlPath, $destination, 'password')) && !preg_match('/not found/', $prod_response)){
+            $logging->insertIntoLogFile($prod_response, date("Y-m-d H:i:s"));
+        }
+        self::deleteLastRecord('failed_products');
+    }
+
+
+    public static function sendOrders($urlDomain, $urlPath, $destination) {
+        $Data = new ProxyData();
+        $logging = new Logging(realpath(__DIR__.'/../../logs/failed_orders.log'));
+        $lastRecord = self::getLastRecord('failed_orders');
+        var_dump($lastRecord);
+        //$lastRecord->data;
+
+        if(($order_response = $Data->sendData(self::$connection, 'orders', $lastRecord->data, null, null, $urlDomain, $urlPath, $destination, 'password')) && !preg_match('/not found/', $order_response)){
+            $logging->insertIntoLogFile($order_response, date("Y-m-d H:i:s"));
+        }
+//        self::deleteLastRecord('failed_orders');
+
+    }
+
+
+    public static function sendRefunds($urlDomain, $urlPath, $destination) {
+
+    }
+
+    public static function run() {
+        $urls = new Urls();
+        while ($destination = self::getDestination('failed_products')) {
+//            self::sendProducts($urls->getDomain($destination, 'get'), $urls->getPath($destination, 'get'));
+            self::sendProducts('dev.server', 'testResender.php', $destination->destination);
+        }
+
+        while ($destination = self::getDestination('failed_orders')) {
+//            self::sendProducts($urls->getDomain($destination, 'get'), $urls->getPath($destination, 'get'));
+            self::sendOrders('dev.server', 'testResender.php', $destination->destination);
+        }
+
+//        while ($destination = self::getDestination('failed_products')) {
+////            self::sendProducts($urls->getDomain($destination, 'get'), $urls->getPath($destination, 'get'));
+//            self::sendProducts('dev.server', 'testResender.php', $destination);
+//        }
+
+    }
+
+    public static function runOnce() {
+        $urls = new Urls();
+        if ($destination = self::getDestination('failed_products')) {
+//            self::sendProducts($urls->getDomain($destination, 'get'), $urls->getPath($destination, 'get'));
+//            var_dump($destination);
+//            self::sendProducts('dev.server', 'testResender.php', $destination);
+
+            var_dump($destination->destination);
+            self::sendProducts('dev.server', 'testResender.php', $destination->destination);
+
+        }
+
+        if ($destination = self::getDestination('failed_orders')) {
+//            self::sendProducts($urls->getDomain($destination, 'sendOrder'), $urls->getPath($destination, 'sendOrder'));
+//            var_dump($destination);
+//            self::sendOrders('dev.server', 'testResender.php', $destination);
+
+            var_dump($destination->destination);
+            self::sendOrders('dev.server', 'testResender.php', $destination->destination);
+        } else {
+            var_dump($destination->destination);
+        }
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+    /**
+     * @param self::$connection PDO
+     * @return string name of table that has records
+     */
+    public static function checkTables() {
+        $products = self::$connection->prepare("SELECT id FROM failed_products");
+        $products->execute();
+
+        $orders = self::$connection->prepare("SELECT id FROM failed_orders");
+        $orders->execute();
+
+        $refunds = self::$connection->prepare("SELECT id FROM failed_refunds");
+        $refunds->execute();
+
+        if (($products->rowCount() > 0)) {
+            return 'failed_products';
+        } elseif (($orders->rowCount() > 0)) {
+            return 'failed_orders';
+        } elseif (($refunds->rowCount() > 0)) {
+            return 'failed_refunds';
+        } else return false;
+    }
+
+
+
 
     public static function generateRandomText($quantity) {
         $characters = 'abcdefghijklmnopqrstuvwxyz';
@@ -146,13 +264,29 @@ class Resender {
 
 // doesn't work ??
     public static function send($data, $urlDomain, $urlPath, $destination) {
+//        $proxyData = new ProxyData();
         $proxyData = new ProxyData();
-        $response = $proxyData->sendData(self::$connection, null, $data, null, null,
-            $urlDomain, $urlPath, $destination, 'password');
+        $Data = new ProxyData();
+        $Logging = new Logging('logs/products_response.log');
+
+//        $response = $proxyData->sendData(self::$connection, null, $data, null, null,
+//            $urlDomain, $urlPath, $destination, 'password');
+
+//        if(($prod_response = $Data->sendData($this->db, 'products', $data, null, null, 'http://10.55.33.34/', 'get', 'AccountService', 'password')) && !preg_match('/not found/', $prod_response)){
+//            $Logging->insertIntoLogFile($prod_response, date("Y-m-d H:i:s"));
+//        }
+
+        if(($prod_response = $Data->sendData(self::$connection, 'products', $data, null, null, $urlDomain, $urlPath, 'AccountService', 'password')) && !preg_match('/not found/', $prod_response)){
+            $Logging->insertIntoLogFile($prod_response, date("Y-m-d H:i:s"));
+        }
+
         echo "var_dump from send in Resender ->";
-        var_dump($response);
-        return $response;
+        var_dump($prod_response);
+        return $$prod_response;
     }
+
+
+
 
 
 
@@ -160,7 +294,7 @@ class Resender {
     /**
      * @param PDO self::$connection
      */
-    public static function run() {
+    public static function run2() {
         $url = 'http://dev.school-server/testResender.php';
 //    $url = 'http://10.55.33.21/without_routing/discard.php';
 //        $url = 'http://10.55.33.21/view/Discard/test.php';
@@ -180,7 +314,7 @@ class Resender {
     /**
      * @param PDO self::$connection
      */
-    public static function runOnce() {
+    public static function runOnce2() {
         $url = 'http://dev.school-server/testResender.php';
 //    $url = 'http://10.55.33.21/without_routing/discard.php';
 //        $url = 'http://10.55.33.21/view/Discard/test.php';
@@ -189,11 +323,20 @@ class Resender {
         if ($record) {
             print("sending" . $record->data . " data to => " . $record->destination . "<br>");
 //            if (self::send($record->data, self::$destinations[$record->destination]['urlDomain'], self::$destinations['$record->destination']['urlPath'], $record->destination) == 200/*Response::HTTP_OK*/) {
-            if (self::send($record->data, 'http://dev.school-server', 'testResender.php', $record->destination) == 200/*Response::HTTP_OK*/) {
-                self::deleteLastRecord($tableName);
-            } else {
-                var_dump(self::send($record->data, 'http://dev.school-server', 'testResender.php', $record->destination));
-            }
+
+
+
+//            if (self::send($record->data, 'http://dev.school-server', 'testResender.php', $record->destination) == 200/*Response::HTTP_OK*/) {
+//                self::deleteLastRecord($tableName);
+//                echo "table $tableName deleted";
+//            } else {
+//                echo "else<br>";
+//                var_dump(self::send($record->data, 'http://dev.school-server', 'testResender.php', $record->destination));
+//            }
+            self::send($record->data, 'http://dev.school-server', 'testResender.php', $record->destination);
+            self::deleteLastRecord($tableName);
+
+
         } else {
             echo 'There are no failed items to send!<br>';
         }
@@ -202,9 +345,9 @@ class Resender {
 }
 
 
-Resender::init();
+//Resender::init();
 //Resender::run();
 //Resender::runOnce();
 
-$config = parse_ini_file(__DIR__ . '../../config/urls.ini');
-var_dump($config);
+//$config = parse_ini_file(__DIR__ . '../../config/urls.ini');
+//var_dump($config);

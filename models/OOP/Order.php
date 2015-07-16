@@ -354,9 +354,6 @@ class Order {
 
 }
 
-
-
-
 // TODO Get and parse this data from PP
 //$bdata = array('order_id' => $data['id'],
 //    'product_id' => $data['product_id'],
@@ -377,6 +374,5 @@ class Order {
 //var_dump($order);
 //var_dump(array($order));
 // echo $order->add2();
-
 
 
