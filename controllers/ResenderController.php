@@ -16,7 +16,6 @@ class ResenderController extends Component\BaseController {
         \OOP\Resender::init();
         \OOP\Resender::runOnce();
 
-        echo "Hello, World!\n";
     }
 
 

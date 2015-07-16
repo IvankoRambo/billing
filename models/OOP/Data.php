@@ -12,6 +12,7 @@ class Data implements iData{
 	public function sendData($db, $key_info, $info, $address = null, $secret_key = null, $urlDomain = null, $urlPath = null, $partner = null, $key = null){
 		
 		$url = $address;
+		$destination = $partner;
 		$fields = array(
 			$key_info => $info,
 			'secret_key' => $secret_key
@@ -27,9 +28,9 @@ class Data implements iData{
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		$response = curl_exec($ch);
 		curl_close($ch);
-		
-		if(!$response || preg_match('/not found/', $response)){
-			$this->insertIntoFailedTable($db, $key_info, $info, $url);	
+
+		if(!$response || preg_match('/not found/', $response)) {
+			$this->insertIntoFailedTable($db, $key_info, $info, $destination);
 		}
 		
 		$this->send_data_json = $info;
