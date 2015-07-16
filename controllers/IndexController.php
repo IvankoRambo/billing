@@ -2,6 +2,7 @@
 
 Zend_Loader::loadClass('Zend_Controller_Action');
 
+use OOP\Urls;
 
 class IndexController extends Component\BaseController{
 	
@@ -23,12 +24,22 @@ class IndexController extends Component\BaseController{
 			$Data = new OOP\ProxyData();
 			$Logging = new OOP\Logging('logs/products_response.log');
 			
-				if(($prod_response = $Data->sendData($this->db, 'products', $products_json, null, null, 'http://10.55.33.34/', 'get', 'AS', 'password')) && !preg_match('/not found/', $prod_response)){
+			$urls = new Urls();
+
+				if(($prod_response = $Data->sendData($this->db, 'products', $products_json, 
+					null, null, 
+					$urls->getDomain('AS', 'get'),//'http://10.55.33.34/', 
+					$urls->getPath('AS', 'get'), //'get',
+					 'AS', 'password')) && !preg_match('/not found/', $prod_response)){
 					$Logging->insertIntoLogFile($prod_response, date("Y-m-d H:i:s"));
 				}
 				
 				
-				if(($prod_response = $Data->sendData($this->db, 'products', $products_json, null, null, 'http://10.55.33.36/', 'billing/GetProductsFromBilling.php', 'PP', '1234')) && !preg_match('/not found/', $prod_response)){
+				if(($prod_response = $Data->sendData($this->db, 'products', $products_json, 
+					null, null, 
+					$urls->getDomain('PP', 'sendProducts'),//'http://10.55.33.36/', 
+					$urls->getPath('PP', 'sendProducts'),//'billing/GetProductsFromBilling.php', 
+					'PP', '1234')) && !preg_match('/not found/', $prod_response)){
 					$Logging->insertIntoLogFile($prod_response, date("Y-m-d H:i:s"));
 				}
 				
