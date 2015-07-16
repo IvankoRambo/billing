@@ -30,12 +30,12 @@
         <?php if (isset($this->session->isLogged)): ?>
             <h4>Welcome <?= $this->session->name; ?></a></h4>
             <a href="logout" class="btn btn-primary" role="button">Logout</a>
+            <a href="registration" class="btn btn-primary" role="button">Register</a>
         <?php else: ?>
             <form method="post" action="<?php echo htmlspecialchars($_SERVER["REQUEST_URI"]);?>">
                 <p><input type="text" name="name" class="login_blocker" placeholder="login" required /></p>
                 <p><input type="password" name="password" placeholder="password" required /></p>
                 <input type="submit" name="sign_in" value="Sign in" class="btn btn-success"/>
-                <a href="registration" class="btn btn-primary" role="button">Register</a>
             </form>
         <?php endif; ?>
     </div>

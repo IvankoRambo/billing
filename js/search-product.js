@@ -1,11 +1,16 @@
 (function($){
 	
+	
+
+	
 	$('.new_products_table').hide();
 	
+
 	
 	var Product = {
+		
 		init: function(){
-			this.template = '<tr><td>{{name}}</td><td>{{description}}</td><td>{{price}}</td><td><a href="single-product?product_id={{id}}" class="btn btn-info pull-right"><span class="glyphicon glyphicon-pencil"></span></a></td></tr>';
+			this.template = '<tr class="tr_data"><td>{{name}}</td><td>{{description}}</td><td>{{price}}</td><td><a href="single-product?product_id={{id}}" class="btn btn-info pull-right"><span class="glyphicon glyphicon-pencil"></span></a></td></tr>';
 			this.query;
 			this.products = [];
 			this.timer;
@@ -67,6 +72,19 @@
 			});
 		},
 		
+	htmlspecialchars: function (html) {
+	    var fn=function(tag) {
+	        var charsToReplace = {
+	            '&': '&amp;',
+	            '<': '&lt;',
+	            '>': '&gt;',
+	            '"': '&#34;'
+	        };
+	        return charsToReplace[tag] || tag;
+	    }
+	    return html.replace(/[&<>"]/g, fn);
+	},
+		
 		parseResults: function(){
 			var self = Product;
 			self.frag = '';
@@ -77,7 +95,7 @@
 				
 				$.each(self.products.data, function(index, obj){
 					self.frag += 
-						self.template.replace(/{{name}}/ig, obj.name)
+						self.template.replace(/{{name}}/ig, self.htmlspecialchars(obj.name))
 						.replace(/{{description}}/ig, obj.description)
 						.replace(/{{price}}/ig, obj.price)
 						.replace(/{{id}}/ig, obj.id);
@@ -85,10 +103,11 @@
 				
 			}
 			else{
-				self.frag = '<td>There is no product with such name</td>';
+				self.frag = '<tr class="tr_data"><td>There is no product with such name</td></tr>';
 			}
 			
-			$('#new_thead').empty().append(self.frag);
+			$('.tr_data').empty();
+			$('#new_thead').append(self.frag)
 			
 		}
 		
