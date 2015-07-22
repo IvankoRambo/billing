@@ -115,7 +115,7 @@ class RefundController extends Component\BaseController{
 								$refunds_data['id_refund'] = $refund['refund_id'];
 								$refunds_data['id_keys'] = $id_keys;
 								$refunds_data_j = json_encode($refunds_data);
-								/*if(($PP_response = $Data_trial->sendData($this->db, 'refunds', $refunds_data_j, 'http://10.55.33.36/refund.php')) && !preg_match('/not found/', $PP_response)){
+								if(($PP_response = $Data_trial->sendData($this->db, 'refunds', $refunds_data_j, 'http://10.55.33.36/refund.php')) && !preg_match('/not found/', $PP_response)){
 									$Logging->insertIntoLogFile($PP_response, date("Y-m-d H:i:s"));	
 								}
 								
@@ -138,7 +138,7 @@ class RefundController extends Component\BaseController{
 										array_push($id_keys_payment[], $p_keys[$i]);	
 									}
 									
-								}*/
+								}
 								
 							}
 							$ref_request = array();

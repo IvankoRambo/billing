@@ -152,12 +152,16 @@ pre.json-obj:hover {
     padding-left: 120px;
 }
 
-#form-product, #q{
+#form-product, #q, #delete-form{
 	display: inline-block;
 }
 
 #q{
 	margin-left: 50px;
+}
+
+#delete-form{
+	margin-left:70px;
 }
 
 @media(max-width:768px) {
